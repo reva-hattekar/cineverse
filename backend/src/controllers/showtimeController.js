@@ -12,7 +12,7 @@ async function getShowtimeSeats(req, res, next) {
     const showtimeRows = await query(`
       SELECT 
         s.show_id,
-        s.show_date,
+        DATE_FORMAT(s.show_date, '%Y-%m-%d') AS show_date,
         s.start_time,
         s.end_time,
         s.base_price,
@@ -21,11 +21,15 @@ async function getShowtimeSeats(req, res, next) {
         m.title AS movie_title,
         m.genre,
         m.rating,
+        m.duration,
         sc.screen_number,
+        sc.screen_name,
+        sc.screen_type,
         sc.capacity,
         t.theater_id,
         t.theater_name,
-        t.city
+        t.city,
+        t.address
       FROM SHOWTIME s
       JOIN MOVIE m ON s.movie_id = m.movie_id
       JOIN SCREEN sc ON s.screen_id = sc.screen_id
@@ -102,7 +106,7 @@ async function getAllShowtimes(req, res, next) {
     let sql = `
       SELECT 
         s.show_id,
-        s.show_date,
+        DATE_FORMAT(s.show_date, '%Y-%m-%d') AS show_date,
         s.start_time,
         s.end_time,
         s.base_price,
@@ -111,8 +115,11 @@ async function getAllShowtimes(req, res, next) {
         m.duration,
         s.screen_id,
         sc.screen_number,
+        sc.screen_name,
+        sc.screen_type,
         t.theater_id,
-        t.theater_name
+        t.theater_name,
+        t.city
       FROM SHOWTIME s
       JOIN MOVIE m ON s.movie_id = m.movie_id
       JOIN SCREEN sc ON s.screen_id = sc.screen_id
@@ -145,6 +152,7 @@ async function getAllShowtimes(req, res, next) {
 
 /**
  * Admin: Schedule a new showtime
+ * Validates against screening overlaps on the same screen (accounting for runtime + turnaround)
  */
 async function adminCreateShowtime(req, res, next) {
   try {
@@ -158,14 +166,35 @@ async function adminCreateShowtime(req, res, next) {
     }
 
     // Verify screen and movie exist
-    const movieCheck = await query('SELECT movie_id FROM MOVIE WHERE movie_id = ?', [movie_id]);
+    const movieCheck = await query('SELECT movie_id, title FROM MOVIE WHERE movie_id = ?', [movie_id]);
     if (movieCheck.length === 0) {
       return res.status(400).json({ success: false, message: 'Invalid movie_id.' });
     }
 
-    const screenCheck = await query('SELECT screen_id FROM SCREEN WHERE screen_id = ?', [screen_id]);
+    const screenCheck = await query('SELECT screen_id, screen_number, theater_id FROM SCREEN WHERE screen_id = ?', [screen_id]);
     if (screenCheck.length === 0) {
       return res.status(400).json({ success: false, message: 'Invalid screen_id.' });
+    }
+
+    // Scheduling Integrity Check: Prevent overlapping screenings on the same screen
+    const overlapCheck = await query(`
+      SELECT s.show_id, s.start_time, s.end_time, m.title
+      FROM SHOWTIME s
+      JOIN MOVIE m ON s.movie_id = m.movie_id
+      WHERE s.screen_id = ?
+        AND s.show_date = ?
+        AND (
+          (s.start_time <= ? AND s.end_time > ?) OR
+          (s.start_time < ? AND s.end_time >= ?) OR
+          (s.start_time >= ? AND s.end_time <= ?)
+        )
+    `, [screen_id, show_date, start_time, start_time, end_time, end_time, start_time, end_time]);
+
+    if (overlapCheck.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: `Scheduling Conflict: Screen ${screen_id} already has '${overlapCheck[0].title}' scheduled from ${overlapCheck[0].start_time} to ${overlapCheck[0].end_time}. Auditoriums require sequential screenings with buffer time.`
+      });
     }
 
     const sql = `

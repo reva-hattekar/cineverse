@@ -167,20 +167,20 @@ export default function TheatresView({
                       {theater.screens && theater.screens.length > 0 ? (
                         theater.screens.map(screen => (
                           <div key={screen.screen_id} className="theatre-screen-chip">
-                            <span className="screen-num">Screen {screen.screen_number}</span>
+                            <span className="screen-num">{screen.screen_name || `Screen ${screen.screen_number}`}</span>
                             <span className="screen-cap">
-                              {screen.capacity ? `${screen.capacity} Seats` : 'Auditorium'}
+                              {screen.capacity ? `${screen.capacity} Seats` : '142 Seats'}
                             </span>
                             <span className="screen-format-tag">
-                              {screen.screen_number === 1 ? 'Dolby Atmos' : 'VIP Recliner'}
+                              {screen.screen_type || (screen.screen_number === 1 ? 'IMAX Laser' : 'Dolby Atmos')}
                             </span>
                           </div>
                         ))
                       ) : (
                         <div className="theatre-screen-chip">
                           <span className="screen-num">Screen 1</span>
-                          <span className="screen-cap">30 Seats</span>
-                          <span className="screen-format-tag">Dolby Atmos</span>
+                          <span className="screen-cap">142 Seats</span>
+                          <span className="screen-format-tag">IMAX Laser</span>
                         </div>
                       )}
                     </div>

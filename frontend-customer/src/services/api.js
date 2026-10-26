@@ -29,8 +29,9 @@ export const api = {
     return handleResponse(res);
   },
 
-  getMovieShowtimes: async (id) => {
-    const res = await fetch(`${BASE_URL}/movies/${id}/showtimes`);
+  getMovieShowtimes: async (id, params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    const res = await fetch(`${BASE_URL}/movies/${id}/showtimes${q ? `?${q}` : ''}`);
     return handleResponse(res);
   },
 

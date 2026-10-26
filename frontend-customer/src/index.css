@@ -2445,6 +2445,304 @@ input:focus, select:focus, textarea:focus {
 /* =========================================================
    BOOKING FLOW PANELS & CARDS (OBSIDIAN & BURGUNDY THEME)
    ========================================================= */
+
+/* DATE SELECTION RIBBON */
+.booking-date-selector-wrapper {
+  margin-bottom: 28px;
+}
+
+.date-selector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.date-selector-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fb7185;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.date-selector-ribbon {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.date-pill-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 12px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.date-pill-btn:hover:not(:disabled) {
+  border-color: rgba(225, 29, 72, 0.45);
+  background: rgba(225, 29, 72, 0.06);
+  transform: translateY(-2px);
+}
+
+.date-pill-btn.active {
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.22) 0%, rgba(136, 19, 55, 0.35) 100%);
+  border: 1.5px solid #fb7185;
+  box-shadow: 0 4px 20px rgba(225, 29, 72, 0.35);
+  transform: translateY(-2px);
+}
+
+.date-pill-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fb7185;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.date-pill-day {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #ffffff;
+  font-family: var(--font-serif);
+}
+
+.date-pill-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.date-pill-btn.active .date-pill-sub {
+  color: #fce7f3;
+}
+
+/* MULTIPLEX THEATRES CONTAINER */
+.multiplex-theatres-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.multiplex-theatre-card {
+  background: radial-gradient(ellipse at top left, rgba(225, 29, 72, 0.05), transparent 70%), #0c0e17;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 22px 24px;
+  transition: border-color 0.2s ease;
+}
+
+.multiplex-theatre-card:hover {
+  border-color: rgba(225, 29, 72, 0.3);
+}
+
+.multiplex-theatre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 16px;
+}
+
+.multiplex-theatre-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.multiplex-theatre-addr {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* MULTIPLEX SCREENS & SHOWTIMES */
+.multiplex-screens-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.multiplex-screen-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.multiplex-screen-header {
+  min-width: 190px;
+  max-width: 210px;
+  flex-shrink: 0;
+}
+
+.screen-name-tag {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.screen-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.screen-badge.badge-imax {
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  color: #38bdf8;
+}
+
+.screen-badge.badge-dolby {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.screen-badge.badge-4dx {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+}
+
+.screen-badge.badge-vip {
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  color: #fb7185;
+}
+
+.screen-badge.badge-std {
+  background: rgba(148, 163, 184, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #cbd5e1;
+}
+
+.showtimes-slots-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.multiplex-showtime-btn {
+  all: unset;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 110px;
+}
+
+.multiplex-showtime-btn:hover {
+  border-color: #fb7185;
+  background: rgba(225, 29, 72, 0.09);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
+}
+
+.showtime-btn-start {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.showtime-btn-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 0.72rem;
+}
+
+.showtime-btn-end {
+  color: #94a3b8;
+}
+
+.showtime-btn-price {
+  color: #10b981;
+  font-weight: 800;
+}
+
+/* SCREENING CONTEXT BANNER AT STEP 2 */
+.screening-selected-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: radial-gradient(ellipse at left, rgba(225, 29, 72, 0.12), transparent 70%), #141722;
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  border-radius: 16px;
+  padding: 16px 22px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.screening-bar-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.screening-bar-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.screening-bar-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .booking-screening-card {
   display: flex;
   gap: 24px;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Calendar,
   Clock,
@@ -13,11 +13,91 @@ import {
   QrCode,
   Building,
   Sparkles,
-  Armchair,
-  ArrowRight
+  Film,
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { api } from '../services/api';
 import AuditoriumSeatMap from '../components/AuditoriumSeatMap';
+
+/**
+ * Generate a useful range of upcoming dates (next 8 days from current context date: 2026-10-27)
+ */
+function getUpcomingDates(daysCount = 8) {
+  const dates = [];
+  // Today in local context is 2026-10-27
+  const start = new Date(2026, 9, 27); // Month 9 is October (0-indexed)
+
+  for (let i = 0; i < daysCount; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const isoString = `${yyyy}-${mm}-${dd}`;
+
+    const weekdayShort = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+    const monthShort = d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+    const dayNum = String(d.getDate()).padStart(2, '0');
+
+    let label = '';
+    if (i === 0) label = 'TODAY';
+    else if (i === 1) label = 'TOMORROW';
+
+    dates.push({
+      dateStr: isoString,
+      dayNum,
+      weekdayShort,
+      monthShort,
+      label
+    });
+  }
+  return dates;
+}
+
+/**
+ * Format 24-hr time string ('HH:MM:SS') into friendly 12-hr display ('10:00 AM')
+ */
+function formatTime12(timeStr) {
+  if (!timeStr) return '';
+  const parts = timeStr.split(':');
+  let h = parseInt(parts[0], 10);
+  const m = parts[1] || '00';
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m} ${ampm}`;
+}
+
+/**
+ * Format date string ('YYYY-MM-DD') into friendly display ('Tue, 27 Oct 2026')
+ */
+function formatDisplayDate(dateStr) {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length < 3) return dateStr;
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10) - 1;
+  const d = parseInt(parts[2], 10);
+  const dateObj = new Date(y, m, d);
+  return dateObj.toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+
+/**
+ * Return appropriate badge class for a screen type
+ */
+function getScreenBadgeClass(screenType = '') {
+  const lower = screenType.toLowerCase();
+  if (lower.includes('imax')) return 'badge-imax';
+  if (lower.includes('dolby')) return 'badge-dolby';
+  if (lower.includes('4dx')) return 'badge-4dx';
+  if (lower.includes('vip') || lower.includes('recliner')) return 'badge-vip';
+  return 'badge-std';
+}
 
 export default function BookingFlowView({
   movie,
@@ -29,9 +109,15 @@ export default function BookingFlowView({
   setSelectedCity,
   theaters = []
 }) {
-  const [step, setStep] = useState(2); // 2: Seats & Showtime, 3: Snacks, 4: Payment, 5: Confirmation
+  const upcomingDates = useMemo(() => getUpcomingDates(8), []);
+
+  // Step state: 1: Date & Screening, 2: Seats, 3: Snacks, 4: Payment, 5: Confirmation
+  const [step, setStep] = useState(initialShowtime ? 2 : 1);
   const [showtimes, setShowtimes] = useState([]);
-  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(
+    initialShowtime?.show_date || upcomingDates[0]?.dateStr || '2026-10-27'
+  );
+  const [selectedShowtime, setSelectedShowtime] = useState(initialShowtime || null);
   const [seatsData, setSeatsData] = useState(null);
   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
   const [snacks, setSnacks] = useState([]);
@@ -57,21 +143,18 @@ export default function BookingFlowView({
     loadSnacks();
   }, [movie]);
 
+  useEffect(() => {
+    if (initialShowtime) {
+      handleSelectShowtime(initialShowtime);
+    }
+  }, [initialShowtime]);
+
   const loadMovieShowtimes = async () => {
     setLoading(true);
     try {
       const res = await api.getMovieShowtimes(movie.movie_id);
       if (res.success) {
         setShowtimes(res.data);
-        if (initialShowtime) {
-          const matched = res.data.find(st => st.show_id === initialShowtime.show_id);
-          handleSelectShowtime(matched || initialShowtime);
-        } else if (!selectedShowtime && res.data.length > 0) {
-          const matchingCity = res.data.find(
-            st => st.city && st.city.toLowerCase() === selectedCity.toLowerCase()
-          );
-          handleSelectShowtime(matchingCity || res.data[0]);
-        }
       }
     } catch (err) {
       setErrorMsg('Failed to load screening schedules.');
@@ -91,6 +174,7 @@ export default function BookingFlowView({
 
   const handleSelectShowtime = async (st) => {
     setSelectedShowtime(st);
+    if (st.show_date) setSelectedDate(st.show_date);
     setSelectedSeatIds([]);
     setErrorMsg('');
     try {
@@ -142,18 +226,44 @@ export default function BookingFlowView({
 
   const grandTotal = calculateTicketTotal() + calculateSnackTotal();
 
-  // Filter showtimes for the selected city
-  const cityShowtimes = showtimes.filter(
-    st => st.city && st.city.toLowerCase() === selectedCity.toLowerCase()
-  );
+  // Filter showtimes for the selected City AND selected Date
+  const filteredShowtimes = useMemo(() => {
+    return showtimes.filter(st => {
+      const matchCity = !st.city || st.city.toLowerCase() === selectedCity.toLowerCase();
+      const matchDate = st.show_date === selectedDate;
+      return matchCity && matchDate;
+    });
+  }, [showtimes, selectedCity, selectedDate]);
 
-  // Group city showtimes by real theater venue
-  const showtimesByTheater = {};
-  cityShowtimes.forEach(st => {
-    const tName = st.theater_name || 'Flagship Auditorium';
-    if (!showtimesByTheater[tName]) showtimesByTheater[tName] = [];
-    showtimesByTheater[tName].push(st);
-  });
+  // Group filtered showtimes by Theatre complex, and within theatre by Screen
+  const showtimesByTheater = useMemo(() => {
+    const map = {};
+    filteredShowtimes.forEach(st => {
+      const tName = st.theater_name || 'Flagship Auditorium';
+      if (!map[tName]) {
+        map[tName] = {
+          theater_id: st.theater_id,
+          theater_name: tName,
+          city: st.city,
+          address: st.address,
+          screens: {}
+        };
+      }
+      const screenKey = st.screen_name || `Screen ${st.screen_number}`;
+      if (!map[tName].screens[screenKey]) {
+        map[tName].screens[screenKey] = {
+          screen_id: st.screen_id,
+          screen_number: st.screen_number,
+          screen_name: st.screen_name || `Audi ${st.screen_number}`,
+          screen_type: st.screen_type || 'Standard',
+          capacity: st.capacity || 142,
+          slots: []
+        };
+      }
+      map[tName].screens[screenKey].slots.push(st);
+    });
+    return map;
+  }, [filteredShowtimes]);
 
   const getSelectedSeatObjects = () => {
     if (!seatsData) return [];
@@ -188,14 +298,17 @@ export default function BookingFlowView({
       const res = await api.createBooking(payload);
       if (res.success) {
         setBookingResult({
-          ...res.data,
-          movie_title: movie.title,
+          booking_id: res.data.booking_id,
+          total_amount: res.data.total_amount,
+          seats: getSelectedSeatObjects(),
+          show_date: selectedShowtime.show_date,
+          start_time: formatTime12(selectedShowtime.start_time),
           theater_name: selectedShowtime.theater_name,
           screen_number: selectedShowtime.screen_number,
-          show_date: selectedShowtime.show_date,
-          start_time: selectedShowtime.start_time,
-          seats: getSelectedSeatObjects(),
-          total_amount: grandTotal
+          screen_name: selectedShowtime.screen_name,
+          screen_type: selectedShowtime.screen_type,
+          movie_title: movie.title,
+          payment_method: paymentMethod
         });
         setStep(5); // Confirmation
       }
@@ -203,12 +316,11 @@ export default function BookingFlowView({
       const isConflict = err.status === 409 || err.message?.includes('already booked') || err.message?.includes('conflict');
       if (isConflict) {
         setErrorMsg('⚠️ Seat Conflict: One or more selected seats were just reserved by another customer. Please select alternative seats.');
-        // Refresh seat layout and reset selected seats
         if (selectedShowtime) {
           await handleSelectShowtime(selectedShowtime);
         }
         setSelectedSeatIds([]);
-        setStep(2); // Return to seat selection step so user can reselect
+        setStep(2);
       } else {
         setErrorMsg(err.message || 'Payment processing failed. Please retry.');
       }
@@ -217,39 +329,83 @@ export default function BookingFlowView({
     }
   };
 
+  const availableCities = ['Bengaluru', 'Jaipur', 'Mumbai', 'Delhi NCR'];
+
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '24px 20px 140px' }}>
-      {/* Top Header */}
+      {/* Top Header & Breadcrumbs */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '28px',
         paddingBottom: '16px',
-        borderBottom: '1px solid #1c2438',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         flexWrap: 'wrap',
         gap: '14px'
       }}>
-        <button className="btn btn-secondary btn-sm" onClick={onBack}>
-          <ArrowLeft size={16} /> Back to Movies
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={() => {
+            if (step > 1) {
+              setStep(step - 1);
+            } else {
+              onBack();
+            }
+          }}
+        >
+          <ArrowLeft size={16} /> {step === 1 ? 'Back to Movies' : 'Back'}
         </button>
 
         {/* Step Breadcrumbs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem' }}>
-          <span style={{ color: step === 2 ? '#f59e0b' : '#94a3b8', fontWeight: step === 2 ? 800 : 600 }}>
-            1. Showtime & Seats
+          <span
+            style={{
+              color: step === 1 ? '#fb7185' : '#94a3b8',
+              fontWeight: step === 1 ? 800 : 600,
+              cursor: step > 1 ? 'pointer' : 'default'
+            }}
+            onClick={() => step > 1 && setStep(1)}
+          >
+            1. Date & Showtime
           </span>
           <span style={{ color: '#64748b' }}>›</span>
-          <span style={{ color: step === 3 ? '#f59e0b' : '#94a3b8', fontWeight: step === 3 ? 800 : 600 }}>
-            2. Concessions
+          <span
+            style={{
+              color: step === 2 ? '#f59e0b' : '#94a3b8',
+              fontWeight: step === 2 ? 800 : 600,
+              cursor: selectedShowtime && step > 2 ? 'pointer' : 'default'
+            }}
+            onClick={() => selectedShowtime && step > 2 && setStep(2)}
+          >
+            2. Seats
           </span>
           <span style={{ color: '#64748b' }}>›</span>
-          <span style={{ color: step === 4 ? '#f59e0b' : '#94a3b8', fontWeight: step === 4 ? 800 : 600 }}>
-            3. Payment
+          <span
+            style={{
+              color: step === 3 ? '#f59e0b' : '#94a3b8',
+              fontWeight: step === 3 ? 800 : 600
+            }}
+          >
+            3. Concessions
           </span>
           <span style={{ color: '#64748b' }}>›</span>
-          <span style={{ color: step === 5 ? '#f59e0b' : '#94a3b8', fontWeight: step === 5 ? 800 : 600 }}>
-            4. Confirmation
+          <span
+            style={{
+              color: step === 4 ? '#f59e0b' : '#94a3b8',
+              fontWeight: step === 4 ? 800 : 600
+            }}
+          >
+            4. Payment
+          </span>
+          <span style={{ color: '#64748b' }}>›</span>
+          <span
+            style={{
+              color: step === 5 ? '#10b981' : '#94a3b8',
+              fontWeight: step === 5 ? 800 : 600
+            }}
+          >
+            5. Confirmation
           </span>
         </div>
       </div>
@@ -258,7 +414,7 @@ export default function BookingFlowView({
         <div style={{
           background: 'rgba(239, 68, 68, 0.15)',
           border: '1px solid rgba(239, 68, 68, 0.3)',
-          borderRadius: '8px',
+          borderRadius: '12px',
           padding: '12px 16px',
           marginBottom: '20px',
           color: '#f87171',
@@ -277,9 +433,12 @@ export default function BookingFlowView({
         </div>
       )}
 
-      {/* STEP 1 & 2: MOVIE, SHOWTIME & AUDITORIUM SEAT PICKER */}
-      {step <= 2 && (
-        <>
+      {/* =========================================================================
+          STEP 1: MOVIE HEADER, DATE SELECTION & MULTIPLEX SCREENINGS
+          ========================================================================= */}
+      {step === 1 && (
+        <div>
+          {/* Movie Banner */}
           <div className="booking-screening-card">
             <div className="booking-poster-box">
               <img
@@ -290,103 +449,261 @@ export default function BookingFlowView({
             </div>
 
             <div style={{ flex: 1, minWidth: '240px' }}>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff' }}>{movie.title}</h2>
-              <div style={{ color: '#94a3b8', fontSize: '0.85rem', marginTop: '4px' }}>
-                {movie.genre} • {movie.language} • {movie.duration} mins • ⭐ {movie.rating}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 9px', borderRadius: '6px', background: 'rgba(225, 29, 72, 0.15)', border: '1px solid rgba(225, 29, 72, 0.35)', color: '#fb7185', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
+                <Film size={12} /> Now Screening
+              </div>
+              <h1 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>{movie.title}</h1>
+              <div style={{ color: '#94a3b8', fontSize: '0.86rem', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <span>{movie.genre}</span>
+                <span>•</span>
+                <span>{movie.language}</span>
+                <span>•</span>
+                <span>{movie.duration} mins</span>
+                <span>•</span>
+                <span style={{ color: '#f59e0b', fontWeight: 800 }}>⭐ {movie.rating}</span>
               </div>
 
-              {/* Screening Selection Grouped by Theatre */}
-              <div style={{ marginTop: '16px' }}>
-                {cityShowtimes.length > 0 ? (
-                  <>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', textTransform: 'uppercase', marginBottom: '10px', letterSpacing: '0.08em' }}>
-                      Screening Theatres in {selectedCity}:
-                    </div>
-
-                    {Object.entries(showtimesByTheater).map(([theaterName, tShowtimes]) => (
-                      <div key={theaterName} style={{ marginBottom: '14px' }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fb7185', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span>🏛️ {theaterName}</span>
-                          <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 500 }}>
-                            ({selectedCity})
-                          </span>
-                        </div>
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                          {tShowtimes.map(st => {
-                            const isSelected = selectedShowtime?.show_id === st.show_id;
-                            return (
-                              <button
-                                key={st.show_id}
-                                className={`btn ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
-                                style={{ padding: '8px 14px', fontSize: '0.82rem', textAlign: 'left' }}
-                                onClick={() => handleSelectShowtime(st)}
-                              >
-                                <div>
-                                  <strong>{st.show_date}</strong> @ {st.start_time}
-                                </div>
-                                <div style={{ fontSize: '0.72rem', opacity: 0.85 }}>
-                                  Screen {st.screen_number} • ₹{st.base_price}
-                                </div>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <div style={{ padding: '16px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
-                      No screenings currently scheduled in {selectedCity}
-                    </div>
-                    <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0 0 12px', lineHeight: 1.5 }}>
-                      CINEVERSE theatrical releases are currently operational in <strong>Bengaluru</strong> across 2 multi-screen flagship complexes.
-                    </p>
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        if (setSelectedCity) setSelectedCity('Bengaluru');
-                      }}
-                    >
-                      Switch to Bengaluru (View Screenings)
-                    </button>
-                  </div>
-                )}
+              {/* City Switcher in Booking flow */}
+              <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>CITY:</span>
+                {availableCities.map(city => (
+                  <button
+                    key={city}
+                    type="button"
+                    className={`btn btn-sm ${selectedCity.toLowerCase() === city.toLowerCase() ? 'btn-primary' : 'btn-secondary'}`}
+                    style={{ padding: '4px 12px', fontSize: '0.76rem', borderRadius: '16px' }}
+                    onClick={() => {
+                      if (setSelectedCity) setSelectedCity(city);
+                    }}
+                  >
+                    {city}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
 
-          {selectedShowtime && seatsData && (
-            <div className="auditorium-container">
-              <div style={{ textAlign: 'center', marginBottom: '18px' }}>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800 }}>Auditorium Seat Selection</h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Select your seats below. Warm amber marks selected seats.
-                </p>
+          {/* DATE SELECTION RIBBON (Next 8 upcoming days) */}
+          <div className="booking-date-selector-wrapper">
+            <div className="date-selector-header">
+              <div className="date-selector-title">
+                <Calendar size={15} /> Choose Screening Date
               </div>
-
-              <AuditoriumSeatMap
-                showtime={selectedShowtime}
-                seats={seatsData.seats}
-                selectedSeatIds={selectedSeatIds}
-                onToggleSeat={toggleSeat}
-                interactive={true}
-              />
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                Showing screenings for: <strong style={{ color: '#ffffff' }}>{formatDisplayDate(selectedDate)}</strong>
+              </div>
             </div>
-          )}
-        </>
+
+            <div className="date-selector-ribbon" role="tablist" aria-label="Screening Dates">
+              {upcomingDates.map(item => {
+                const isSelected = selectedDate === item.dateStr;
+                return (
+                  <button
+                    key={item.dateStr}
+                    type="button"
+                    role="tab"
+                    aria-selected={isSelected}
+                    className={`date-pill-btn ${isSelected ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedDate(item.dateStr);
+                      setErrorMsg('');
+                    }}
+                  >
+                    {item.label && <span className="date-pill-badge">{item.label}</span>}
+                    <span className="date-pill-day">{item.dayNum}</span>
+                    <span className="date-pill-sub">{item.weekdayShort}, {item.monthShort}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* MULTIPLEX THEATRES & SCREENS SCHEDULE */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Multiplex Auditoriums in {selectedCity}
+              </div>
+              <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                Select an auditorium showtime to book seats
+              </div>
+            </div>
+
+            {loading ? (
+              <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>
+                Loading available screenings...
+              </div>
+            ) : Object.keys(showtimesByTheater).length > 0 ? (
+              <div className="multiplex-theatres-list">
+                {Object.entries(showtimesByTheater).map(([theaterName, theaterData]) => (
+                  <div key={theaterName} className="multiplex-theatre-card">
+                    {/* Theatre Header */}
+                    <div className="multiplex-theatre-header">
+                      <div>
+                        <div className="multiplex-theatre-name">
+                          <Building size={18} color="#fb7185" />
+                          <span>{theaterName}</span>
+                        </div>
+                        <div className="multiplex-theatre-addr">
+                          <MapPin size={13} />
+                          <span>{theaterData.address} ({theaterData.city})</span>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '0.74rem', color: '#10b981', fontWeight: 700, background: 'rgba(16, 185, 129, 0.1)', padding: '4px 10px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+                        ✓ Multiplex Active
+                      </div>
+                    </div>
+
+                    {/* Multiplex Auditoriums / Screens */}
+                    <div className="multiplex-screens-container">
+                      {Object.entries(theaterData.screens).map(([screenKey, screenData]) => (
+                        <div key={screenKey} className="multiplex-screen-row">
+                          <div className="multiplex-screen-header">
+                            <div className="screen-name-tag">{screenData.screen_name}</div>
+                            <span className={`screen-badge ${getScreenBadgeClass(screenData.screen_type)}`}>
+                              {screenData.screen_type}
+                            </span>
+                          </div>
+
+                          <div className="showtimes-slots-grid">
+                            {screenData.slots.map(slot => (
+                              <button
+                                key={slot.show_id}
+                                type="button"
+                                className="multiplex-showtime-btn"
+                                onClick={() => handleSelectShowtime(slot)}
+                                title={`Book ${slot.screen_name} at ${formatTime12(slot.start_time)}`}
+                              >
+                                <div className="showtime-btn-start">{formatTime12(slot.start_time)}</div>
+                                <div className="showtime-btn-meta">
+                                  <span className="showtime-btn-end">Ends {formatTime12(slot.end_time)}</span>
+                                  <span className="showtime-btn-price">₹{slot.base_price}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Empty State */
+              <div style={{
+                padding: '42px 24px',
+                textAlign: 'center',
+                background: 'rgba(255, 255, 255, 0.02)',
+                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.08)'
+              }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(225, 29, 72, 0.12)', border: '1px solid rgba(225, 29, 72, 0.3)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
+                  <Calendar size={26} color="#fb7185" />
+                </div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: '6px' }}>
+                  No screenings scheduled on {formatDisplayDate(selectedDate)} in {selectedCity}
+                </h3>
+                <p style={{ color: '#94a3b8', fontSize: '0.85rem', maxWidth: '480px', margin: '0 auto 18px', lineHeight: 1.5 }}>
+                  Screenings for <strong>{movie.title}</strong> are scheduled across multiple upcoming dates in our flagship auditoriums. Select another date above or explore other cities.
+                </p>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  {upcomingDates.slice(0, 4).map(d => (
+                    <button
+                      key={d.dateStr}
+                      type="button"
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => setSelectedDate(d.dateStr)}
+                    >
+                      {d.label ? `${d.label} (${d.dayNum} ${d.monthShort})` : `${d.dayNum} ${d.monthShort}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
-      {/* STEP 3: CONCESSIONS & SNACKS */}
+      {/* =========================================================================
+          STEP 2: AUDITORIUM SEAT MAP
+          ========================================================================= */}
+      {step === 2 && selectedShowtime && seatsData && (
+        <div>
+          {/* Active Screening Context Banner */}
+          <div className="screening-selected-bar">
+            <div>
+              <div className="screening-bar-title">
+                <span>{movie.title}</span>
+                <span className={`screen-badge ${getScreenBadgeClass(selectedShowtime.screen_type)}`}>
+                  {selectedShowtime.screen_type || 'Standard'}
+                </span>
+              </div>
+              <div className="screening-bar-meta">
+                <span>
+                  <Calendar size={14} color="#fb7185" />
+                  <strong>{formatDisplayDate(selectedShowtime.show_date)}</strong>
+                </span>
+                <span>•</span>
+                <span>
+                  <Clock size={14} color="#f59e0b" />
+                  {formatTime12(selectedShowtime.start_time)} – {formatTime12(selectedShowtime.end_time)}
+                </span>
+                <span>•</span>
+                <span>
+                  <Building size={14} color="#38bdf8" />
+                  {selectedShowtime.theater_name} ({selectedShowtime.city})
+                </span>
+                <span>•</span>
+                <span>
+                  <Film size={14} color="#c084fc" />
+                  {selectedShowtime.screen_name || `Screen ${selectedShowtime.screen_number}`}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+              onClick={() => setStep(1)}
+            >
+              <Calendar size={14} /> Change Date / Showtime
+            </button>
+          </div>
+
+          {/* Genuine 142-seat Auditorium Seating Layout */}
+          <div className="auditorium-container">
+            <div style={{ textAlign: 'center', marginBottom: '18px' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
+                Select Your Auditorium Seats
+              </h2>
+              <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginTop: '4px' }}>
+                Choose your preferred armchairs below. Warm gold marks selected seats.
+              </p>
+            </div>
+
+            <AuditoriumSeatMap
+              showtime={selectedShowtime}
+              seats={seatsData.seats}
+              selectedSeatIds={selectedSeatIds}
+              onToggleSeat={toggleSeat}
+              interactive={true}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          STEP 3: CONCESSIONS & SNACKS
+          ========================================================================= */}
       {step === 3 && (
         <div className="booking-concessions-card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <Popcorn size={24} color="#f59e0b" />
-            <h3 style={{ fontSize: '1.3rem', fontWeight: 800 }}>Add Concession Combos</h3>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>Add Concession Combos</h2>
           </div>
           <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '24px' }}>
-            Elevate your cinematic experience with popcorn and drinks delivered to your seat.
+            Elevate your cinematic experience with gourmet popcorn, nachos, and craft sodas delivered to your seat.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
@@ -401,6 +718,7 @@ export default function BookingFlowView({
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <button
+                      type="button"
                       className="btn btn-secondary btn-sm"
                       style={{ width: '28px', height: '28px', padding: 0 }}
                       onClick={() => updateSnackQty(sn.snack_id, -1)}
@@ -409,6 +727,7 @@ export default function BookingFlowView({
                     </button>
                     <span style={{ minWidth: '18px', textAlign: 'center', fontWeight: 800 }}>{qty}</span>
                     <button
+                      type="button"
                       className="btn btn-secondary btn-sm"
                       style={{ width: '28px', height: '28px', padding: 0 }}
                       onClick={() => updateSnackQty(sn.snack_id, 1)}
@@ -432,7 +751,9 @@ export default function BookingFlowView({
         </div>
       )}
 
-      {/* STEP 4: PAYMENT CHECKOUT */}
+      {/* =========================================================================
+          STEP 4: PAYMENT CHECKOUT
+          ========================================================================= */}
       {step === 4 && (
         <div>
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -595,12 +916,17 @@ export default function BookingFlowView({
 
                 <div className="summary-item">
                   <span>Screening Slot:</span>
-                  <span>{selectedShowtime.show_date} @ {selectedShowtime.start_time}</span>
+                  <span>{formatDisplayDate(selectedShowtime.show_date)} @ {formatTime12(selectedShowtime.start_time)}</span>
                 </div>
 
                 <div className="summary-item">
-                  <span>Venue Auditorium:</span>
-                  <span>{selectedShowtime.theater_name} (Screen {selectedShowtime.screen_number})</span>
+                  <span>Venue Multiplex:</span>
+                  <span>{selectedShowtime.theater_name} ({selectedShowtime.city})</span>
+                </div>
+
+                <div className="summary-item">
+                  <span>Auditorium:</span>
+                  <span>{selectedShowtime.screen_name || `Screen ${selectedShowtime.screen_number}`} ({selectedShowtime.screen_type})</span>
                 </div>
 
                 <div className="summary-item">
@@ -653,7 +979,9 @@ export default function BookingFlowView({
         </div>
       )}
 
-      {/* STEP 5: BOOKING CONFIRMATION & TICKET SLIP */}
+      {/* =========================================================================
+          STEP 5: BOOKING CONFIRMATION & TICKET SLIP
+          ========================================================================= */}
       {step === 5 && bookingResult && (
         <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
           <div style={{
@@ -698,12 +1026,16 @@ export default function BookingFlowView({
                 <strong style={{ color: '#fff' }}>{bookingResult.movie_title}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#94a3b8' }}>Screening:</span>
-                <span>{bookingResult.show_date} @ {bookingResult.start_time}</span>
+                <span style={{ color: '#94a3b8' }}>Screening Slot:</span>
+                <span>{formatDisplayDate(bookingResult.show_date)} @ {bookingResult.start_time}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#94a3b8' }}>Cinema Auditorium:</span>
-                <span>{bookingResult.theater_name} (Screen {bookingResult.screen_number})</span>
+                <span style={{ color: '#94a3b8' }}>Multiplex Venue:</span>
+                <span>{bookingResult.theater_name}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Auditorium:</span>
+                <span>{bookingResult.screen_name || `Screen ${bookingResult.screen_number}`} ({bookingResult.screen_type})</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Reserved Seats:</span>
@@ -741,8 +1073,10 @@ export default function BookingFlowView({
         </div>
       )}
 
-      {/* STICKY BOTTOM SUMMARY BAR FOR SEAT SELECTION STEP */}
-      {step <= 2 && selectedShowtime && seatsData && (
+      {/* =========================================================================
+          STICKY BOTTOM BAR (For Step 2: Seat Selection)
+          ========================================================================= */}
+      {step === 2 && selectedShowtime && seatsData && (
         <div className="sticky-bar">
           <div>
             <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
@@ -752,7 +1086,7 @@ export default function BookingFlowView({
                   <strong style={{ color: '#f59e0b', fontWeight: 800 }}>
                     {getSelectedSeatObjects().map(s => s.seat_number).join(', ')}
                   </strong>{' '}
-                  • Screen {selectedShowtime.screen_number}
+                  • {selectedShowtime.screen_name || `Screen ${selectedShowtime.screen_number}`}
                 </>
               ) : (
                 <span style={{ color: '#94a3b8' }}>

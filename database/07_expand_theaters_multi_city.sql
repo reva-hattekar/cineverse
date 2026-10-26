@@ -158,3 +158,4 @@ WHERE t.city IN ('Jaipur', 'Mumbai', 'Delhi NCR') AND s.screen_number = 2
 AND NOT EXISTS (
     SELECT 1 FROM SHOWTIME sh WHERE sh.screen_id = s.screen_id AND sh.movie_id = 7 AND sh.start_time = '19:00:00' AND sh.show_date = '2026-10-29'
 );
+

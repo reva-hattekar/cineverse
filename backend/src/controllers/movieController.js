@@ -65,30 +65,47 @@ async function getMovieById(req, res, next) {
 
 /**
  * Public: Get showtimes for a specific movie with Theater & Screen info
+ * Supports optional date and city filtering, includes screen types & formatting
  */
 async function getMovieShowtimes(req, res, next) {
   try {
     const { id } = req.params;
-    const sql = `
+    const { date, city } = req.query;
+
+    let sql = `
       SELECT 
         s.show_id,
-        s.show_date,
+        DATE_FORMAT(s.show_date, '%Y-%m-%d') AS show_date,
         s.start_time,
         s.end_time,
         s.base_price,
         s.screen_id,
         sc.screen_number,
+        sc.screen_name,
+        sc.screen_type,
         sc.capacity,
         t.theater_id,
         t.theater_name,
-        t.city
+        t.city,
+        t.address
       FROM SHOWTIME s
       JOIN SCREEN sc ON s.screen_id = sc.screen_id
       JOIN THEATER t ON sc.theater_id = t.theater_id
       WHERE s.movie_id = ?
-      ORDER BY s.show_date ASC, s.start_time ASC
     `;
-    const showtimes = await query(sql, [id]);
+    const params = [id];
+
+    if (date) {
+      sql += ' AND s.show_date = ?';
+      params.push(date);
+    }
+    if (city) {
+      sql += ' AND LOWER(t.city) = LOWER(?)';
+      params.push(city);
+    }
+
+    sql += ' ORDER BY s.show_date ASC, t.theater_name ASC, sc.screen_number ASC, s.start_time ASC';
+    const showtimes = await query(sql, params);
 
     res.json({ success: true, count: showtimes.length, data: showtimes });
   } catch (err) {
