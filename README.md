@@ -143,31 +143,6 @@ npm run dev
 
 ---
 
-## 🧪 RDBMS Lab Evaluation Viva Guide (Experiments 1–8)
-
-All lab queries are available in `database/04_lab_queries.sql`:
-* **Exp 1 (Relational Mapping & Keys)**: Schema introspection using `information_schema.KEY_COLUMN_USAGE`.
-* **Exp 2 (DDL Commands)**: `CREATE TABLE`, `ALTER ADD/MODIFY/DROP COLUMN`, `RENAME TABLE`, and `DROP TABLE`.
-* **Exp 3 (Integrity Constraints)**: Real project demonstrations of `PRIMARY KEY`, `FOREIGN KEY`, `CHECK` constraints (rating $\in [0, 10]$, points $\ge 0$), `UNIQUE`, and `DEFAULT`.
-* **Exp 4 (Multi-Row & INSERT ... SELECT)**: Bulk ingestion of top-rated movies into promotional archive tables.
-* **Exp 5 (DQL Operations)**: Filtering with `WHERE`, `LIKE`, `DISTINCT`, `BETWEEN`, and `IN`.
-* **Exp 6 (Aggregates & GROUP BY)**: `COUNT`, `MAX`, `MIN`, `AVG`, `SUM`, `GROUP BY`, and `HAVING` filters (revenue grouped by movie).
-* **Exp 7 (Join Operations)**:
-  * `INNER JOIN`: Bookings with customer, movie, screen, and payment details.
-  * `LEFT JOIN`: All customers, including those with zero bookings.
-  * `RIGHT JOIN`: All showtimes and attached bookings.
-  * **FULL OUTER JOIN Equivalent**: MySQL simulation combining `LEFT JOIN` and anti-join with `UNION ALL`.
-* **Exp 8 (Subqueries)**:
-  * Subquery using `IN`: Customers with confirmed bookings.
-  * Subquery using `NOT IN`: Customers who have never made a booking.
-  * Subquery using `> ALL`: Movies longer than all Animation films.
-  * Subquery using `> ANY`: Showtimes priced above any showtime on Screen 1.
-  * Scalar Subquery: Movies longer than the overall average duration.
-  * Subquery using `EXISTS` & `NOT EXISTS`: Customers without loyalty accounts.
-  * **Correlated Subquery**: Mapping each customer to their latest booking amount.
-
----
-
 ## 🔒 Security & Demo Safety Notes
 * **Zero Secrets in Frontend**: All credentials, database configurations, and TMDB keys are strictly confined to the backend environment (`backend/.env`).
 * **Password Hashing**: Stored passwords use industry-standard **bcrypt** hashes.
