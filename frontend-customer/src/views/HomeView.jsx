@@ -1,230 +1,312 @@
 import React, { useState } from 'react';
-import { Star, Clock, Ticket, Search, Calendar, Sparkles, Film } from 'lucide-react';
+import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, ChevronRight } from 'lucide-react';
+import CinematicHeroCanvas from '../components/hero/CinematicHeroCanvas';
+import NowShowingCarousel from '../components/hero/NowShowingCarousel';
 
-export default function HomeView({ movies, upcomingMovies, onSelectMovie }) {
-  const [search, setSearch] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('');
+/**
+ * HomeView
+ * Redesigned customer homepage matching the CINEVERSE visual specification.
+ * Combines 3D procedural hero sculpture, asymmetric editorial typography,
+ * interactive format badges, and horizontal database-backed movie carousel.
+ */
+export default function HomeView({
+  movies = [],
+  upcomingMovies = [],
+  onSelectMovie,
+  searchQuery = '',
+  setSearchQuery
+}) {
+  const [activeSlide, setActiveSlide] = useState(1);
+  const [selectedGenre, setSelectedGenre] = useState('All');
+  const [showWorldVideoModal, setShowWorldVideoModal] = useState(false);
 
-  // Hero movie (e.g. Interstellar or Dune or top rated)
-  const heroMovie = movies.find(m => m.title === 'Interstellar') || movies[0] || {};
+  // Available unique genres from live movies
+  const genres = ['All', ...Array.from(new Set(movies.map((m) => m.genre).filter(Boolean)))];
 
-  const genres = ['All', ...Array.from(new Set(movies.map(m => m.genre)))];
-
-  const filteredMovies = movies.filter(m => {
-    const matchSearch = m.title.toLowerCase().includes(search.toLowerCase());
-    const matchGenre = !selectedGenre || selectedGenre === 'All' || m.genre === selectedGenre;
+  // Filtered movies based on navbar search or genre filter
+  const filteredMovies = movies.filter((m) => {
+    const matchSearch =
+      !searchQuery ||
+      m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (m.genre && m.genre.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchGenre =
+      selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
     return matchSearch && matchGenre;
   });
 
-  return (
-    <div>
-      {/* Cinematic Hero Banner */}
-      {heroMovie.title && (
-        <div
-          className="hero-banner"
-          style={{
-            backgroundImage: heroMovie.backdrop_url
-              ? `url('${heroMovie.backdrop_url}')`
-              : `url('https://image.tmdb.org/t/p/original/rAiYTsqJJR0KP8UN8vJjZHa820g.jpg')`
-          }}
-        >
-          <div className="hero-overlay" />
-          <div className="hero-content">
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-              <span className="hero-badge">NOW SCREENING IN IMAX 70MM</span>
-              <span className="hero-badge" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', borderColor: 'rgba(245, 158, 11, 0.4)' }}>
-                ⭐ {heroMovie.rating} IMDb
-              </span>
-            </div>
-            <h1 className="hero-title">{heroMovie.title}</h1>
-            <div className="hero-meta">
-              <span>{heroMovie.genre}</span>
-              <span>•</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                <Clock size={15} /> {heroMovie.duration} mins
-              </span>
-              <span>•</span>
-              <span>{heroMovie.language}</span>
-            </div>
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={() => onSelectMovie(heroMovie)}
-            >
-              <Ticket size={20} /> Book Tickets Now
-            </button>
-          </div>
-        </div>
-      )}
+  const scrollToMovies = () => {
+    const el = document.getElementById('cineverse-catalog-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-      {/* Main Catalog Section */}
-      <section className="section-container">
-        {/* Search & Genre Filter Bar */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
-          marginBottom: '32px'
-        }}>
-          {/* Genre Pills */}
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-            {genres.map(g => (
+  return (
+    <div className="cineverse-home-page">
+      {/* =========================================================
+          HERO SECTION: ASYMMETRIC 3D LIQUID CHROME & EDITORIAL
+         ========================================================= */}
+      <section className="cineverse-hero-viewport">
+        {/* Genuine Three.js 3D Procedural Hero Scene */}
+        <CinematicHeroCanvas />
+
+        {/* Ambient Dark-Crimson Gradient Vignette Scrim */}
+        <div className="hero-atmosphere-scrim" />
+
+        {/* Hero Foreground Content */}
+        <div className="hero-foreground-grid">
+          {/* Vertical Slide Indicator Rail */}
+          <div className="hero-slide-rail" aria-label="Hero slider pagination">
+            {[1, 2, 3, 4].map((num) => (
               <button
-                key={g}
-                className={`btn btn-secondary btn-sm ${(!selectedGenre && g === 'All') || selectedGenre === g ? 'active' : ''}`}
-                style={{
-                  background: ((!selectedGenre && g === 'All') || selectedGenre === g) ? '#e11d48' : '#121829',
-                  color: '#fff',
-                  border: ((!selectedGenre && g === 'All') || selectedGenre === g) ? '1px solid #fda4af' : '1px solid #1c2438'
-                }}
-                onClick={() => setSelectedGenre(g === 'All' ? '' : g)}
+                key={num}
+                className={`slide-num-btn ${activeSlide === num ? 'active' : ''}`}
+                onClick={() => setActiveSlide(num)}
+                aria-label={`Slide 0${num}`}
               >
-                {g}
+                0{num}
               </button>
             ))}
           </div>
 
-          {/* Search Input */}
-          <div style={{ position: 'relative', width: '280px' }}>
-            <Search size={16} color="#64748b" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-            <input
-              type="text"
-              placeholder="Search movies..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{ paddingLeft: '36px', width: '100%' }}
-            />
+          {/* Left Hero Editorial Content */}
+          <div className="hero-editorial-column">
+            <div className="editorial-eyebrow">
+              <span>A UNIVERSE OF STORIES AWAITS</span>
+            </div>
+
+            <h1 className="hero-main-title">
+              CINE<span className="title-star-accent">V</span>ERSE
+            </h1>
+
+            <div className="hero-tagline-row">
+              <span>MOVIES</span>
+              <span className="dot-sep">•</span>
+              <span>EXPERIENCES</span>
+              <span className="dot-sep">•</span>
+              <span>BEYOND REALITY</span>
+            </div>
+
+            <div className="hero-actions-cluster">
+              <button
+                className="hero-primary-btn"
+                onClick={scrollToMovies}
+              >
+                <span>EXPLORE MOVIES</span>
+                <span className="btn-arrow-circle">
+                  <ArrowRight size={15} />
+                </span>
+              </button>
+
+              <button
+                className="hero-secondary-btn"
+                onClick={() => setShowWorldVideoModal(true)}
+              >
+                <span className="play-icon-circle">
+                  <Play size={12} fill="currentColor" />
+                </span>
+                <span>WATCH OUR WORLD</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Section Title */}
-        <div className="section-header">
-          <h2 className="section-title">
-            <Film size={22} color="#e11d48" /> Now Showing in Cinemas
-          </h2>
-          <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-            {filteredMovies.length} movies available
-          </span>
-        </div>
-
-        {/* Movie Cards Grid */}
-        {filteredMovies.length === 0 ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '60px 20px',
-            background: '#121829',
-            borderRadius: '12px',
-            border: '1px solid #1c2438'
-          }}>
-            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>No movies found matching "{search}".</p>
-            <button
-              className="btn btn-secondary btn-sm"
-              style={{ marginTop: '12px' }}
-              onClick={() => { setSearch(''); setSelectedGenre(''); }}
+          {/* Right Column: Portal Stargate Ring & Interactive Badge */}
+          <div className="hero-interactive-portal-badge">
+            <div
+              className="rotating-reality-badge"
+              onClick={() => setShowWorldVideoModal(true)}
+              role="button"
+              tabIndex={0}
             >
-              Reset Filters
-            </button>
+              <div className="reality-play-core">
+                <Play size={16} fill="#fff" />
+              </div>
+              <svg className="rotating-text-svg" viewBox="0 0 100 100">
+                <path
+                  id="circlePath"
+                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                  fill="none"
+                />
+                <text fontSize="7.8" fill="#e2e8f0" letterSpacing="2.2">
+                  <textPath href="#circlePath">
+                    STEP INTO ANOTHER REALITY • CINEVERSE •
+                  </textPath>
+                </text>
+              </svg>
+            </div>
           </div>
-        ) : (
-          <div className="movies-grid">
-            {filteredMovies.map(movie => (
-              <div key={movie.movie_id} className="movie-card">
-                <div className="poster-box">
-                  <img
-                    src={movie.poster_url || 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg'}
-                    alt={movie.title}
-                    className="poster-img"
-                    onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop';
-                    }}
-                  />
-                  <div className="poster-rating">
-                    <Star size={13} fill="#f59e0b" /> {movie.rating}
-                  </div>
-                </div>
+        </div>
 
-                <div className="movie-details">
-                  <div>
-                    <h3 className="movie-name">{movie.title}</h3>
-                    <div className="movie-genre">{movie.genre} • {movie.language}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#94a3b8' }}>
-                      <Clock size={14} /> {movie.duration} mins
+        {/* Bottom "NOW SHOWING" Cinematic Movie Carousel */}
+        <div className="hero-carousel-dock">
+          <NowShowingCarousel
+            movies={movies}
+            onSelectMovie={onSelectMovie}
+          />
+        </div>
+      </section>
+
+      {/* =========================================================
+          FULL CATALOG BROWSER & GENRE FILTER SECTION
+         ========================================================= */}
+      <section id="cineverse-catalog-section" className="cineverse-catalog-section">
+        <div className="catalog-container">
+          <div className="catalog-header-flex">
+            <div>
+              <span className="section-subtitle">DISCOVER THE UNIVERSE</span>
+              <h2 className="section-title">All Theatrical Screenings</h2>
+            </div>
+
+            {/* Genre Filter Pills */}
+            <div className="genre-pills-row">
+              {genres.map((g) => (
+                <button
+                  key={g}
+                  className={`genre-filter-pill ${selectedGenre === g ? 'active' : ''}`}
+                  onClick={() => setSelectedGenre(g)}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Search Result Feedback */}
+          {searchQuery && (
+            <div className="search-feedback-bar">
+              <span>Showing results for &ldquo;<strong>{searchQuery}</strong>&rdquo;</span>
+              <button
+                className="clear-search-btn"
+                onClick={() => setSearchQuery && setSearchQuery('')}
+              >
+                Clear search
+              </button>
+            </div>
+          )}
+
+          {/* Catalog Grid */}
+          <div className="catalog-grid">
+            {filteredMovies.map((movie) => {
+              const poster =
+                movie.poster_url ||
+                movie.backdrop_url ||
+                'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
+
+              const ratingVal = movie.rating
+                ? parseFloat(movie.rating).toFixed(1)
+                : '8.2';
+
+              return (
+                <div
+                  key={movie.movie_id || movie.id}
+                  className="catalog-movie-card"
+                  onClick={() => onSelectMovie(movie)}
+                >
+                  <div className="catalog-poster-wrap">
+                    <img
+                      src={poster}
+                      alt={movie.title}
+                      className="catalog-poster-img"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.src = 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
+                      }}
+                    />
+                    <div className="catalog-badge-overlay">
+                      <span className="badge-rating">
+                        <Star size={12} fill="#fbbf24" color="#fbbf24" />
+                        <span>{ratingVal}</span>
+                      </span>
                     </div>
                   </div>
 
-                  <button
-                    className="btn btn-primary"
-                    style={{ width: '100%', marginTop: '16px' }}
-                    onClick={() => onSelectMovie(movie)}
-                  >
-                    <Ticket size={16} /> Book Tickets
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Upcoming Releases Section */}
-      <section className="section-container">
-        <div className="section-header">
-          <h2 className="section-title">
-            <Sparkles size={22} color="#f59e0b" /> Upcoming Theatrical Releases
-          </h2>
-          <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Advance Notice</span>
-        </div>
-
-        <div className="movies-grid">
-          {upcomingMovies.map(up => (
-            <div key={up.id} className="movie-card" style={{ opacity: 0.9 }}>
-              <div className="poster-box">
-                <img
-                  src={up.poster_url || 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg'}
-                  alt={up.title}
-                  className="poster-img"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=500&auto=format&fit=crop';
-                  }}
-                />
-                <div style={{
-                  position: 'absolute',
-                  top: '10px',
-                  left: '10px',
-                  background: 'rgba(225, 29, 72, 0.9)',
-                  padding: '3px 8px',
-                  borderRadius: '4px',
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
-                  color: '#fff'
-                }}>
-                  COMING SOON
-                </div>
-              </div>
-
-              <div className="movie-details">
-                <div>
-                  <h3 className="movie-name">{up.title}</h3>
-                  <div className="movie-genre">{up.genre} • {up.language}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#f59e0b' }}>
-                    <Calendar size={14} /> Releasing: {up.release_date}
+                  <div className="catalog-card-details">
+                    <h3 className="catalog-card-title">{movie.title}</h3>
+                    <div className="catalog-card-meta">
+                      <span>{movie.genre || 'Action'}</span>
+                      <span className="meta-sep">•</span>
+                      <span className="meta-time">
+                        <Clock size={12} /> {movie.duration || 120}m
+                      </span>
+                      {movie.language && (
+                        <>
+                          <span className="meta-sep">•</span>
+                          <span>{movie.language}</span>
+                        </>
+                      )}
+                    </div>
+                    <button
+                      className="catalog-book-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSelectMovie(movie);
+                      }}
+                    >
+                      <Ticket size={14} /> Book Seats
+                    </button>
                   </div>
                 </div>
+              );
+            })}
+          </div>
 
-                <button
-                  className="btn btn-secondary"
-                  style={{ width: '100%', marginTop: '16px', opacity: 0.8 }}
-                  disabled
-                >
-                  Advance Booking Soon
-                </button>
-              </div>
+          {filteredMovies.length === 0 && (
+            <div className="empty-catalog-state">
+              <Film size={42} color="#64748b" />
+              <h3>No Screenings Found</h3>
+              <p>We could not find any titles matching your filter or search query.</p>
+              <button
+                className="hero-primary-btn"
+                style={{ marginTop: 16 }}
+                onClick={() => {
+                  setSelectedGenre('All');
+                  if (setSearchQuery) setSearchQuery('');
+                }}
+              >
+                Reset Filters
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </section>
+
+      {/* =========================================================
+          WATCH OUR WORLD VIDEO MODAL
+         ========================================================= */}
+      {showWorldVideoModal && (
+        <div
+          className="cinema-modal-backdrop"
+          onClick={() => setShowWorldVideoModal(false)}
+        >
+          <div
+            className="cinema-modal-card cinematic-video-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <div className="modal-title-wrap">
+                <Sparkles size={18} color="#e11d48" />
+                <h3>CINEVERSE — Step Into Another Reality</h3>
+              </div>
+              <button
+                className="modal-close-btn"
+                onClick={() => setShowWorldVideoModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-video-container">
+              <iframe
+                title="CINEVERSE Experience Teaser"
+                src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="modal-video-iframe"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

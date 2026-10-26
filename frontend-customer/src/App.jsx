@@ -13,6 +13,8 @@ export default function App() {
   const [customers, setCustomers] = useState([]);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState('Jaipur');
 
   useEffect(() => {
     loadInitialData();
@@ -60,7 +62,7 @@ export default function App() {
   };
 
   return (
-    <div>
+    <div className="cineverse-app-root">
       <CinemaNavbar
         currentView={currentView}
         setCurrentView={(view) => {
@@ -70,6 +72,10 @@ export default function App() {
         currentCustomer={currentCustomer}
         customers={customers}
         onSwitchCustomer={handleSwitchCustomer}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedCity={selectedCity}
+        setSelectedCity={setSelectedCity}
       />
 
       <main>
@@ -78,35 +84,40 @@ export default function App() {
             movies={movies}
             upcomingMovies={upcomingMovies}
             onSelectMovie={handleSelectMovie}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
           />
         )}
 
         {currentView === 'upcoming' && (
-          <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 24px' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '8px' }}>
+          <div style={{ maxWidth: '1240px', margin: '40px auto', padding: '0 24px' }}>
+            <h1 style={{ fontSize: '2.4rem', fontFamily: 'Cinzel, Georgia, serif', fontWeight: 800, marginBottom: '8px', color: '#f8fafc' }}>
               Upcoming Theatrical Releases
             </h1>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '32px' }}>
+            <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '32px' }}>
               Check out highly anticipated films hitting Indian cinemas in coming months.
             </p>
 
-            <div className="movies-grid">
+            <div className="catalog-grid">
               {upcomingMovies.map(up => (
-                <div key={up.id} className="movie-card">
-                  <div className="poster-box">
+                <div key={up.id} className="catalog-movie-card">
+                  <div className="catalog-poster-wrap">
                     <img
                       src={up.poster_url || 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg'}
                       alt={up.title}
-                      className="poster-img"
+                      className="catalog-poster-img"
+                      loading="lazy"
                     />
                   </div>
-                  <div className="movie-details">
-                    <div>
-                      <h3 className="movie-name">{up.title}</h3>
-                      <div className="movie-genre">{up.genre} • {up.language}</div>
-                      <div style={{ color: '#f59e0b', fontSize: '0.82rem', fontWeight: 700 }}>
-                        Releasing: {up.release_date}
-                      </div>
+                  <div className="catalog-card-details">
+                    <h3 className="catalog-card-title">{up.title}</h3>
+                    <div className="catalog-card-meta">
+                      <span>{up.genre}</span>
+                      <span className="meta-sep">•</span>
+                      <span>{up.language}</span>
+                    </div>
+                    <div style={{ color: '#fb7185', fontSize: '0.84rem', fontWeight: 700, marginTop: '8px' }}>
+                      Releasing: {up.release_date}
                     </div>
                   </div>
                 </div>
@@ -137,4 +148,3 @@ export default function App() {
     </div>
   );
 }
-
