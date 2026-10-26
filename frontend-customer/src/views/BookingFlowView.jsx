@@ -23,7 +23,10 @@ export default function BookingFlowView({
   movie,
   currentCustomer,
   onBack,
-  onBookingFinished
+  onBookingFinished,
+  selectedCity = 'Bengaluru',
+  setSelectedCity,
+  theaters = []
 }) {
   const [step, setStep] = useState(2); // 2: Seats & Showtime, 3: Snacks, 4: Payment, 5: Confirmation
   const [showtimes, setShowtimes] = useState([]);
@@ -59,8 +62,12 @@ export default function BookingFlowView({
       const res = await api.getMovieShowtimes(movie.movie_id);
       if (res.success) {
         setShowtimes(res.data);
-        if (res.data.length > 0) {
-          handleSelectShowtime(res.data[0]);
+        // Only auto-select showtime if none is actively chosen (prevents wiping active user bookings)
+        if (!selectedShowtime && res.data.length > 0) {
+          const matchingCity = res.data.find(
+            st => st.city && st.city.toLowerCase() === selectedCity.toLowerCase()
+          );
+          handleSelectShowtime(matchingCity || res.data[0]);
         }
       }
     } catch (err) {
@@ -131,6 +138,19 @@ export default function BookingFlowView({
   };
 
   const grandTotal = calculateTicketTotal() + calculateSnackTotal();
+
+  // Filter showtimes for the selected city
+  const cityShowtimes = showtimes.filter(
+    st => st.city && st.city.toLowerCase() === selectedCity.toLowerCase()
+  );
+
+  // Group city showtimes by real theater venue
+  const showtimesByTheater = {};
+  cityShowtimes.forEach(st => {
+    const tName = st.theater_name || 'Flagship Auditorium';
+    if (!showtimesByTheater[tName]) showtimesByTheater[tName] = [];
+    showtimesByTheater[tName].push(st);
+  });
 
   const getSelectedSeatObjects = () => {
     if (!seatsData) return [];
@@ -272,30 +292,64 @@ export default function BookingFlowView({
                 {movie.genre} • {movie.language} • {movie.duration} mins • ⭐ {movie.rating}
               </div>
 
+              {/* Screening Selection Grouped by Theatre */}
               <div style={{ marginTop: '16px' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.08em' }}>
-                  Select Screening Slot:
-                </div>
-                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                  {showtimes.map(st => {
-                    const isSelected = selectedShowtime?.show_id === st.show_id;
-                    return (
-                      <button
-                        key={st.show_id}
-                        className={`btn ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
-                        style={{ padding: '8px 14px', fontSize: '0.82rem', textAlign: 'left' }}
-                        onClick={() => handleSelectShowtime(st)}
-                      >
-                        <div>
-                          <strong>{st.show_date}</strong> @ {st.start_time}
+                {cityShowtimes.length > 0 ? (
+                  <>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', textTransform: 'uppercase', marginBottom: '10px', letterSpacing: '0.08em' }}>
+                      Screening Theatres in {selectedCity}:
+                    </div>
+
+                    {Object.entries(showtimesByTheater).map(([theaterName, tShowtimes]) => (
+                      <div key={theaterName} style={{ marginBottom: '14px' }}>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fb7185', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>🏛️ {theaterName}</span>
+                          <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 500 }}>
+                            ({selectedCity})
+                          </span>
                         </div>
-                        <div style={{ fontSize: '0.72rem', opacity: 0.85 }}>
-                          {st.theater_name} (Screen {st.screen_number}) • ₹{st.base_price}
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                          {tShowtimes.map(st => {
+                            const isSelected = selectedShowtime?.show_id === st.show_id;
+                            return (
+                              <button
+                                key={st.show_id}
+                                className={`btn ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
+                                style={{ padding: '8px 14px', fontSize: '0.82rem', textAlign: 'left' }}
+                                onClick={() => handleSelectShowtime(st)}
+                              >
+                                <div>
+                                  <strong>{st.show_date}</strong> @ {st.start_time}
+                                </div>
+                                <div style={{ fontSize: '0.72rem', opacity: 0.85 }}>
+                                  Screen {st.screen_number} • ₹{st.base_price}
+                                </div>
+                              </button>
+                            );
+                          })}
                         </div>
-                      </button>
-                    );
-                  })}
-                </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div style={{ padding: '16px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#f8fafc', marginBottom: '4px' }}>
+                      No screenings currently scheduled in {selectedCity}
+                    </div>
+                    <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0 0 12px', lineHeight: 1.5 }}>
+                      CINEVERSE theatrical releases are currently operational in <strong>Bengaluru</strong> across 2 multi-screen flagship complexes.
+                    </p>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {
+                        if (setSelectedCity) setSelectedCity('Bengaluru');
+                      }}
+                    >
+                      Switch to Bengaluru (View Screenings)
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

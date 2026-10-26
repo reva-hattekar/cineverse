@@ -21,7 +21,10 @@ export default function HomeView({
   upcomingMovies = [],
   onSelectMovie,
   searchQuery = '',
-  setSearchQuery
+  setSearchQuery,
+  selectedCity = 'Bengaluru',
+  setSelectedCity,
+  theaters = []
 }) {
   const [activeSlide, setActiveSlide] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState('All');
@@ -277,6 +280,25 @@ export default function HomeView({
             <div>
               <span className="section-subtitle">DISCOVER THE UNIVERSE</span>
               <h2 className="section-title">All Theatrical Screenings</h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.82rem', color: '#94a3b8' }}>
+                <span>📍 Exploring in <strong style={{ color: '#fff' }}>{selectedCity}</strong></span>
+                <span className="dot-sep">•</span>
+                {theaters.filter(t => t.city.toLowerCase() === selectedCity.toLowerCase()).length > 0 ? (
+                  <span style={{ color: '#10b981', fontWeight: 600 }}>2 Flagship Theatres Available</span>
+                ) : (
+                  <span>
+                    No local venues yet (
+                    <button
+                      type="button"
+                      style={{ background: 'none', border: 'none', padding: 0, color: '#fb7185', textDecoration: 'underline', cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem' }}
+                      onClick={() => setSelectedCity && setSelectedCity('Bengaluru')}
+                    >
+                      switch to Bengaluru
+                    </button>
+                    )
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Genre Filter Pills */}

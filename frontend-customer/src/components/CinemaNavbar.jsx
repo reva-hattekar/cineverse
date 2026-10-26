@@ -74,12 +74,20 @@ export default function CinemaNavbar({
     : movies.slice(0, 3); // Quick suggestions when focused
 
   const matchingTheatres = cleanQuery
-    ? theaters.filter(
-        (t) =>
-          t.theater_name.toLowerCase().includes(cleanQuery) ||
-          t.city.toLowerCase().includes(cleanQuery) ||
-          t.address.toLowerCase().includes(cleanQuery)
-      )
+    ? theaters
+        .filter(
+          (t) =>
+            t.theater_name.toLowerCase().includes(cleanQuery) ||
+            t.city.toLowerCase().includes(cleanQuery) ||
+            t.address.toLowerCase().includes(cleanQuery)
+        )
+        .sort((a, b) => {
+          const aInCity = a.city.toLowerCase() === selectedCity.toLowerCase();
+          const bInCity = b.city.toLowerCase() === selectedCity.toLowerCase();
+          if (aInCity && !bInCity) return -1;
+          if (!aInCity && bInCity) return 1;
+          return 0;
+        })
     : theaters.filter((t) => t.city.toLowerCase() === selectedCity.toLowerCase());
 
   // Combined flat list for keyboard arrow navigation

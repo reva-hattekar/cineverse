@@ -92,6 +92,9 @@ export default function App() {
             onSelectMovie={handleSelectMovie}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            theaters={theaters}
           />
         )}
 
@@ -141,6 +144,9 @@ export default function App() {
               setCurrentView('home');
             }}
             onBookingFinished={handleBookingFinished}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            theaters={theaters}
           />
         )}
 
