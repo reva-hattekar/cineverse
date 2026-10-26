@@ -67,3 +67,4 @@ WHERE movie_id NOT IN (
 SELECT movie_id, title, genre, rating, release_date, release_status 
 FROM MOVIE 
 ORDER BY movie_id ASC;
+
