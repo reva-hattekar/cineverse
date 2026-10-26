@@ -3,18 +3,23 @@ import * as THREE from 'three';
 
 /**
  * CinematicHeroCanvas
- * Elegantly sculpted 3D hero scene matching the CINEVERSE visual reference:
+ * Refined 3D hero scene matching the CINEVERSE visual reference:
  * - Fluid, glossy obsidian-black sculpture with restrained silver reflections & subtle burgundy rim glow
- * - Smooth, low-frequency organic wave deformation (no jagged facets or harsh color bands)
- * - Positioned strictly on the right half of the hero space, leaving the left pristine for editorial typography
+ * - Shifted ~12-15% farther right to ensure complete separation from left-side typography
+ * - Smooth, low-frequency organic wave deformation (no jagged facets)
  * - Atmospheric gateway portal with dark translucent aperture and soft rim lighting
- * - Subtle floating obsidian shards & gentle dust embers
+ * - Throttles / pauses WebGL rendering loop when not active (e.g. during video trailer playback)
  * - Responds to reduced motion and cleans up all WebGL resources on unmount
  */
-export default function CinematicHeroCanvas({ onSceneReady }) {
+export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
   const containerRef = useRef(null);
   const [webGLSupported, setWebGLSupported] = useState(true);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const activeRef = useRef(active);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   useEffect(() => {
     // Check reduced motion preference
@@ -41,10 +46,10 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x050508, 0.05);
 
-    // --- Camera ---
-    // Positioned so the left half (x < 0) has ample negative space for typography
+    // --- Camera Framing ---
+    // Framed with clear negative space on the left for editorial headline
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 80);
-    camera.position.set(0.6, 0.05, 5.2);
+    camera.position.set(0.7, 0.05, 5.2);
 
     // --- WebGL Renderer ---
     const renderer = new THREE.WebGLRenderer({
@@ -59,7 +64,6 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     container.appendChild(renderer.domElement);
 
     // --- Studio Reflection Environment Texture ---
-    // Smooth gradient with dark obsidian tones, subtle burgundy horizon, and soft silver key highlight
     const envCanvas = document.createElement('canvas');
     envCanvas.width = 512;
     envCanvas.height = 256;
@@ -84,34 +88,30 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     envTexture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = envTexture;
 
-    // --- Lighting (Restrained & Cinematic) ---
+    // --- Cinematic Lighting ---
     const ambientLight = new THREE.AmbientLight(0x0a0507, 1.4);
     scene.add(ambientLight);
 
-    // Key directional light for soft silver highlights on the curves
     const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.2);
-    keyLight.position.set(3.5, 4.0, 3.0);
+    keyLight.position.set(4.0, 4.0, 3.0);
     scene.add(keyLight);
 
-    // Subtle burgundy rim light from below/behind the sculpture
-    const burgundyRimLight = new THREE.PointLight(0xbe123c, 4.0, 8.0, 1.8);
-    burgundyRimLight.position.set(1.5, -1.0, 1.0);
+    const burgundyRimLight = new THREE.PointLight(0xbe123c, 4.2, 8.5, 1.8);
+    burgundyRimLight.position.set(2.0, -1.0, 1.0);
     scene.add(burgundyRimLight);
 
-    // Deep crimson accent light from right
-    const crimsonAccent = new THREE.PointLight(0x881337, 3.5, 7.0, 1.6);
-    crimsonAccent.position.set(3.0, 1.2, 0.5);
+    const crimsonAccent = new THREE.PointLight(0x881337, 3.5, 7.5, 1.6);
+    crimsonAccent.position.set(3.5, 1.2, 0.5);
     scene.add(crimsonAccent);
 
     // --- The 3D Sculpture ---
-    // Smooth, flowing organic form: Torus Knot with high subdivision for silk-smooth curvature
-    const sculptureGeo = new THREE.TorusKnotGeometry(0.75, 0.22, 192, 48, 2, 3);
-    
-    // Store original vertex positions for clean, low-frequency procedural sine wave displacement
+    // Shifted ~10-15% farther right (from 1.45 to 1.95)
+    const SCULPTURE_CENTER_X = 1.95;
+
+    const sculptureGeo = new THREE.TorusKnotGeometry(0.78, 0.22, 192, 48, 2, 3);
     const posAttr = sculptureGeo.attributes.position;
     const originalPositions = posAttr.array.slice();
 
-    // Material: predominantly glossy obsidian-black with restrained silver reflections and subtle burgundy glow
     const sculptureMaterial = new THREE.MeshPhysicalMaterial({
       color: 0x08090d,
       roughness: 0.12,
@@ -126,14 +126,13 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     });
 
     const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMaterial);
-    // Positioned strictly on the right half of the scene
-    sculptureMesh.position.set(1.45, 0.1, 0.0);
+    sculptureMesh.position.set(SCULPTURE_CENTER_X, 0.1, 0.0);
     sculptureMesh.rotation.set(0.3, 0.4, -0.15);
-    sculptureMesh.scale.set(0.85, 0.85, 0.85);
+    sculptureMesh.scale.set(0.88, 0.88, 0.88);
     scene.add(sculptureMesh);
 
-    // Secondary subtle obsidian flow ring weaving through the core
-    const ribbonGeo = new THREE.TorusGeometry(0.55, 0.07, 32, 96);
+    // Secondary subtle obsidian flow ribbon
+    const ribbonGeo = new THREE.TorusGeometry(0.58, 0.07, 32, 96);
     const ribbonMat = new THREE.MeshStandardMaterial({
       color: 0x050608,
       roughness: 0.18,
@@ -142,16 +141,15 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       emissiveIntensity: 0.4
     });
     const ribbonMesh = new THREE.Mesh(ribbonGeo, ribbonMat);
-    ribbonMesh.position.set(1.45, 0.1, 0.0);
+    ribbonMesh.position.set(SCULPTURE_CENTER_X, 0.1, 0.0);
     ribbonMesh.rotation.set(1.1, 0.2, 0.6);
     scene.add(ribbonMesh);
 
     // --- Subtle Atmospheric Gateway Portal (Right Edge) ---
     const portalGroup = new THREE.Group();
-    portalGroup.position.set(3.0, 0.25, -0.8);
+    portalGroup.position.set(3.5, 0.25, -0.9);
     portalGroup.rotation.y = -0.28;
 
-    // Dark architectural monolith frame
     const frameGeo = new THREE.BoxGeometry(1.25, 2.2, 0.15);
     const frameMat = new THREE.MeshStandardMaterial({
       color: 0x06070a,
@@ -161,7 +159,7 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     portalGroup.add(frameMesh);
 
-    // Dark translucent portal interior (atmospheric haze with dark canyon mood)
+    // Dark translucent portal interior
     const portalCanvas = document.createElement('canvas');
     portalCanvas.width = 256;
     portalCanvas.height = 384;
@@ -175,7 +173,6 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     pCtx.fillStyle = pGrad;
     pCtx.fillRect(0, 0, 256, 384);
 
-    // Gentle misty mountain silhouette in portal
     pCtx.fillStyle = 'rgba(10, 2, 4, 0.75)';
     pCtx.beginPath();
     pCtx.moveTo(0, 384);
@@ -199,7 +196,6 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     apertureMesh.position.z = 0.085;
     portalGroup.add(apertureMesh);
 
-    // Soft, delicate burgundy rim around the portal (no harsh flat pink!)
     const portalRimGeo = new THREE.RingGeometry(0.55, 0.58, 48);
     const portalRimMat = new THREE.MeshBasicMaterial({
       color: 0xbe123c,
@@ -213,7 +209,7 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
 
     scene.add(portalGroup);
 
-    // --- Subtle Floating Obsidian Shards (Restrained, only 8 pieces) ---
+    // --- Subtle Floating Obsidian Shards ---
     const shardGroup = new THREE.Group();
     const shardGeo = new THREE.DodecahedronGeometry(0.065, 0);
     const shardMat = new THREE.MeshStandardMaterial({
@@ -226,13 +222,13 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
 
     const shardData = [];
     const shardPositions = [
-      [1.1, 0.9, 0.4],
-      [1.9, -0.6, 0.2],
-      [2.3, 0.7, -0.3],
-      [0.9, -0.7, 0.5],
-      [2.6, -0.3, -0.4],
-      [1.6, 1.1, -0.2],
-      [2.8, 0.5, -0.5]
+      [1.6, 0.9, 0.4],
+      [2.4, -0.6, 0.2],
+      [2.8, 0.7, -0.3],
+      [1.4, -0.7, 0.5],
+      [3.1, -0.3, -0.4],
+      [2.1, 1.1, -0.2],
+      [3.3, 0.5, -0.5]
     ];
 
     shardPositions.forEach((pos, idx) => {
@@ -255,11 +251,11 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     });
     scene.add(shardGroup);
 
-    // --- Gentle Dust Embers (Drifting faintly in background) ---
+    // --- Gentle Embers ---
     const emberCount = 35;
     const emberPositions = new Float32Array(emberCount * 3);
     for (let i = 0; i < emberCount; i++) {
-      emberPositions[i * 3] = 0.5 + Math.random() * 3.5;
+      emberPositions[i * 3] = 1.0 + Math.random() * 3.5;
       emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.0;
       emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
     }
@@ -317,7 +313,8 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      if (!isVisible) return;
+      // Only render if element is visible and currently active experience
+      if (!isVisible || !activeRef.current) return;
 
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
@@ -327,17 +324,16 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
       if (!isReducedMotion) {
-        // Smooth, low-frequency organic wave deformation on the sculpture vertices
+        // Low-frequency sine wave organic deformation
         const posArray = posAttr.array;
         const speed = elapsed * 0.8;
-        const waveAmp = 0.04; // Very restrained amplitude to keep curves silky smooth
+        const waveAmp = 0.038;
 
         for (let i = 0; i < posArray.length; i += 3) {
           const ox = originalPositions[i];
           const oy = originalPositions[i + 1];
           const oz = originalPositions[i + 2];
 
-          // Gentle low-frequency harmonics
           const wave = Math.sin(ox * 1.8 + speed) * Math.cos(oy * 1.5 + speed * 0.7) * waveAmp;
 
           posArray[i] = ox + ox * wave;
@@ -345,9 +341,9 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
           posArray[i + 2] = oz + oz * wave;
         }
         posAttr.needsUpdate = true;
-        sculptureGeo.computeVertexNormals(); // Recompute smooth normals
+        sculptureGeo.computeVertexNormals();
 
-        // Subtle, elegant rotation
+        // Subtle rotation
         sculptureMesh.rotation.y = 0.4 + Math.sin(elapsed * 0.22) * 0.08 + mouse.x * 0.1;
         sculptureMesh.rotation.x = 0.3 + Math.cos(elapsed * 0.18) * 0.06 + mouse.y * 0.08;
 
@@ -361,17 +357,14 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
           s.mesh.position.y = s.basePos[1] + Math.sin(elapsed * 0.6 + s.phase) * 0.05;
         });
 
-        // Slow ember drift
         embers.rotation.y = elapsed * 0.015;
-
-        // Portal gentle atmospheric breath
         portalRimMesh.scale.setScalar(1.0 + Math.sin(elapsed * 1.5) * 0.03);
       }
 
-      // Parallax camera tilt (subtle)
-      camera.position.x = 0.6 + mouse.x * 0.2;
+      // Parallax camera framing looking at the shifted sculpture
+      camera.position.x = 0.7 + mouse.x * 0.2;
       camera.position.y = 0.05 + mouse.y * 0.15;
-      camera.lookAt(0.9, 0.05, 0);
+      camera.lookAt(1.4, 0.05, 0);
 
       renderer.render(scene, camera);
     };
@@ -391,7 +384,6 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       mediaQuery.removeEventListener('change', handleMotionChange);
       observer.disconnect();
 
-      // Dispose Geometries & Materials
       sculptureGeo.dispose();
       sculptureMaterial.dispose();
       ribbonGeo.dispose();
@@ -427,7 +419,7 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
   return (
     <div
       ref={containerRef}
-      className="cinematic-hero-canvas-container"
+      className={`cinematic-hero-canvas-container ${!active ? 'scene-dormant' : ''}`}
       style={{
         position: 'absolute',
         top: 0,
@@ -436,9 +428,11 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
         height: '100%',
         pointerEvents: 'none',
         zIndex: 1,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        opacity: active ? 1 : 0,
+        transition: 'opacity 0.6s ease'
       }}
-      aria-hidden="true"
+      aria-hidden={!active}
     />
   );
 }

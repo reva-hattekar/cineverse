@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, ChevronRight } from 'lucide-react';
 import CinematicHeroCanvas from '../components/hero/CinematicHeroCanvas';
 import NowShowingCarousel from '../components/hero/NowShowingCarousel';
+import HeroTrailerPlayer from '../components/hero/HeroTrailerPlayer';
+import { HERO_EXPERIENCES } from '../config/heroExperiences';
 
 /**
  * HomeView
- * Redesigned customer homepage matching the CINEVERSE visual specification.
- * Combines 3D procedural hero sculpture, asymmetric editorial typography,
- * interactive format badges, and horizontal database-backed movie carousel.
+ * Customer homepage matching the CINEVERSE visual specification.
+ * - Interactive 01, 02, 03, 04 indicators switching between 3D Brand experience and featured Movie Trailers
+ * - Data-driven trailer integration with configurable video sources and graceful poster fallbacks
+ * - Automatic transition into dimmed end-state with prominent "BOOK TICKETS NOW" CTA
+ * - Continuous charcoal/burgundy atmosphere flowing into database-backed carousel and catalog
  */
 export default function HomeView({
   movies = [],
@@ -19,6 +23,14 @@ export default function HomeView({
   const [activeSlide, setActiveSlide] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [showWorldVideoModal, setShowWorldVideoModal] = useState(false);
+
+  // Current active hero experience from data configuration
+  const currentExp = HERO_EXPERIENCES.find((e) => e.id === activeSlide) || HERO_EXPERIENCES[0];
+
+  // Match real movie from live database movies array if configured
+  const matchedMovie = currentExp.movieId
+    ? movies.find((m) => m.movie_id === currentExp.movieId || m.title?.toLowerCase() === currentExp.fallbackTitle?.toLowerCase())
+    : null;
 
   // Available unique genres from live movies
   const genres = ['All', ...Array.from(new Set(movies.map((m) => m.genre).filter(Boolean)))];
@@ -41,113 +53,189 @@ export default function HomeView({
     }
   };
 
+  const handleBookCurrentExperience = () => {
+    if (matchedMovie) {
+      onSelectMovie(matchedMovie);
+    } else if (currentExp.movieId) {
+      // Fallback matching by ID or title
+      const fallbackObj = movies.find(m => m.movie_id === currentExp.movieId) || {
+        movie_id: currentExp.movieId,
+        title: currentExp.fallbackTitle
+      };
+      onSelectMovie(fallbackObj);
+    } else {
+      scrollToMovies();
+    }
+  };
+
   return (
     <div className="cineverse-home-page">
       {/* =========================================================
-          HERO SECTION: ASYMMETRIC 3D LIQUID CHROME & EDITORIAL
+          HERO SECTION: 4 INTERACTIVE EXPERIENCES (01-04)
          ========================================================= */}
-      <section className="cineverse-hero-viewport">
-        {/* Genuine Three.js 3D Procedural Hero Scene */}
-        <CinematicHeroCanvas />
+      <section className="cineverse-hero-viewport" aria-label="Hero Spotlight">
+        {/* Experience 01: Genuine Three.js 3D Procedural Hero Scene */}
+        <CinematicHeroCanvas active={currentExp.type === '3d-brand'} />
+
+        {/* Experiences 02, 03, 04: Configurable Featured Trailer Layer */}
+        {currentExp.type === 'trailer' && (
+          <HeroTrailerPlayer
+            key={currentExp.id}
+            experience={currentExp}
+            movie={matchedMovie}
+            onSelectMovie={onSelectMovie}
+            isActive={currentExp.type === 'trailer'}
+          />
+        )}
 
         {/* Ambient Dark-Crimson Gradient Vignette Scrim */}
         <div className="hero-atmosphere-scrim" />
 
         {/* Hero Foreground Content */}
         <div className="hero-foreground-grid">
-          {/* Vertical Slide Indicator Rail */}
-          <div className="hero-slide-rail" aria-label="Hero slider pagination">
-            {[1, 2, 3, 4].map((num) => (
+          {/* Vertical Slide Indicator Rail (01, 02, 03, 04) */}
+          <div className="hero-slide-rail" aria-label="Hero experience selector" role="tablist">
+            {HERO_EXPERIENCES.map((exp) => (
               <button
-                key={num}
-                className={`slide-num-btn ${activeSlide === num ? 'active' : ''}`}
-                onClick={() => setActiveSlide(num)}
-                aria-label={`Slide 0${num}`}
+                key={exp.id}
+                role="tab"
+                aria-selected={activeSlide === exp.id}
+                aria-label={`Experience 0${exp.id}: ${exp.title || exp.fallbackTitle}`}
+                className={`slide-num-btn ${activeSlide === exp.id ? 'active' : ''}`}
+                onClick={() => setActiveSlide(exp.id)}
               >
-                0{num}
+                0{exp.id}
               </button>
             ))}
           </div>
 
-          {/* Left Hero Editorial Content */}
+          {/* Left Hero Editorial Column */}
           <div className="hero-editorial-column">
             <div className="editorial-eyebrow">
-              <span>A UNIVERSE OF STORIES AWAITS</span>
+              <span>{currentExp.eyebrow}</span>
             </div>
 
-            <h1 className="hero-main-title">
-              CINE<span className="title-star-accent">V</span>ERSE
-            </h1>
+            {currentExp.id === 1 ? (
+              <h1 className="hero-main-title">
+                CINE<span className="title-star-accent">V</span>ERSE
+              </h1>
+            ) : (
+              <h1 className="hero-main-title trailer-movie-title">
+                {matchedMovie?.title || currentExp.fallbackTitle}
+              </h1>
+            )}
 
             <div className="hero-tagline-row">
-              <span>MOVIES</span>
-              <span className="dot-sep">•</span>
-              <span>EXPERIENCES</span>
-              <span className="dot-sep">•</span>
-              <span>BEYOND REALITY</span>
+              {currentExp.id === 1 ? (
+                <>
+                  <span>MOVIES</span>
+                  <span className="dot-sep">•</span>
+                  <span>EXPERIENCES</span>
+                  <span className="dot-sep">•</span>
+                  <span>BEYOND REALITY</span>
+                </>
+              ) : (
+                <>
+                  <span>{matchedMovie?.genre || 'Action'}</span>
+                  <span className="dot-sep">•</span>
+                  <span>
+                    {matchedMovie
+                      ? `${Math.floor(matchedMovie.duration / 60)}h ${matchedMovie.duration % 60}m`
+                      : '2h 30m'}
+                  </span>
+                  <span className="dot-sep">•</span>
+                  <span className="hero-rating-badge">
+                    <Star size={13} fill="#fbbf24" color="#fbbf24" />
+                    <span>{matchedMovie?.rating || '8.8'}</span>
+                  </span>
+                </>
+              )}
             </div>
+
+            {currentExp.description && (
+              <p className="hero-description-text">{currentExp.description}</p>
+            )}
 
             <div className="hero-actions-cluster">
-              <button
-                className="hero-primary-btn"
-                onClick={scrollToMovies}
-              >
-                <span>EXPLORE MOVIES</span>
-                <span className="btn-arrow-circle">
-                  <ArrowRight size={15} />
-                </span>
-              </button>
+              {currentExp.id === 1 ? (
+                <>
+                  <button className="hero-primary-btn" onClick={scrollToMovies}>
+                    <span>EXPLORE MOVIES</span>
+                    <span className="btn-arrow-circle">
+                      <ArrowRight size={15} />
+                    </span>
+                  </button>
 
-              <button
-                className="hero-secondary-btn"
+                  <button
+                    className="hero-secondary-btn"
+                    onClick={() => setShowWorldVideoModal(true)}
+                  >
+                    <span className="play-icon-circle">
+                      <Play size={12} fill="currentColor" />
+                    </span>
+                    <span>WATCH OUR WORLD</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="hero-primary-btn"
+                    onClick={handleBookCurrentExperience}
+                  >
+                    <Ticket size={15} />
+                    <span>BOOK TICKETS NOW</span>
+                    <span className="btn-arrow-circle">
+                      <ArrowRight size={15} />
+                    </span>
+                  </button>
+
+                  <button className="hero-secondary-btn" onClick={scrollToMovies}>
+                    <Compass size={14} />
+                    <span>ALL MOVIES</span>
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column: Portal Stargate Ring & Interactive Badge (shown in 3D brand mode) */}
+          {currentExp.id === 1 && (
+            <div className="hero-interactive-portal-badge">
+              <div
+                className="rotating-reality-badge"
                 onClick={() => setShowWorldVideoModal(true)}
+                role="button"
+                tabIndex={0}
+                aria-label="Watch CINEVERSE World Experience"
               >
-                <span className="play-icon-circle">
-                  <Play size={12} fill="currentColor" />
-                </span>
-                <span>WATCH OUR WORLD</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column: Portal Stargate Ring & Interactive Badge */}
-          <div className="hero-interactive-portal-badge">
-            <div
-              className="rotating-reality-badge"
-              onClick={() => setShowWorldVideoModal(true)}
-              role="button"
-              tabIndex={0}
-            >
-              <div className="reality-play-core">
-                <Play size={16} fill="#fff" />
+                <div className="reality-play-core">
+                  <Play size={16} fill="#fff" />
+                </div>
+                <svg className="rotating-text-svg" viewBox="0 0 100 100">
+                  <path
+                    id="circlePath"
+                    d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                    fill="none"
+                  />
+                  <text fontSize="7.8" fill="#e2e8f0" letterSpacing="2.2">
+                    <textPath href="#circlePath">
+                      STEP INTO ANOTHER REALITY • CINEVERSE •
+                    </textPath>
+                  </text>
+                </svg>
               </div>
-              <svg className="rotating-text-svg" viewBox="0 0 100 100">
-                <path
-                  id="circlePath"
-                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                  fill="none"
-                />
-                <text fontSize="7.8" fill="#e2e8f0" letterSpacing="2.2">
-                  <textPath href="#circlePath">
-                    STEP INTO ANOTHER REALITY • CINEVERSE •
-                  </textPath>
-                </text>
-              </svg>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Bottom "NOW SHOWING" Cinematic Movie Carousel */}
         <div className="hero-carousel-dock">
-          <NowShowingCarousel
-            movies={movies}
-            onSelectMovie={onSelectMovie}
-          />
+          <NowShowingCarousel movies={movies} onSelectMovie={onSelectMovie} />
         </div>
       </section>
 
       {/* =========================================================
-          FULL CATALOG BROWSER & GENRE FILTER SECTION
+          CONTINUOUS CATALOG BROWSER & GENRE FILTER SECTION
          ========================================================= */}
       <section id="cineverse-catalog-section" className="cineverse-catalog-section">
         <div className="catalog-container">
@@ -295,14 +383,22 @@ export default function HomeView({
               </button>
             </div>
             <div className="modal-video-container">
-              <iframe
-                title="CINEVERSE Experience Teaser"
-                src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="modal-video-iframe"
-              />
+              <div style={{ padding: '24px', textAlign: 'center', color: '#cbd5e1' }}>
+                <Film size={48} color="#e11d48" style={{ marginBottom: 12 }} />
+                <h4 style={{ color: '#fff', marginBottom: 8, fontSize: '1.2rem' }}>Experience the World of CINEVERSE</h4>
+                <p style={{ fontSize: '0.9rem', color: '#94a3b8', maxWidth: 440, margin: '0 auto 16px' }}>
+                  Ultra-luxurious recliners, IMAX 70mm dual-laser projection, and artisanal concession dining.
+                </p>
+                <button
+                  className="hero-primary-btn"
+                  onClick={() => {
+                    setShowWorldVideoModal(false);
+                    scrollToMovies();
+                  }}
+                >
+                  <Ticket size={15} /> Explore All Screenings
+                </button>
+              </div>
             </div>
           </div>
         </div>

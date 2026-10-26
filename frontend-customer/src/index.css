@@ -45,6 +45,13 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 75% 15%, rgba(69, 10, 20, 0.32) 0%, transparent 48%),
+    radial-gradient(circle at 15% 45%, rgba(35, 5, 12, 0.42) 0%, transparent 52%),
+    radial-gradient(circle at 85% 72%, rgba(136, 19, 55, 0.22) 0%, transparent 46%),
+    radial-gradient(circle at 25% 92%, rgba(69, 10, 20, 0.26) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 button {
@@ -433,6 +440,155 @@ input:focus, select:focus, textarea:focus {
   z-index: 2;
 }
 
+/* Trailer Player Layer & End State */
+.hero-trailer-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-media-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.72) contrast(1.1);
+}
+
+.hero-media-poster {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center 25%;
+  filter: brightness(0.68) contrast(1.12);
+  transform: scale(1.02);
+  transition: transform 12s ease-out;
+}
+
+.hero-media-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 5, 8, 0.95) 0%,
+    rgba(5, 5, 8, 0.8) 36%,
+    rgba(5, 5, 8, 0.35) 70%,
+    rgba(5, 5, 8, 0.7) 100%
+  ),
+  linear-gradient(0deg, rgba(5, 5, 8, 0.96) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.trailer-playback-controls {
+  position: absolute;
+  top: 24px;
+  right: 40px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trailer-ctrl-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(15, 17, 26, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.trailer-ctrl-btn:hover {
+  background: rgba(225, 29, 72, 0.35);
+  border-color: var(--accent-red);
+  transform: scale(1.06);
+}
+
+.trailer-end-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 22;
+  background: rgba(5, 5, 8, 0.86);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  animation: fadeInModal 0.4s ease;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.trailer-end-card {
+  max-width: 540px;
+  width: 100%;
+  background: #0f111a;
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 24px rgba(225, 29, 72, 0.25);
+  border-radius: 18px;
+  padding: 32px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trailer-end-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #fb7185;
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.trailer-end-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.trailer-end-desc {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.trailer-end-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .hero-foreground-grid {
   position: relative;
   z-index: 10;
@@ -521,6 +677,27 @@ input:focus, select:focus, textarea:focus {
   text-shadow: 0 0 12px rgba(251, 113, 133, 0.9);
 }
 
+.trailer-movie-title {
+  font-size: clamp(2.3rem, 4.4vw, 4.2rem) !important;
+  line-height: 1.08 !important;
+}
+
+.hero-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.hero-description-text {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  max-width: 520px;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+
 .hero-tagline-row {
   display: flex;
   align-items: center;
@@ -529,7 +706,7 @@ input:focus, select:focus, textarea:focus {
   font-weight: 600;
   letter-spacing: 0.28em;
   color: #94a3b8;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 }
 
