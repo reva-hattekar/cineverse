@@ -110,16 +110,19 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
 
     // =========================================================
     // 1. CINEMA PROJECTION SCREEN (Integrated into the Installation)
-    // Positioned behind and framed by the sculpture on the right
+    // Positioned behind and framed by the sculpture on the right.
+    // Screen width enlarged so its left edge begins beneath 'R' in CINEVERSE
+    // and extends right behind the suspended spider web at 16:9 widescreen ratio,
+    // moved upward to sit higher within the hero.
     // =========================================================
     const cinemaScreenGroup = new THREE.Group();
-    // Positioned at (2.55, 0.05, -0.35) with subtle cinematic angle
-    cinemaScreenGroup.position.set(2.55, 0.05, -0.35);
-    cinemaScreenGroup.rotation.y = -0.22;
+    // Positioned higher (y: 0.46) and widened (center x: 1.80, z: -0.38)
+    cinemaScreenGroup.position.set(1.80, 0.46, -0.38);
+    cinemaScreenGroup.rotation.y = -0.16;
     scene.add(cinemaScreenGroup);
 
-    const screenWidth = 3.0;
-    const screenHeight = 1.69; // 16:9 widescreen ratio (3.0 / 1.69 ≈ 1.78)
+    const screenWidth = 4.2;
+    const screenHeight = 2.36; // 16:9 widescreen ratio (4.2 / 2.36 ≈ 1.78)
 
     // A. Soft Ambient Projection Spill Plane (Behind Frame)
     const spillCanvas = document.createElement('canvas');
@@ -135,7 +138,7 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     spCtx.fillRect(0, 0, 512, 288);
 
     const spillTexture = new THREE.CanvasTexture(spillCanvas);
-    const spillGeo = new THREE.PlaneGeometry(screenWidth + 0.5, screenHeight + 0.45);
+    const spillGeo = new THREE.PlaneGeometry(screenWidth + 0.65, screenHeight + 0.55);
     const spillMat = new THREE.MeshBasicMaterial({
       map: spillTexture,
       transparent: true,

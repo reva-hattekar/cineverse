@@ -2231,12 +2231,13 @@ input:focus, select:focus, textarea:focus {
 
 .screen-light-beam {
   position: absolute;
-  top: 14px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
-  height: 60px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.22) 0%, rgba(212, 175, 55, 0.08) 50%, transparent 85%);
+  height: 72px;
+  clip-path: polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(212, 175, 55, 0.12) 40%, transparent 100%);
   pointer-events: none;
 }
 
@@ -2248,12 +2249,12 @@ input:focus, select:focus, textarea:focus {
 
 .screen-gold-title {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 700;
   color: #d4af37;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   margin-top: -6px;
-  text-shadow: 0 2px 14px rgba(212, 175, 55, 0.4);
+  text-shadow: 0 2px 14px rgba(212, 175, 55, 0.45);
 }
 
 /* Seating Tiers matching Image 2 */
@@ -2322,6 +2323,8 @@ input:focus, select:focus, textarea:focus {
 
 /* Individual Cinema Armchair Button */
 .cinema-seat-unit {
+  all: unset;
+  box-sizing: border-box;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
