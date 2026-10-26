@@ -3,11 +3,11 @@ import React from 'react';
 /**
  * ReferenceCinemaSeat
  * Exact cinema armchair SVG matching the supplied visual reference (Image 2).
- * - Rounded backrest with centered seat number
- * - Rounded wider base cushion
+ * - Rounded backrest tab with centered seat number
+ * - Rounded wider base cushion with armrests
  * - Color-coded:
  *   - Available: Slate/Charcoal grey (#4a5568 / #374151)
- *   - Occupied: Vibrant Royal Blue (#2563eb / #1d4ed8) — unselectable
+ *   - Occupied / Reserved: Vibrant Royal Blue (#2563eb / #1d4ed8) — unselectable
  *   - Selected: Radiant Warm Amber (#f59e0b / #d97706) with golden glow
  */
 export function ReferenceCinemaSeat({
@@ -16,31 +16,37 @@ export function ReferenceCinemaSeat({
   isBooked = false,
   isSelected = false,
   onClick,
-  interactive = true
+  interactive = true,
+  isBlueprintOnly = false
 }) {
-  const seatId = seat?.seat_id;
   const displayNumber = seatNumberDisplay || (seat ? seat.seat_number.replace(/\D/g, '') : '');
 
   let stateClass = 'seat-state-available';
-  if (isBooked) stateClass = 'seat-state-occupied';
+  if (isBooked || isBlueprintOnly) stateClass = 'seat-state-occupied';
   else if (isSelected) stateClass = 'seat-state-selected';
+
+  const isClickable = interactive && !isBooked && !isBlueprintOnly && Boolean(seat);
 
   return (
     <button
       type="button"
-      className={`cinema-seat-unit ${stateClass} ${interactive && !isBooked ? 'interactive' : 'disabled'}`}
-      onClick={interactive && !isBooked && onClick ? onClick : undefined}
-      disabled={isBooked}
+      className={`cinema-seat-unit ${stateClass} ${isClickable ? 'interactive' : 'disabled'}`}
+      onClick={isClickable && onClick ? onClick : undefined}
+      disabled={!isClickable}
       aria-label={`Seat ${seat?.seat_number || displayNumber} — ${
-        isBooked ? 'Occupied' : isSelected ? 'Selected' : 'Available'
+        isBooked || isBlueprintOnly ? 'Occupied / Reserved' : isSelected ? 'Selected' : 'Available'
       } — ₹${seat?.price || 250}`}
-      title={`Seat ${seat?.seat_number || displayNumber} (${seat?.seat_type || 'Standard'}) — ${
-        isBooked ? 'Occupied' : isSelected ? 'Selected' : 'Available'
-      } — ₹${seat?.price || 250}`}
+      title={
+        isBlueprintOnly
+          ? `Seat ${displayNumber} — Reserved for Screen Maintenance`
+          : `Seat ${seat?.seat_number || displayNumber} (${seat?.seat_type || 'Standard'}) — ${
+              isBooked ? 'Occupied (Sold)' : isSelected ? 'Selected' : 'Available'
+            } — ₹${seat?.price || 250}`
+      }
     >
       <svg
-        width="28"
-        height="24"
+        width="26"
+        height="22"
         viewBox="0 0 28 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -72,14 +78,14 @@ export function ReferenceCinemaSeat({
 
 /**
  * AuditoriumSeatMap
- * Reproduces the exact cinema auditorium layout from the supplied visual reference (Image 2):
+ * Reproduces the exact 142-seat cinema auditorium layout from the supplied visual reference (Image 2):
  * 1. Curved "SCREEN" arch at the top with downward atmospheric light glow
- * 2. Tiers in warm amber/gold serif typography:
- *    - "REGULER" (Rows G, F / Standard tier)
- *    - "GOLD" (Rows E, D, C, B / Premium tier with left, center, and right blocks)
- *    - "PREMIUM" (Row A / VIP tier)
- * 3. Exact seat shape, row labels, aisle gaps, and bottom legend (Available, Occupied, Selected)
- * 4. Binds directly to database seat IDs and showtime availability.
+ * 2. Exact Tiers and Rows:
+ *    - "REGULER" (Rows G [1-16], F [1-17])
+ *    - "GOLD" (Rows E [1-19], D [3-17-3], C [3-17-3], B [3-17-3])
+ *    - "PREMIUM" (Row A [1-21])
+ * 3. 1:1 Mapping to database seat IDs and live booking state for provisioned seats
+ * 4. Zero fake IDs: Blueprint seats not provisioned in current screen are shown as Reserved/Occupied
  */
 export default function AuditoriumSeatMap({
   showtime,
@@ -88,156 +94,34 @@ export default function AuditoriumSeatMap({
   onToggleSeat,
   interactive = true
 }) {
-  // Map seats by seat_number for O(1) lookup
+  // Map real database seats by seat_number (e.g. 'A1', 'B4', 'C6')
   const seatMapByNumber = {};
   seats.forEach((s) => {
     seatMapByNumber[s.seat_number.toUpperCase()] = s;
   });
 
-  // Group database seats by row letter (e.g. 'A', 'B', 'C')
-  const dbRows = {};
-  seats.forEach((s) => {
-    const rowLetter = s.seat_number.charAt(0).toUpperCase();
-    if (!dbRows[rowLetter]) dbRows[rowLetter] = [];
-    dbRows[rowLetter].push(s);
-  });
-
-  // Sort each row's seats by seat number numeric index
-  Object.keys(dbRows).forEach((row) => {
-    dbRows[row].sort((a, b) => {
-      const numA = parseInt(a.seat_number.replace(/\D/g, ''), 10) || 0;
-      const numB = parseInt(b.seat_number.replace(/\D/g, ''), 10) || 0;
-      return numA - numB;
-    });
-  });
-
-  // Render a block of seats bound to real database records
-  const renderSeatBlock = (rowLetter, seatIndices) => {
-    return seatIndices.map((idx) => {
-      const seatKey = `${rowLetter}${idx}`;
+  // Helper to render an individual seat block
+  const renderSeats = (rowLetter, startIndex, endIndex) => {
+    const seatNodes = [];
+    for (let i = startIndex; i <= endIndex; i++) {
+      const seatKey = `${rowLetter}${i}`;
       const realSeat = seatMapByNumber[seatKey];
+      const isBlueprintOnly = !realSeat;
 
-      if (!realSeat) {
-        // If this specific seat number is not in this screen's database,
-        // render a subtle unavailable space placeholder or skip
-        return (
-          <div key={seatKey} className="cinema-seat-unit seat-state-empty" aria-hidden="true">
-            <div className="seat-empty-spacer" />
-          </div>
-        );
-      }
-
-      return (
+      seatNodes.push(
         <ReferenceCinemaSeat
-          key={realSeat.seat_id}
+          key={seatKey}
           seat={realSeat}
-          seatNumberDisplay={idx}
-          isBooked={Boolean(realSeat.is_booked)}
-          isSelected={selectedSeatIds.includes(realSeat.seat_id)}
-          onClick={() => onToggleSeat && onToggleSeat(realSeat)}
+          seatNumberDisplay={i}
+          isBooked={Boolean(realSeat?.is_booked)}
+          isSelected={realSeat ? selectedSeatIds.includes(realSeat.seat_id) : false}
+          onClick={() => realSeat && onToggleSeat && onToggleSeat(realSeat)}
           interactive={interactive}
+          isBlueprintOnly={isBlueprintOnly}
         />
       );
-    });
-  };
-
-  // Helper to render a full row based on Image 2 reference structure
-  const renderRow = (rowLetter, leftCount, centerCount, rightCount, centerStart = 1) => {
-    const hasSeatsInDB = Boolean(dbRows[rowLetter] && dbRows[rowLetter].length > 0);
-
-    // If database has seats for this row, ensure we render them
-    if (!hasSeatsInDB) {
-      // If the database has only A, B, C, we only render rows with actual data
-      // to avoid phantom non-existent seats
-      return null;
     }
-
-    const rowSeats = dbRows[rowLetter];
-    const totalCount = rowSeats.length;
-
-    // If row has standard left/center/right aisles (like B, C, D in Image 2)
-    if (leftCount > 0 && rightCount > 0 && totalCount > 4) {
-      const leftSeats = rowSeats.slice(0, Math.min(leftCount, 3));
-      const rightSeats = rowSeats.slice(Math.max(0, totalCount - Math.min(rightCount, 3)));
-      const centerSeats = rowSeats.slice(leftSeats.length, totalCount - rightSeats.length);
-
-      return (
-        <div key={rowLetter} className="auditorium-row-container">
-          <span className="row-label-tag left">{rowLetter}</span>
-
-          <div className="seat-group-left">
-            {leftSeats.map((s) => (
-              <ReferenceCinemaSeat
-                key={s.seat_id}
-                seat={s}
-                seatNumberDisplay={s.seat_number.replace(/\D/g, '')}
-                isBooked={Boolean(s.is_booked)}
-                isSelected={selectedSeatIds.includes(s.seat_id)}
-                onClick={() => onToggleSeat && onToggleSeat(s)}
-                interactive={interactive}
-              />
-            ))}
-          </div>
-
-          <div className="auditorium-aisle-gap" />
-
-          <div className="seat-group-center">
-            {centerSeats.map((s) => (
-              <ReferenceCinemaSeat
-                key={s.seat_id}
-                seat={s}
-                seatNumberDisplay={s.seat_number.replace(/\D/g, '')}
-                isBooked={Boolean(s.is_booked)}
-                isSelected={selectedSeatIds.includes(s.seat_id)}
-                onClick={() => onToggleSeat && onToggleSeat(s)}
-                interactive={interactive}
-              />
-            ))}
-          </div>
-
-          <div className="auditorium-aisle-gap" />
-
-          <div className="seat-group-right">
-            {rightSeats.map((s) => (
-              <ReferenceCinemaSeat
-                key={s.seat_id}
-                seat={s}
-                seatNumberDisplay={s.seat_number.replace(/\D/g, '')}
-                isBooked={Boolean(s.is_booked)}
-                isSelected={selectedSeatIds.includes(s.seat_id)}
-                onClick={() => onToggleSeat && onToggleSeat(s)}
-                interactive={interactive}
-              />
-            ))}
-          </div>
-
-          <span className="row-label-tag right">{rowLetter}</span>
-        </div>
-      );
-    }
-
-    // Single contiguous center row (like Row A, Row E, Row F, Row G in Image 2)
-    return (
-      <div key={rowLetter} className="auditorium-row-container">
-        <span className="row-label-tag left">{rowLetter}</span>
-
-        <div className="seat-group-center continuous">
-          {rowSeats.map((s) => (
-            <ReferenceCinemaSeat
-              key={s.seat_id}
-              seat={s}
-              seatNumberDisplay={s.seat_number.replace(/\D/g, '')}
-              isBooked={Boolean(s.is_booked)}
-              isSelected={selectedSeatIds.includes(s.seat_id)}
-              onClick={() => onToggleSeat && onToggleSeat(s)}
-              interactive={interactive}
-            />
-          ))}
-        </div>
-
-        <span className="row-label-tag right">{rowLetter}</span>
-      </div>
-    );
+    return seatNodes;
   };
 
   return (
@@ -247,66 +131,140 @@ export default function AuditoriumSeatMap({
         <div className="screen-light-beam" />
         <svg viewBox="0 0 600 44" className="cinema-screen-svg" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="screenBeamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
-              <stop offset="40%" stopColor="#d4af37" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#d4af37" stopOpacity="0" />
-            </linearGradient>
             <filter id="screenGlow">
               <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
           </defs>
-          <path d="M 40 40 Q 300 6 560 40" stroke="#f1f5f9" strokeWidth="4.5" strokeLinecap="round" fill="none" filter="url(#screenGlow)" />
+          <path
+            d="M 40 40 Q 300 6 560 40"
+            stroke="#ffffff"
+            strokeWidth="4.5"
+            strokeLinecap="round"
+            fill="none"
+            filter="url(#screenGlow)"
+          />
         </svg>
         <h2 className="screen-gold-title">SCREEN</h2>
       </div>
 
-      {/* 2. Seating Grid divided by Tier (matching Image 2) */}
+      {/* 2. Full 142-Seat Auditorium Blueprint matching Image 2 */}
       <div className="auditorium-seating-body">
         {/* TIER 1: REGULER */}
-        {(dbRows['G'] || dbRows['F'] || dbRows['C']) && (
-          <div className="seat-tier-section">
-            <h3 className="reference-tier-header">REGULER</h3>
-            {renderRow('G', 0, 16, 0, 1)}
-            {renderRow('F', 0, 17, 0, 1)}
-            {/* If DB standard row is C, render under REGULER */}
-            {!dbRows['G'] && !dbRows['F'] && renderRow('C', 0, 20, 0, 1)}
+        <div className="seat-tier-section">
+          <h3 className="reference-tier-header">REGULER</h3>
+
+          {/* Row G: seats 1 to 16 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">G</span>
+            <div className="seat-group-center continuous">
+              {renderSeats('G', 1, 16)}
+            </div>
+            <span className="row-label-tag right">G</span>
           </div>
-        )}
+
+          {/* Row F: seats 1 to 17 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">F</span>
+            <div className="seat-group-center continuous">
+              {renderSeats('F', 1, 17)}
+            </div>
+            <span className="row-label-tag right">F</span>
+          </div>
+        </div>
 
         {/* TIER 2: GOLD */}
-        {(dbRows['E'] || dbRows['D'] || dbRows['B'] || (dbRows['C'] && (dbRows['G'] || dbRows['F']))) && (
-          <div className="seat-tier-section">
-            <h3 className="reference-tier-header">GOLD</h3>
-            {renderRow('E', 0, 19, 0, 1)}
-            {renderRow('D', 3, 17, 3, 4)}
-            {(dbRows['G'] || dbRows['F']) && renderRow('C', 3, 17, 3, 4)}
-            {renderRow('B', 3, 17, 3, 4)}
+        <div className="seat-tier-section">
+          <h3 className="reference-tier-header">GOLD</h3>
+
+          {/* Row E: seats 1 to 19 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">E</span>
+            <div className="seat-group-center continuous">
+              {renderSeats('E', 1, 19)}
+            </div>
+            <span className="row-label-tag right">E</span>
           </div>
-        )}
+
+          {/* Row D: Left 1-3, Center 4-20, Right 21-23 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">D</span>
+            <div className="seat-group-left">
+              {renderSeats('D', 1, 3)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-center">
+              {renderSeats('D', 4, 20)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-right">
+              {renderSeats('D', 21, 23)}
+            </div>
+            <span className="row-label-tag right">D</span>
+          </div>
+
+          {/* Row C: Left 1-3, Center 4-20, Right 21-23 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">C</span>
+            <div className="seat-group-left">
+              {renderSeats('C', 1, 3)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-center">
+              {renderSeats('C', 4, 20)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-right">
+              {renderSeats('C', 21, 23)}
+            </div>
+            <span className="row-label-tag right">C</span>
+          </div>
+
+          {/* Row B: Left 1-3, Center 4-20, Right 21-23 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">B</span>
+            <div className="seat-group-left">
+              {renderSeats('B', 1, 3)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-center">
+              {renderSeats('B', 4, 20)}
+            </div>
+            <div className="auditorium-aisle-gap" />
+            <div className="seat-group-right">
+              {renderSeats('B', 21, 23)}
+            </div>
+            <span className="row-label-tag right">B</span>
+          </div>
+        </div>
 
         {/* TIER 3: PREMIUM */}
-        {dbRows['A'] && (
-          <div className="seat-tier-section">
-            <h3 className="reference-tier-header">PREMIUM</h3>
-            {renderRow('A', 0, 21, 0, 1)}
+        <div className="seat-tier-section">
+          <h3 className="reference-tier-header">PREMIUM</h3>
+
+          {/* Row A: seats 1 to 21 */}
+          <div className="auditorium-row-container">
+            <span className="row-label-tag left">A</span>
+            <div className="seat-group-center continuous">
+              {renderSeats('A', 1, 21)}
+            </div>
+            <span className="row-label-tag right">A</span>
           </div>
-        )}
+        </div>
       </div>
 
       {/* 3. Seating Legend (Image 2: Available, Occupied, Selected) */}
       <div className="reference-seating-legend">
         <div className="legend-entry">
-          <ReferenceCinemaSeat seatNumberDisplay="1" isBooked={false} isSelected={false} interactive={false} />
+          <ReferenceCinemaSeat seatNumberDisplay="•" isBooked={false} isSelected={false} interactive={false} />
           <span>Available</span>
         </div>
         <div className="legend-entry">
-          <ReferenceCinemaSeat seatNumberDisplay="2" isBooked={true} isSelected={false} interactive={false} />
+          <ReferenceCinemaSeat seatNumberDisplay="•" isBooked={true} isSelected={false} interactive={false} />
           <span>Occupied</span>
         </div>
         <div className="legend-entry">
-          <ReferenceCinemaSeat seatNumberDisplay="3" isBooked={false} isSelected={true} interactive={false} />
+          <ReferenceCinemaSeat seatNumberDisplay="•" isBooked={false} isSelected={true} interactive={false} />
           <span>Selected</span>
         </div>
       </div>

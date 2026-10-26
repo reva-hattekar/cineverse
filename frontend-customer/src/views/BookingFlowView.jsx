@@ -257,25 +257,8 @@ export default function BookingFlowView({
       {/* STEP 1 & 2: MOVIE, SHOWTIME & AUDITORIUM SEAT PICKER */}
       {step <= 2 && (
         <>
-          <div style={{
-            background: '#121829',
-            border: '1px solid #1c2438',
-            borderRadius: '14px',
-            padding: '24px',
-            marginBottom: '32px',
-            display: 'flex',
-            gap: '24px',
-            alignItems: 'center',
-            flexWrap: 'wrap'
-          }}>
-            <div style={{
-              width: '90px',
-              height: '125px',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              background: '#182035',
-              flexShrink: 0
-            }}>
+          <div className="booking-screening-card">
+            <div className="booking-poster-box">
               <img
                 src={movie.poster_url || 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg'}
                 alt={movie.title}
@@ -290,7 +273,7 @@ export default function BookingFlowView({
               </div>
 
               <div style={{ marginTop: '16px' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '8px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.08em' }}>
                   Select Screening Slot:
                 </div>
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -340,14 +323,7 @@ export default function BookingFlowView({
 
       {/* STEP 3: CONCESSIONS & SNACKS */}
       {step === 3 && (
-        <div style={{
-          background: '#121829',
-          border: '1px solid #1c2438',
-          borderRadius: '16px',
-          padding: '28px',
-          maxWidth: '800px',
-          margin: '0 auto 36px'
-        }}>
+        <div className="booking-concessions-card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <Popcorn size={24} color="#f59e0b" />
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800 }}>Add Concession Combos</h3>
@@ -360,17 +336,9 @@ export default function BookingFlowView({
             {snacks.map(sn => {
               const qty = selectedSnacks[sn.snack_id] || 0;
               return (
-                <div key={sn.snack_id} style={{
-                  background: '#0c101d',
-                  border: '1px solid #1c2438',
-                  borderRadius: '10px',
-                  padding: '14px 18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
+                <div key={sn.snack_id} className="concession-item-row">
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>{sn.snack_name}</div>
+                    <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#fff' }}>{sn.snack_name}</div>
                     <div style={{ color: '#10b981', fontWeight: 800, fontSize: '0.85rem' }}>₹{sn.price}</div>
                   </div>
 
@@ -396,7 +364,7 @@ export default function BookingFlowView({
             })}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '28px', borderTop: '1px solid #1c2438', paddingTop: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '28px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '20px' }}>
             <button className="btn btn-secondary" onClick={() => setStep(2)}>
               ← Back to Seats
             </button>
@@ -470,7 +438,7 @@ export default function BookingFlowView({
               </div>
 
               {/* Payment Details Form based on selected method */}
-              <div style={{ marginTop: '20px', padding: '16px', background: '#0b101d', borderRadius: '10px', border: '1px solid #1c2438' }}>
+              <div className="payment-form-box">
                 {paymentMethod === 'UPI' && (
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#94a3b8', marginBottom: '6px', display: 'block' }}>
@@ -651,47 +619,47 @@ export default function BookingFlowView({
           </p>
 
           <div className="ticket-slip" style={{ textAlign: 'left', marginBottom: '28px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #23304c', paddingBottom: '14px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '14px', marginBottom: '16px' }}>
               <div>
-                <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#64748b', fontWeight: 700 }}>
+                <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 700, letterSpacing: '0.08em' }}>
                   Booking Reference
                 </span>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#f59e0b' }}>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f59e0b', fontFamily: 'var(--font-serif)' }}>
                   #{bookingResult.booking_id}
                 </div>
               </div>
-              <QrCode size={36} color="#94a3b8" />
+              <QrCode size={36} color="#fb7185" />
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Customer:</span>
+                <span style={{ color: '#94a3b8' }}>Customer:</span>
                 <strong>{currentCustomer.customer_name}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Movie:</span>
+                <span style={{ color: '#94a3b8' }}>Movie:</span>
                 <strong style={{ color: '#fff' }}>{bookingResult.movie_title}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Screening:</span>
+                <span style={{ color: '#94a3b8' }}>Screening:</span>
                 <span>{bookingResult.show_date} @ {bookingResult.start_time}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Cinema Auditorium:</span>
+                <span style={{ color: '#94a3b8' }}>Cinema Auditorium:</span>
                 <span>{bookingResult.theater_name} (Screen {bookingResult.screen_number})</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Reserved Seats:</span>
+                <span style={{ color: '#94a3b8' }}>Reserved Seats:</span>
                 <strong style={{ color: '#f59e0b' }}>
                   {bookingResult.seats.map(s => s.seat_number).join(', ')}
                 </strong>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1c2438', paddingTop: '8px' }}>
-                <span style={{ color: '#64748b' }}>Total Paid:</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '8px' }}>
+                <span style={{ color: '#94a3b8' }}>Total Paid:</span>
                 <strong style={{ color: '#10b981', fontSize: '1.1rem' }}>₹{bookingResult.total_amount}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Payment Mode:</span>
+                <span style={{ color: '#94a3b8' }}>Payment Mode:</span>
                 <span>{bookingResult.payment_method}</span>
               </div>
             </div>

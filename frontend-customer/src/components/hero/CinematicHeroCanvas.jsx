@@ -3,13 +3,13 @@ import * as THREE from 'three';
 
 /**
  * CinematicHeroCanvas
- * Refined 3D hero scene matching the CINEVERSE visual reference:
- * - Fluid, glossy obsidian-black sculpture with restrained silver reflections & subtle burgundy rim glow
- * - Shifted ~5-8% farther right to provide generous negative space for the headline
- * - Smooth, low-frequency organic wave deformation (no jagged facets)
- * - Atmospheric gateway portal positioned coherently on the right
- * - Throttles / pauses WebGL rendering loop when not active (e.g. during video trailer playback)
- * - Responds to reduced motion and cleans up all WebGL resources on unmount
+ * Redesigned 3D hero scene matching the CINEVERSE visual identity:
+ * - Recognisable 16:9 widescreen cinematic projection screen with dark beveled frame and ambient glow
+ * - Fluid, glossy obsidian-black & liquid-chrome sculpture wrapping around, emerging beside, and partially framing the screen
+ * - Restrained burgundy & silver edge illumination
+ * - Composition positioned firmly on the right side, preserving clear negative space for the CINEVERSE heading
+ * - Throttles / pauses WebGL rendering loop when not active
+ * - Cleans up all WebGL resources on unmount
  */
 export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
   const containerRef = useRef(null);
@@ -47,9 +47,9 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     scene.fog = new THREE.FogExp2(0x050508, 0.05);
 
     // --- Camera Framing ---
-    // Camera looking towards the right-shifted composition
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 80);
-    camera.position.set(0.9, 0.05, 5.2);
+    // Framed so the widescreen cinema screen and sculpture occupy the right half (x > 0.4)
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 80);
+    camera.position.set(0.85, 0.1, 5.2);
 
     // --- WebGL Renderer ---
     const renderer = new THREE.WebGLRenderer({
@@ -60,7 +60,7 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
 
     // --- Studio Reflection Environment Texture ---
@@ -89,26 +89,128 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     scene.environment = envTexture;
 
     // --- Cinematic Lighting ---
-    const ambientLight = new THREE.AmbientLight(0x0a0507, 1.4);
+    const ambientLight = new THREE.AmbientLight(0x0a0507, 1.5);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.2);
-    keyLight.position.set(4.5, 4.0, 3.0);
+    // Key directional light for soft silver highlights on the curves
+    const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.4);
+    keyLight.position.set(4.5, 4.0, 3.2);
     scene.add(keyLight);
 
-    const burgundyRimLight = new THREE.PointLight(0xbe123c, 4.2, 8.5, 1.8);
-    burgundyRimLight.position.set(2.4, -1.0, 1.0);
-    scene.add(burgundyRimLight);
+    // Burgundy screen backlight
+    const screenBacklight = new THREE.PointLight(0xbe123c, 4.5, 9.0, 1.8);
+    screenBacklight.position.set(2.4, 0.1, -0.4);
+    scene.add(screenBacklight);
 
-    const crimsonAccent = new THREE.PointLight(0x881337, 3.5, 7.5, 1.6);
-    crimsonAccent.position.set(3.9, 1.2, 0.5);
+    // Crimson accent light from right
+    const crimsonAccent = new THREE.PointLight(0x881337, 3.8, 8.0, 1.6);
+    crimsonAccent.position.set(4.2, 1.2, 0.6);
     scene.add(crimsonAccent);
 
-    // --- The 3D Sculpture ---
-    // Shifted ~5-8% farther right (from 1.95 to 2.4)
-    const SCULPTURE_CENTER_X = 2.4;
+    // Screen surface projection glow
+    const projectionGlow = new THREE.PointLight(0xff3366, 2.5, 5.0, 2.0);
+    projectionGlow.position.set(2.6, 0.15, 0.2);
+    scene.add(projectionGlow);
 
-    const sculptureGeo = new THREE.TorusKnotGeometry(0.78, 0.22, 192, 48, 2, 3);
+    // =========================================================
+    // 1. WIDESCREEN CINEMA SCREEN (16:9 Aspect Ratio)
+    // =========================================================
+    const cinemaScreenGroup = new THREE.Group();
+    // Positioned in the right half of the scene with a subtle cinematic angle
+    cinemaScreenGroup.position.set(2.55, 0.15, -0.6);
+    cinemaScreenGroup.rotation.y = -0.22;
+    cinemaScreenGroup.rotation.x = 0.02;
+
+    // A. Outer Architectural Cinema Screen Bezel / Frame
+    const screenWidth = 3.2;
+    const screenHeight = 1.8; // 16:9 ratio (3.2 / 1.8 ≈ 1.78)
+    const frameGeo = new THREE.BoxGeometry(screenWidth, screenHeight, 0.14);
+    const frameMat = new THREE.MeshStandardMaterial({
+      color: 0x080a0f,
+      roughness: 0.35,
+      metalness: 0.85
+    });
+    const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+    cinemaScreenGroup.add(frameMesh);
+
+    // B. Illuminated Cinema Screen Canvas Surface (Projecting subtle cosmic cinema scene)
+    const screenCanvas = document.createElement('canvas');
+    screenCanvas.width = 512;
+    screenCanvas.height = 288; // 16:9
+    const sCtx = screenCanvas.getContext('2d');
+
+    // Base cinematic projection gradient
+    const sGrad = sCtx.createRadialGradient(256, 144, 10, 256, 144, 260);
+    sGrad.addColorStop(0, '#2d0612');
+    sGrad.addColorStop(0.35, '#18040a');
+    sGrad.addColorStop(0.7, '#080509');
+    sGrad.addColorStop(1, '#020204');
+    sCtx.fillStyle = sGrad;
+    sCtx.fillRect(0, 0, 512, 288);
+
+    // Anamorphic horizontal lens flare / light streak across screen center
+    const streakGrad = sCtx.createLinearGradient(0, 144, 512, 144);
+    streakGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    streakGrad.addColorStop(0.3, 'rgba(251, 113, 133, 0.25)');
+    streakGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.65)');
+    streakGrad.addColorStop(0.7, 'rgba(251, 113, 133, 0.25)');
+    streakGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    sCtx.fillStyle = streakGrad;
+    sCtx.fillRect(0, 138, 512, 12);
+
+    // Soft celestial mountain silhouette in the projection
+    sCtx.fillStyle = 'rgba(10, 2, 5, 0.85)';
+    sCtx.beginPath();
+    sCtx.moveTo(0, 288);
+    sCtx.lineTo(90, 190);
+    sCtx.lineTo(180, 215);
+    sCtx.lineTo(256, 165);
+    sCtx.lineTo(340, 225);
+    sCtx.lineTo(440, 180);
+    sCtx.lineTo(512, 230);
+    sCtx.lineTo(512, 288);
+    sCtx.closePath();
+    sCtx.fill();
+
+    const screenTexture = new THREE.CanvasTexture(screenCanvas);
+    const screenApertureGeo = new THREE.PlaneGeometry(screenWidth - 0.12, screenHeight - 0.12);
+    const screenApertureMat = new THREE.MeshPhysicalMaterial({
+      map: screenTexture,
+      emissive: 0x350814,
+      emissiveIntensity: 0.75,
+      roughness: 0.45,
+      metalness: 0.2,
+      clearcoat: 0.3,
+      clearcoatRoughness: 0.2
+    });
+    const screenApertureMesh = new THREE.Mesh(screenApertureGeo, screenApertureMat);
+    screenApertureMesh.position.z = 0.075;
+    cinemaScreenGroup.add(screenApertureMesh);
+
+    // C. Fine Restrained Burgundy / Silver Screen Rim Edge Glow
+    const rimPoints = [
+      new THREE.Vector3(-(screenWidth / 2), -(screenHeight / 2), 0.08),
+      new THREE.Vector3((screenWidth / 2), -(screenHeight / 2), 0.08),
+      new THREE.Vector3((screenWidth / 2), (screenHeight / 2), 0.08),
+      new THREE.Vector3(-(screenWidth / 2), (screenHeight / 2), 0.08),
+      new THREE.Vector3(-(screenWidth / 2), -(screenHeight / 2), 0.08)
+    ];
+    const rimLineGeo = new THREE.BufferGeometry().setFromPoints(rimPoints);
+    const rimLineMat = new THREE.LineBasicMaterial({
+      color: 0xe11d48,
+      transparent: true,
+      opacity: 0.65
+    });
+    const rimLine = new THREE.Line(rimLineGeo, rimLineMat);
+    cinemaScreenGroup.add(rimLine);
+
+    scene.add(cinemaScreenGroup);
+
+    // =========================================================
+    // 2. THE ORGANIC BLACK-GLASS & LIQUID-CHROME SCULPTURE
+    // (Framing and wrapping around the left edge of the cinema screen)
+    // =========================================================
+    const sculptureGeo = new THREE.TorusKnotGeometry(0.74, 0.21, 192, 48, 2, 3);
     const posAttr = sculptureGeo.attributes.position;
     const originalPositions = posAttr.array.slice();
 
@@ -126,13 +228,14 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     });
 
     const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMaterial);
-    sculptureMesh.position.set(SCULPTURE_CENTER_X, 0.1, 0.0);
-    sculptureMesh.rotation.set(0.3, 0.4, -0.15);
-    sculptureMesh.scale.set(0.88, 0.88, 0.88);
+    // Positioned so it emerges beside and wraps the left corner of the screen
+    sculptureMesh.position.set(1.95, -0.05, 0.2);
+    sculptureMesh.rotation.set(0.35, 0.45, -0.12);
+    sculptureMesh.scale.set(0.86, 0.86, 0.86);
     scene.add(sculptureMesh);
 
-    // Secondary subtle obsidian flow ribbon
-    const ribbonGeo = new THREE.TorusGeometry(0.58, 0.07, 32, 96);
+    // Secondary subtle obsidian flow ribbon weaving around the screen edge
+    const ribbonGeo = new THREE.TorusGeometry(0.56, 0.07, 32, 96);
     const ribbonMat = new THREE.MeshStandardMaterial({
       color: 0x050608,
       roughness: 0.18,
@@ -141,75 +244,13 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       emissiveIntensity: 0.4
     });
     const ribbonMesh = new THREE.Mesh(ribbonGeo, ribbonMat);
-    ribbonMesh.position.set(SCULPTURE_CENTER_X, 0.1, 0.0);
+    ribbonMesh.position.set(1.95, -0.05, 0.2);
     ribbonMesh.rotation.set(1.1, 0.2, 0.6);
     scene.add(ribbonMesh);
 
-    // --- Subtle Atmospheric Gateway Portal (Right Edge) ---
-    const portalGroup = new THREE.Group();
-    portalGroup.position.set(3.95, 0.25, -0.9);
-    portalGroup.rotation.y = -0.28;
-
-    const frameGeo = new THREE.BoxGeometry(1.25, 2.2, 0.15);
-    const frameMat = new THREE.MeshStandardMaterial({
-      color: 0x06070a,
-      roughness: 0.55,
-      metalness: 0.7
-    });
-    const frameMesh = new THREE.Mesh(frameGeo, frameMat);
-    portalGroup.add(frameMesh);
-
-    // Dark translucent portal interior
-    const portalCanvas = document.createElement('canvas');
-    portalCanvas.width = 256;
-    portalCanvas.height = 384;
-    const pCtx = portalCanvas.getContext('2d');
-    const pGrad = pCtx.createLinearGradient(0, 0, 0, 384);
-    pGrad.addColorStop(0, '#050204');
-    pGrad.addColorStop(0.35, '#20050c');
-    pGrad.addColorStop(0.6, '#3a0814');
-    pGrad.addColorStop(0.85, '#150307');
-    pGrad.addColorStop(1, '#050508');
-    pCtx.fillStyle = pGrad;
-    pCtx.fillRect(0, 0, 256, 384);
-
-    pCtx.fillStyle = 'rgba(10, 2, 4, 0.75)';
-    pCtx.beginPath();
-    pCtx.moveTo(0, 384);
-    pCtx.lineTo(60, 260);
-    pCtx.lineTo(120, 290);
-    pCtx.lineTo(180, 230);
-    pCtx.lineTo(256, 300);
-    pCtx.lineTo(256, 384);
-    pCtx.closePath();
-    pCtx.fill();
-
-    const portalTexture = new THREE.CanvasTexture(portalCanvas);
-    const apertureGeo = new THREE.PlaneGeometry(1.05, 1.95);
-    const apertureMat = new THREE.MeshBasicMaterial({
-      map: portalTexture,
-      transparent: true,
-      opacity: 0.88,
-      side: THREE.DoubleSide
-    });
-    const apertureMesh = new THREE.Mesh(apertureGeo, apertureMat);
-    apertureMesh.position.z = 0.085;
-    portalGroup.add(apertureMesh);
-
-    const portalRimGeo = new THREE.RingGeometry(0.55, 0.58, 48);
-    const portalRimMat = new THREE.MeshBasicMaterial({
-      color: 0xbe123c,
-      transparent: true,
-      opacity: 0.45,
-      side: THREE.DoubleSide
-    });
-    const portalRimMesh = new THREE.Mesh(portalRimGeo, portalRimMat);
-    portalRimMesh.position.set(-0.15, 0.35, 0.09);
-    portalGroup.add(portalRimMesh);
-
-    scene.add(portalGroup);
-
-    // --- Subtle Floating Obsidian Shards ---
+    // =========================================================
+    // 3. SUBTLE FLOATING OBSIDIAN SHARDS & EMBERS
+    // =========================================================
     const shardGroup = new THREE.Group();
     const shardGeo = new THREE.DodecahedronGeometry(0.065, 0);
     const shardMat = new THREE.MeshStandardMaterial({
@@ -222,13 +263,13 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
 
     const shardData = [];
     const shardPositions = [
-      [2.0, 0.9, 0.4],
-      [2.8, -0.6, 0.2],
-      [3.2, 0.7, -0.3],
-      [1.8, -0.7, 0.5],
-      [3.5, -0.3, -0.4],
-      [2.5, 1.1, -0.2],
-      [3.7, 0.5, -0.5]
+      [1.4, 0.8, 0.4],
+      [2.8, -0.7, 0.2],
+      [3.3, 0.7, -0.2],
+      [1.3, -0.6, 0.5],
+      [3.6, -0.3, -0.3],
+      [2.2, 1.0, -0.2],
+      [3.8, 0.5, -0.4]
     ];
 
     shardPositions.forEach((pos, idx) => {
@@ -251,11 +292,11 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     });
     scene.add(shardGroup);
 
-    // --- Gentle Embers ---
+    // Gentle embers
     const emberCount = 35;
     const emberPositions = new Float32Array(emberCount * 3);
     for (let i = 0; i < emberCount; i++) {
-      emberPositions[i * 3] = 1.4 + Math.random() * 3.5;
+      emberPositions[i * 3] = 1.2 + Math.random() * 3.2;
       emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.0;
       emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
     }
@@ -323,10 +364,10 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
       if (!isReducedMotion) {
-        // Low-frequency sine wave organic deformation
+        // Low-frequency sine wave organic deformation on sculpture
         const posArray = posAttr.array;
         const speed = elapsed * 0.8;
-        const waveAmp = 0.038;
+        const waveAmp = 0.036;
 
         for (let i = 0; i < posArray.length; i += 3) {
           const ox = originalPositions[i];
@@ -342,12 +383,16 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
         posAttr.needsUpdate = true;
         sculptureGeo.computeVertexNormals();
 
-        // Subtle rotation
-        sculptureMesh.rotation.y = 0.4 + Math.sin(elapsed * 0.22) * 0.08 + mouse.x * 0.1;
-        sculptureMesh.rotation.x = 0.3 + Math.cos(elapsed * 0.18) * 0.06 + mouse.y * 0.08;
+        // Subtle sculpture rotation wrapping the cinema screen
+        sculptureMesh.rotation.y = 0.45 + Math.sin(elapsed * 0.22) * 0.07 + mouse.x * 0.08;
+        sculptureMesh.rotation.x = 0.35 + Math.cos(elapsed * 0.18) * 0.05 + mouse.y * 0.06;
 
         ribbonMesh.rotation.y = -elapsed * 0.12;
         ribbonMesh.rotation.z = 0.6 + Math.sin(elapsed * 0.15) * 0.1;
+
+        // Cinema screen gentle atmospheric projection pulse
+        screenApertureMesh.material.emissiveIntensity = 0.75 + Math.sin(elapsed * 1.8) * 0.12;
+        rimLine.material.opacity = 0.55 + Math.sin(elapsed * 2.2) * 0.15;
 
         // Subtle shard drift
         shardData.forEach((s) => {
@@ -357,13 +402,12 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
         });
 
         embers.rotation.y = elapsed * 0.015;
-        portalRimMesh.scale.setScalar(1.0 + Math.sin(elapsed * 1.5) * 0.03);
       }
 
-      // Parallax camera framing looking at the shifted sculpture
-      camera.position.x = 0.9 + mouse.x * 0.2;
-      camera.position.y = 0.05 + mouse.y * 0.15;
-      camera.lookAt(1.7, 0.05, 0);
+      // Parallax camera framing looking at the unified cinema screen + sculpture composition
+      camera.position.x = 0.85 + mouse.x * 0.18;
+      camera.position.y = 0.1 + mouse.y * 0.14;
+      camera.lookAt(2.0, 0.1, 0);
 
       renderer.render(scene, camera);
     };
@@ -389,16 +433,16 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       ribbonMat.dispose();
       frameGeo.dispose();
       frameMat.dispose();
-      apertureGeo.dispose();
-      apertureMat.dispose();
-      portalRimGeo.dispose();
-      portalRimMat.dispose();
+      screenApertureGeo.dispose();
+      screenApertureMat.dispose();
+      rimLineGeo.dispose();
+      rimLineMat.dispose();
       shardGeo.dispose();
       shardMat.dispose();
       emberGeo.dispose();
       emberMat.dispose();
       envTexture.dispose();
-      portalTexture.dispose();
+      screenTexture.dispose();
 
       renderer.dispose();
       if (renderer.domElement && renderer.domElement.parentNode) {
