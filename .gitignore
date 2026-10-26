@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+dist/
+*/dist/
+build/
+*/build/
+
+# Environment files and credentials
+.env
+.env.local
+.env.*.local
+*.env
+backend/.env
+!backend/.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vite dependency cache
+.vite/
+*/.vite/
+node_modules/.vite/
+*/node_modules/.vite/
