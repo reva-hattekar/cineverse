@@ -59,6 +59,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
   const [searchTerm, setSearchTerm] = useState('');
 
   // Form State
+  const [statusFilter, setStatusFilter] = useState('all');
   const [formData, setFormData] = useState({
     title: '',
     genre: 'Action',
@@ -66,7 +67,9 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
     language: 'Hindi',
     rating: 8.5,
     poster_url: '',
-    backdrop_url: ''
+    backdrop_url: '',
+    release_date: '',
+    release_status: 'Now Showing'
   });
 
   // Accessible keyboard ESC listener
@@ -90,7 +93,9 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
       language: 'Hindi',
       rating: 8.5,
       poster_url: '',
-      backdrop_url: ''
+      backdrop_url: '',
+      release_date: '',
+      release_status: 'Now Showing'
     });
     setEditModalOpen(true);
   };
@@ -104,7 +109,9 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
       language: m.language,
       rating: m.rating,
       poster_url: m.poster_url || '',
-      backdrop_url: m.backdrop_url || ''
+      backdrop_url: m.backdrop_url || '',
+      release_date: m.release_date || '',
+      release_status: m.release_status || (m.scheduled_showtimes_count > 0 ? 'Now Showing' : 'Coming Soon')
     });
     setEditModalOpen(true);
   };
@@ -180,25 +187,107 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
     }
   };
 
-  const filteredMovies = movies.filter(m =>
-    m.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.language.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const nowShowingCount = movies.filter(m => (m.release_status === 'Now Showing' || (!m.release_status && m.scheduled_showtimes_count > 0))).length;
+  const comingSoonCount = movies.filter(m => (m.release_status === 'Coming Soon' || (!m.release_status && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0)))).length;
+  const endedCount = movies.filter(m => m.release_status === 'Ended').length;
+
+  const filteredMovies = movies.filter(m => {
+    const matchesSearch =
+      m.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      m.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      m.language.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!matchesSearch) return false;
+
+    const status = m.release_status || (m.scheduled_showtimes_count > 0 ? 'Now Showing' : 'Coming Soon');
+    if (statusFilter === 'now_showing') return status === 'Now Showing';
+    if (statusFilter === 'coming_soon') return status === 'Coming Soon';
+    if (statusFilter === 'ended') return status === 'Ended';
+    return true;
+  });
 
   return (
     <div>
       <div className="table-card">
-        <div className="table-toolbar">
+        <div className="table-toolbar" style={{ flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>Theatrical Movie Catalog</h3>
             <p style={{ color: '#94a3b8', fontSize: '0.8rem' }}>
-              Manage screening films, metadata, and relational database integrity
+              Manage screening films, release lifecycles, and relational database integrity
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ position: 'relative', width: '220px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            {/* Status Filter Tabs */}
+            <div style={{ display: 'flex', background: 'var(--bg-secondary)', padding: '3px', borderRadius: '8px', border: '1px solid var(--border-subtle)', gap: '2px' }}>
+              <button
+                type="button"
+                onClick={() => setStatusFilter('all')}
+                style={{
+                  background: statusFilter === 'all' ? 'var(--primary-crimson)' : 'transparent',
+                  color: statusFilter === 'all' ? '#fff' : 'var(--text-secondary)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '5px 12px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                All ({movies.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setStatusFilter('now_showing')}
+                style={{
+                  background: statusFilter === 'now_showing' ? 'var(--status-success)' : 'transparent',
+                  color: statusFilter === 'now_showing' ? '#fff' : 'var(--text-secondary)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '5px 12px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Now Showing ({nowShowingCount})
+              </button>
+              <button
+                type="button"
+                onClick={() => setStatusFilter('coming_soon')}
+                style={{
+                  background: statusFilter === 'coming_soon' ? 'var(--status-warning)' : 'transparent',
+                  color: statusFilter === 'coming_soon' ? '#000' : 'var(--text-secondary)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '5px 12px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Coming Soon ({comingSoonCount})
+              </button>
+              {endedCount > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setStatusFilter('ended')}
+                  style={{
+                    background: statusFilter === 'ended' ? 'var(--text-muted)' : 'transparent',
+                    color: statusFilter === 'ended' ? '#fff' : 'var(--text-secondary)',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '5px 12px',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Ended ({endedCount})
+                </button>
+              )}
+            </div>
+
+            <div style={{ position: 'relative', width: '200px' }}>
               <Search size={15} style={{ position: 'absolute', left: '10px', top: '11px', color: '#64748b' }} />
               <input
                 type="text"
@@ -219,11 +308,13 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
             <thead>
               <tr>
                 <th style={{ width: '56px' }}>Poster</th>
-                <th>Title & Relational ID</th>
+                <th>Title & ID</th>
                 <th>Genre</th>
                 <th>Duration</th>
                 <th>Language</th>
                 <th>Rating</th>
+                <th>Release Status</th>
+                <th>Release Date</th>
                 <th>Active Showtimes</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
@@ -233,6 +324,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                 const showtimesCount = m.scheduled_showtimes_count !== undefined
                   ? m.scheduled_showtimes_count
                   : 0;
+                const status = m.release_status || (showtimesCount > 0 ? 'Now Showing' : 'Coming Soon');
 
                 return (
                   <tr key={m.movie_id}>
@@ -280,6 +372,22 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                       </span>
                     </td>
                     <td>
+                      {status === 'Now Showing' && (
+                        <span className="badge badge-success" title="Currently actively screening in theaters">Now Showing</span>
+                      )}
+                      {status === 'Coming Soon' && (
+                        <span className="badge badge-warning" title="Upcoming theatrical premiere">Coming Soon</span>
+                      )}
+                      {status === 'Ended' && (
+                        <span className="badge badge-secondary" title="Theatrical distribution concluded">Ended</span>
+                      )}
+                    </td>
+                    <td>
+                      <span style={{ fontSize: '0.82rem', color: m.release_date ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                        {m.release_date || '—'}
+                      </span>
+                    </td>
+                    <td>
                       {showtimesCount > 0 ? (
                         <span className="badge badge-warning" title={`${showtimesCount} active showtimes`}>
                           {showtimesCount} Scheduled
@@ -291,20 +399,30 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                       )}
                     </td>
                     <td style={{ textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: '8px' }}>
+                      <div style={{ display: 'inline-flex', gap: '6px' }}>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => navigate(`/showtimes?movie_id=${m.movie_id}`)}
+                          title={`Schedule Screenings for "${m.title}"`}
+                          style={{ padding: '4px 10px', fontSize: '0.78rem' }}
+                        >
+                          <Calendar size={13} /> Schedule
+                        </button>
                         <button
                           className="btn btn-secondary btn-sm"
                           onClick={() => handleOpenEdit(m)}
                           title="Edit Movie"
+                          style={{ padding: '4px 8px' }}
                         >
-                          <Edit2 size={13} /> Edit
+                          <Edit2 size={13} />
                         </button>
                         <button
                           className="btn btn-danger btn-sm"
                           onClick={() => handleOpenDelete(m)}
                           title="Delete Movie"
+                          style={{ padding: '4px 8px' }}
                         >
-                          <Trash2 size={13} /> Delete
+                          <Trash2 size={13} />
                         </button>
                       </div>
                     </td>
@@ -380,7 +498,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
-                  <label>Duration (Minutes)</label>
+                  <label>Duration (Minutes) *</label>
                   <input
                     type="number"
                     min="1"
@@ -391,7 +509,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                 </div>
 
                 <div className="form-group">
-                  <label>Rating (0.0 - 10.0)</label>
+                  <label>Rating (0.0 - 10.0) *</label>
                   <input
                     type="number"
                     step="0.1"
@@ -401,6 +519,36 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                     value={formData.rating}
                     onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
                   />
+                </div>
+              </div>
+
+              {/* Release Management Fields */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', background: 'var(--bg-secondary)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label style={{ color: 'var(--text-primary)', fontWeight: 700 }}>Release Status *</label>
+                  <select
+                    value={formData.release_status}
+                    onChange={(e) => setFormData({ ...formData, release_status: e.target.value })}
+                  >
+                    <option value="Now Showing">Now Showing (Theatrical Screenings)</option>
+                    <option value="Coming Soon">Coming Soon (Upcoming Premiere)</option>
+                    <option value="Ended">Ended (Run Concluded)</option>
+                  </select>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '3px' }}>
+                    Categorizes title on customer portal
+                  </div>
+                </div>
+
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label style={{ color: 'var(--text-primary)', fontWeight: 700 }}>Theatrical Release Date</label>
+                  <input
+                    type="date"
+                    value={formData.release_date}
+                    onChange={(e) => setFormData({ ...formData, release_date: e.target.value })}
+                  />
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '3px' }}>
+                    Official premiere / release date
+                  </div>
                 </div>
               </div>
 

@@ -1393,12 +1393,51 @@ input:focus, select:focus, textarea:focus {
   font-size: 0.84rem;
   font-weight: 700;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.catalog-movie-card:hover .catalog-book-btn {
+.catalog-movie-card:hover .catalog-book-btn:not(:disabled) {
   background: var(--accent-red);
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4);
+}
+
+.catalog-book-btn:disabled,
+.catalog-book-btn.btn-disabled {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.catalog-status-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.catalog-status-badge.status-coming-soon {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.catalog-status-badge.status-now-showing {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
 }
 
 .empty-catalog-state {

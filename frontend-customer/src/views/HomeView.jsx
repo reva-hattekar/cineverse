@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, CheckCircle2 } from 'lucide-react';
 import CinematicHeroCanvas from '../components/hero/CinematicHeroCanvas';
 import NowShowingCarousel from '../components/hero/NowShowingCarousel';
 import HeroTrailerPlayer from '../components/hero/HeroTrailerPlayer';
@@ -28,8 +28,33 @@ export default function HomeView({
 }) {
   const [activeSlide, setActiveSlide] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('all'); // 'all', 'now_showing', 'coming_soon'
   const [showRealityModal, setShowRealityModal] = useState(false);
   const [userInteracting, setUserInteracting] = useState(false);
+
+  // Filter movies that are legitimately Now Showing with bookable showtimes
+  const nowShowingCarouselMovies = useMemo(() => {
+    const list = movies.filter(
+      (m) =>
+        (m.scheduled_showtimes_count > 0 && m.release_status !== 'Ended') ||
+        (m.release_status === 'Now Showing' && m.scheduled_showtimes_count > 0)
+    );
+    return list.length > 0 ? list : movies;
+  }, [movies]);
+
+  const nowShowingCount = useMemo(() => {
+    return movies.filter(
+      (m) => m.scheduled_showtimes_count > 0 && m.release_status !== 'Ended'
+    ).length;
+  }, [movies]);
+
+  const comingSoonCount = useMemo(() => {
+    return movies.filter(
+      (m) =>
+        m.release_status === 'Coming Soon' ||
+        (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0))
+    ).length;
+  }, [movies]);
 
   // Current active hero experience from data configuration
   const currentExp = HERO_EXPERIENCES.find((e) => e.id === activeSlide) || HERO_EXPERIENCES[0];
@@ -46,12 +71,23 @@ export default function HomeView({
   // Available unique genres from live movies
   const genres = ['All', ...Array.from(new Set(movies.map((m) => m.genre).filter(Boolean)))];
 
-  // Filtered movies based on genre filter (search suggestions are now presented in the navbar dropdown)
-  const filteredMovies = movies.filter((m) => {
-    const matchGenre =
-      selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
-    return matchGenre;
-  });
+  // Filtered movies based on genre and category filter
+  const filteredMovies = useMemo(() => {
+    return movies.filter((m) => {
+      const matchGenre =
+        selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
+      if (!matchGenre) return false;
+
+      const isBookable = m.scheduled_showtimes_count > 0 && m.release_status !== 'Ended';
+      const isComingSoon =
+        m.release_status === 'Coming Soon' ||
+        (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0));
+
+      if (categoryFilter === 'now_showing') return isBookable;
+      if (categoryFilter === 'coming_soon') return isComingSoon;
+      return true;
+    });
+  }, [movies, selectedGenre, categoryFilter]);
 
   const scrollToMovies = () => {
     const el = document.getElementById('cineverse-catalog-section');
@@ -265,9 +301,9 @@ export default function HomeView({
           <div className="hero-grid-right-spacer" />
         </div>
 
-        {/* Bottom "NOW SHOWING" Cinematic Movie Carousel */}
+        {/* Bottom "NOW SHOWING" Cinematic Movie Carousel (Only Verified Showing Titles) */}
         <div className="hero-carousel-dock">
-          <NowShowingCarousel movies={movies} onSelectMovie={onSelectMovie} />
+          <NowShowingCarousel movies={nowShowingCarouselMovies} onSelectMovie={onSelectMovie} />
         </div>
       </section>
 
@@ -276,15 +312,15 @@ export default function HomeView({
          ========================================================= */}
       <section id="cineverse-catalog-section" className="cineverse-catalog-section">
         <div className="catalog-container">
-          <div className="catalog-header-flex">
+          <div className="catalog-header-flex" style={{ flexWrap: 'wrap', gap: '18px' }}>
             <div>
               <span className="section-subtitle">DISCOVER THE UNIVERSE</span>
-              <h2 className="section-title">All Theatrical Screenings</h2>
+              <h2 className="section-title">Theatrical Movie Catalog</h2>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.82rem', color: '#94a3b8' }}>
                 <span>📍 Exploring in <strong style={{ color: '#fff' }}>{selectedCity}</strong></span>
                 <span className="dot-sep">•</span>
                 {theaters.filter(t => t.city.toLowerCase() === selectedCity.toLowerCase()).length > 0 ? (
-                  <span style={{ color: '#10b981', fontWeight: 600 }}>2 Flagship Theatres Available</span>
+                  <span style={{ color: '#10b981', fontWeight: 600 }}>{theaters.filter(t => t.city.toLowerCase() === selectedCity.toLowerCase()).length} Flagship Multiplexes Active</span>
                 ) : (
                   <span>
                     No local venues yet (
@@ -301,17 +337,48 @@ export default function HomeView({
               </div>
             </div>
 
-            {/* Genre Filter Pills */}
-            <div className="genre-pills-row">
-              {genres.map((g) => (
+            {/* Combined Category & Genre Filter Pills */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' }}>
+              {/* Category Pills (Now Showing vs Coming Soon) */}
+              <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.04)', borderRadius: '24px', padding: '3px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 <button
-                  key={g}
-                  className={`genre-filter-pill ${selectedGenre === g ? 'active' : ''}`}
-                  onClick={() => setSelectedGenre(g)}
+                  type="button"
+                  className={`genre-filter-pill ${categoryFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('all')}
+                  style={{ borderRadius: '20px', fontSize: '0.78rem' }}
                 >
-                  {g}
+                  All ({movies.length})
                 </button>
-              ))}
+                <button
+                  type="button"
+                  className={`genre-filter-pill ${categoryFilter === 'now_showing' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('now_showing')}
+                  style={{ borderRadius: '20px', fontSize: '0.78rem' }}
+                >
+                  Now Showing ({nowShowingCount})
+                </button>
+                <button
+                  type="button"
+                  className={`genre-filter-pill ${categoryFilter === 'coming_soon' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('coming_soon')}
+                  style={{ borderRadius: '20px', fontSize: '0.78rem' }}
+                >
+                  Coming Soon ({comingSoonCount})
+                </button>
+              </div>
+
+              {/* Genre Filter Pills */}
+              <div className="genre-pills-row">
+                {genres.map((g) => (
+                  <button
+                    key={g}
+                    className={`genre-filter-pill ${selectedGenre === g ? 'active' : ''}`}
+                    onClick={() => setSelectedGenre(g)}
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -339,12 +406,18 @@ export default function HomeView({
                 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
 
               const ratingVal = movie.rating ? parseFloat(movie.rating).toFixed(1) : '8.2';
+              const showtimesCount = movie.scheduled_showtimes_count || 0;
+              const hasShowtimes = showtimesCount > 0 && movie.release_status !== 'Ended';
+              const isComingSoon =
+                movie.release_status === 'Coming Soon' ||
+                (movie.release_date && new Date(movie.release_date) > new Date() && !hasShowtimes);
 
               return (
                 <div
                   key={movie.movie_id || movie.id}
                   className="catalog-movie-card"
-                  onClick={() => onSelectMovie(movie)}
+                  onClick={() => hasShowtimes && onSelectMovie(movie)}
+                  style={{ cursor: hasShowtimes ? 'pointer' : 'default' }}
                 >
                   <div className="catalog-poster-wrap">
                     <img
@@ -357,6 +430,24 @@ export default function HomeView({
                           'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
                       }}
                     />
+
+                    {/* Accurate Status Overlays */}
+                    {hasShowtimes ? (
+                      <div className="catalog-status-badge status-now-showing">
+                        <CheckCircle2 size={11} />
+                        <span>{showtimesCount} Showtimes</span>
+                      </div>
+                    ) : isComingSoon ? (
+                      <div className="catalog-status-badge status-coming-soon">
+                        <Sparkles size={11} />
+                        <span>Coming Soon</span>
+                      </div>
+                    ) : (
+                      <div className="catalog-status-badge" style={{ background: 'rgba(100, 116, 139, 0.45)', color: '#94a3b8' }}>
+                        <span>Showtimes TBA</span>
+                      </div>
+                    )}
+
                     <div className="catalog-badge-overlay">
                       <span className="badge-rating">
                         <Star size={12} fill="#fbbf24" color="#fbbf24" />
@@ -380,15 +471,45 @@ export default function HomeView({
                         </>
                       )}
                     </div>
-                    <button
-                      className="catalog-book-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectMovie(movie);
-                      }}
-                    >
-                      <Ticket size={14} /> Book Seats
-                    </button>
+
+                    {/* Release Date if Coming Soon */}
+                    {isComingSoon && movie.release_date && (
+                      <div style={{ color: '#fbbf24', fontSize: '0.78rem', fontWeight: 700, marginTop: '5px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Calendar size={12} /> Releasing: {movie.release_date}
+                      </div>
+                    )}
+
+                    <div style={{ marginTop: '10px' }}>
+                      {hasShowtimes ? (
+                        <button
+                          className="catalog-book-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectMovie(movie);
+                          }}
+                        >
+                          <Ticket size={14} /> Book Seats
+                        </button>
+                      ) : isComingSoon ? (
+                        <button
+                          type="button"
+                          className="catalog-book-btn btn-disabled"
+                          disabled
+                          title="Screenings will become bookable once scheduled closer to release date"
+                        >
+                          <Sparkles size={13} /> Releasing Soon
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="catalog-book-btn btn-disabled"
+                          disabled
+                          title="No auditoriums currently scheduled for this title"
+                        >
+                          Showtimes TBA
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

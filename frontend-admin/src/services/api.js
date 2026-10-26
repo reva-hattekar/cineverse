@@ -123,6 +123,14 @@ export const api = {
     return handleResponse(res);
   },
 
+  deleteShowtime: async (showId) => {
+    const res = await fetch(`${BASE_URL}/admin/showtimes/${showId}`, {
+      method: 'DELETE',
+      headers: { ...getAuthHeader() }
+    });
+    return handleResponse(res);
+  },
+
   // Seat Availability
   getShowtimeSeats: async (showId) => {
     const res = await fetch(`${BASE_URL}/showtimes/${showId}/seats`);

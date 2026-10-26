@@ -90,6 +90,7 @@ router.delete('/admin/movies/:id', authenticateToken, requireRole('Admin', 'Mana
 // Admin Showtimes
 router.get('/admin/showtimes', authenticateToken, showtimeController.getAllShowtimes);
 router.post('/admin/showtimes', authenticateToken, requireRole('Admin', 'Manager'), showtimeController.adminCreateShowtime);
+router.delete('/admin/showtimes/:id', authenticateToken, requireRole('Admin', 'Manager'), showtimeController.adminDeleteShowtime);
 
 // Admin Bookings & Staff
 router.get('/admin/bookings', authenticateToken, bookingController.getAllBookings);

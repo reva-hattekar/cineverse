@@ -33,8 +33,42 @@ export default function App() {
         api.getTheaters()
       ]);
 
-      if (moviesRes.success) setMovies(moviesRes.data);
-      if (upcomingRes.success) setUpcomingMovies(upcomingRes.data);
+      if (moviesRes.success) {
+        setMovies(moviesRes.data);
+      }
+
+      // Merge database upcoming movies with upcoming releases (guaranteeing zero duplicates)
+      let combinedUpcoming = [];
+      if (upcomingRes && upcomingRes.success && Array.isArray(upcomingRes.data)) {
+        combinedUpcoming = [...upcomingRes.data];
+      }
+
+      if (moviesRes && moviesRes.success && Array.isArray(moviesRes.data)) {
+        const dbComingSoon = moviesRes.data.filter(
+          m =>
+            m.release_status === 'Coming Soon' ||
+            (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0))
+        );
+        const existingTitles = new Set(combinedUpcoming.map(u => (u.title || '').trim().toLowerCase()));
+        dbComingSoon.forEach(dbM => {
+          if (!existingTitles.has(dbM.title.trim().toLowerCase())) {
+            combinedUpcoming.unshift({
+              id: dbM.movie_id,
+              title: dbM.title,
+              genre: dbM.genre,
+              language: dbM.language,
+              duration: dbM.duration,
+              release_date: dbM.release_date || 'Expected Soon',
+              poster_url: dbM.poster_url,
+              backdrop_url: dbM.backdrop_url,
+              status: 'Coming Soon'
+            });
+            existingTitles.add(dbM.title.trim().toLowerCase());
+          }
+        });
+      }
+
+      setUpcomingMovies(combinedUpcoming);
       if (theatersRes.success) setTheaters(theatersRes.data);
       if (customersRes.success) {
         setCustomers(customersRes.data);
@@ -114,38 +148,66 @@ export default function App() {
 
         {currentView === 'upcoming' && (
           <div style={{ maxWidth: '1240px', margin: '40px auto', padding: '0 24px' }}>
-            <h1 style={{ fontSize: '2.4rem', fontFamily: 'Cinzel, Georgia, serif', fontWeight: 800, marginBottom: '8px', color: '#f8fafc' }}>
-              Upcoming Theatrical Releases
-            </h1>
-            <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '32px' }}>
-              Check out highly anticipated films hitting Indian cinemas in coming months.
-            </p>
+            <div style={{ marginBottom: '32px' }}>
+              <span style={{ fontSize: '0.8rem', letterSpacing: '0.18em', color: '#fbbf24', textTransform: 'uppercase', fontWeight: 800 }}>
+                ANTICIPATED PREMIERES
+              </span>
+              <h1 style={{ fontSize: '2.4rem', fontFamily: 'Cinzel, Georgia, serif', fontWeight: 800, marginTop: '4px', marginBottom: '8px', color: '#f8fafc' }}>
+                Upcoming Theatrical Releases
+              </h1>
+              <p style={{ color: '#94a3b8', fontSize: '0.95rem' }}>
+                Explore highly anticipated titles arriving across CINEVERSE auditoriums. Advance screenings will become bookable once scheduled.
+              </p>
+            </div>
 
             <div className="catalog-grid">
               {upcomingMovies.map(up => (
-                <div key={up.id} className="catalog-movie-card">
+                <div key={up.id || up.title} className="catalog-movie-card" style={{ cursor: 'default' }}>
                   <div className="catalog-poster-wrap">
                     <img
                       src={up.poster_url || 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg'}
                       alt={up.title}
                       className="catalog-poster-img"
                       loading="lazy"
+                      onError={(e) => {
+                        e.target.src = 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
+                      }}
                     />
+                    <div className="catalog-status-badge status-coming-soon">
+                      <span>Coming Soon</span>
+                    </div>
                   </div>
                   <div className="catalog-card-details">
                     <h3 className="catalog-card-title">{up.title}</h3>
                     <div className="catalog-card-meta">
-                      <span>{up.genre}</span>
+                      <span>{up.genre || 'Action / Drama'}</span>
                       <span className="meta-sep">•</span>
-                      <span>{up.language}</span>
+                      <span>{up.language || 'English'}</span>
                     </div>
-                    <div style={{ color: '#fb7185', fontSize: '0.84rem', fontWeight: 700, marginTop: '8px' }}>
-                      Releasing: {up.release_date}
+                    <div style={{ color: '#fbbf24', fontSize: '0.82rem', fontWeight: 700, marginTop: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      Releasing: {up.release_date || 'Expected Soon'}
+                    </div>
+                    <div style={{ marginTop: '12px' }}>
+                      <button
+                        type="button"
+                        className="catalog-book-btn btn-disabled"
+                        disabled
+                        title="Screenings will become bookable once scheduled closer to premiere date"
+                      >
+                        Premiere Releasing Soon
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
+            {upcomingMovies.length === 0 && (
+              <div className="empty-catalog-state">
+                <h3>No Upcoming Releases Scheduled</h3>
+                <p>Check back shortly as our film programmers announce new theatrical releases.</p>
+              </div>
+            )}
           </div>
         )}
 

@@ -49,42 +49,85 @@ const CURATED_UPCOMING_MOVIES = [
 ];
 
 /**
- * Proxy/Helper: Get upcoming releases (TMDB or curated verified releases)
+ * Helper: Query database for upcoming / Coming Soon titles
+ */
+async function getDatabaseUpcomingMovies() {
+  try {
+    // Check if release_status column exists
+    const cols = await query(`
+      SELECT COLUMN_NAME 
+      FROM information_schema.COLUMNS 
+      WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'MOVIE' 
+        AND COLUMN_NAME = 'release_status'
+    `);
+
+    let sql;
+    if (cols.length > 0) {
+      sql = `
+        SELECT 
+          m.movie_id AS id,
+          m.title,
+          m.genre,
+          m.language,
+          DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
+          m.poster_url,
+          m.backdrop_url,
+          'Coming Soon' AS status
+        FROM MOVIE m
+        LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
+        WHERE m.release_status = 'Coming Soon'
+           OR (m.release_date IS NOT NULL AND m.release_date > CURRENT_DATE AND s.show_id IS NULL)
+        GROUP BY m.movie_id
+        ORDER BY m.release_date ASC, m.title ASC
+      `;
+    } else {
+      // Unmigrated fallback: movies with zero scheduled showtimes
+      sql = `
+        SELECT 
+          m.movie_id AS id,
+          m.title,
+          m.genre,
+          m.language,
+          NULL AS release_date,
+          m.poster_url,
+          m.backdrop_url,
+          'Coming Soon' AS status
+        FROM MOVIE m
+        LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
+        GROUP BY m.movie_id
+        HAVING COUNT(s.show_id) = 0
+        ORDER BY m.title ASC
+      `;
+    }
+    return await query(sql);
+  } catch (err) {
+    console.warn('[Upcoming Movies] Failed to query database upcoming movies:', err.message);
+    return [];
+  }
+}
+
+/**
+ * Proxy/Helper: Get upcoming releases (Database Coming Soon + Curated verified releases)
  */
 async function getUpcomingReleases(req, res, next) {
   try {
-    const apiKey = process.env.TMDB_API_KEY;
+    const dbUpcoming = await getDatabaseUpcomingMovies();
+    const existingTitles = new Set(dbUpcoming.map(m => m.title.trim().toLowerCase()));
 
-    if (apiKey) {
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&region=IN&page=1`
-        );
-        if (response.ok) {
-          const tmdbData = await response.json();
-          const formatted = tmdbData.results.slice(0, 8).map(m => ({
-            id: m.id,
-            title: m.title,
-            genre: 'Action / Drama',
-            language: m.original_language?.toUpperCase() || 'EN',
-            release_date: m.release_date,
-            poster_url: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null,
-            backdrop_url: m.backdrop_path ? `https://image.tmdb.org/t/p/original${m.backdrop_path}` : null,
-            overview: m.overview,
-            status: 'Upcoming'
-          }));
-          return res.json({ success: true, source: 'TMDB_API', data: formatted });
-        }
-      } catch (tmdbErr) {
-        console.warn('[TMDB Proxy] Live request failed, using curated fallback:', tmdbErr.message);
-      }
-    }
+    // Filter curated list to remove duplicates
+    const nonDuplicateCurated = CURATED_UPCOMING_MOVIES.filter(
+      c => !existingTitles.has(c.title.trim().toLowerCase())
+    );
 
-    // Default curated fallback
+    // Combined catalog with DB movies prioritized first
+    const combined = [...dbUpcoming, ...nonDuplicateCurated];
+
     res.json({
       success: true,
-      source: 'CURATED_VERIFIED',
-      data: CURATED_UPCOMING_MOVIES
+      source: dbUpcoming.length > 0 ? 'HYBRID_DATABASE_CURATED' : 'CURATED_VERIFIED',
+      dbCount: dbUpcoming.length,
+      data: combined
     });
   } catch (err) {
     next(err);

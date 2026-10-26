@@ -102,7 +102,7 @@ async function getShowtimeSeats(req, res, next) {
  */
 async function getAllShowtimes(req, res, next) {
   try {
-    const { date, movie_id, screen_id } = req.query;
+    const { date, movie_id, screen_id, theater_id } = req.query;
     let sql = `
       SELECT 
         s.show_id,
@@ -119,7 +119,8 @@ async function getAllShowtimes(req, res, next) {
         sc.screen_type,
         t.theater_id,
         t.theater_name,
-        t.city
+        t.city,
+        (SELECT COUNT(*) FROM BOOKING b WHERE b.show_id = s.show_id AND b.booking_status != 'CANCELLED') AS active_bookings_count
       FROM SHOWTIME s
       JOIN MOVIE m ON s.movie_id = m.movie_id
       JOIN SCREEN sc ON s.screen_id = sc.screen_id
@@ -140,14 +141,35 @@ async function getAllShowtimes(req, res, next) {
       sql += ' AND s.screen_id = ?';
       params.push(screen_id);
     }
+    if (theater_id) {
+      sql += ' AND t.theater_id = ?';
+      params.push(theater_id);
+    }
 
-    sql += ' ORDER BY s.show_date DESC, s.start_time ASC';
+    sql += ' ORDER BY s.show_date DESC, t.theater_name ASC, s.start_time ASC';
     const showtimes = await query(sql, params);
 
     res.json({ success: true, count: showtimes.length, data: showtimes });
   } catch (err) {
     next(err);
   }
+}
+
+/**
+ * Helper to compute end_time in 'HH:MM:SS' given start_time 'HH:MM' and duration minutes (+ buffer)
+ */
+function computeEndTime(startTimeStr, durationMins, turnaroundMins = 15) {
+  const parts = startTimeStr.split(':');
+  let hours = parseInt(parts[0], 10);
+  let mins = parseInt(parts[1], 10);
+
+  const totalMins = hours * 60 + mins + durationMins + turnaroundMins;
+  const endHours = Math.floor(totalMins / 60) % 24;
+  const endRemainingMins = totalMins % 60;
+
+  const hh = String(endHours).padStart(2, '0');
+  const mm = String(endRemainingMins).padStart(2, '0');
+  return `${hh}:${mm}:00`;
 }
 
 /**
@@ -158,42 +180,76 @@ async function adminCreateShowtime(req, res, next) {
   try {
     const { show_date, start_time, end_time, base_price, movie_id, screen_id } = req.body;
 
-    if (!show_date || !start_time || !end_time || !base_price || !movie_id || !screen_id) {
+    if (!show_date || !start_time || !base_price || !movie_id || !screen_id) {
       return res.status(400).json({
         success: false,
-        message: 'All showtime fields (show_date, start_time, end_time, base_price, movie_id, screen_id) are required.'
+        message: 'Missing required screening fields: show_date, start_time, base_price, movie_id, and screen_id are mandatory.'
       });
     }
 
-    // Verify screen and movie exist
-    const movieCheck = await query('SELECT movie_id, title FROM MOVIE WHERE movie_id = ?', [movie_id]);
-    if (movieCheck.length === 0) {
-      return res.status(400).json({ success: false, message: 'Invalid movie_id.' });
+    // Verify movie exists and fetch duration
+    const movieRows = await query('SELECT movie_id, title, duration FROM MOVIE WHERE movie_id = ?', [movie_id]);
+    if (movieRows.length === 0) {
+      return res.status(400).json({ success: false, message: `Movie with ID #${movie_id} does not exist.` });
+    }
+    const movie = movieRows[0];
+
+    // Verify screen exists and fetch auditorium details
+    const screenRows = await query(`
+      SELECT sc.screen_id, sc.screen_number, sc.screen_name, sc.screen_type, t.theater_id, t.theater_name
+      FROM SCREEN sc
+      JOIN THEATER t ON sc.theater_id = t.theater_id
+      WHERE sc.screen_id = ?
+    `, [screen_id]);
+
+    if (screenRows.length === 0) {
+      return res.status(400).json({ success: false, message: `Auditorium screen with ID #${screen_id} does not exist.` });
+    }
+    const screen = screenRows[0];
+
+    // Compute or validate end_time
+    let calculatedEndTime = end_time;
+    if (!calculatedEndTime) {
+      calculatedEndTime = computeEndTime(start_time, movie.duration, 15);
+    } else {
+      // Ensure formatted with seconds
+      if (calculatedEndTime.length === 5) calculatedEndTime += ':00';
     }
 
-    const screenCheck = await query('SELECT screen_id, screen_number, theater_id FROM SCREEN WHERE screen_id = ?', [screen_id]);
-    if (screenCheck.length === 0) {
-      return res.status(400).json({ success: false, message: 'Invalid screen_id.' });
+    let formattedStartTime = start_time;
+    if (formattedStartTime.length === 5) formattedStartTime += ':00';
+
+    const priceNum = parseFloat(base_price);
+    if (isNaN(priceNum) || priceNum <= 0) {
+      return res.status(400).json({ success: false, message: 'Base ticket price must be a valid positive amount.' });
     }
 
-    // Scheduling Integrity Check: Prevent overlapping screenings on the same screen
+    // Overlap Integrity Check:
+    // Prevent overlapping screenings on the same screen on that date
+    // Two time intervals [A_start, A_end] and [B_start, B_end] overlap if A_start < B_end AND A_end > B_start
     const overlapCheck = await query(`
-      SELECT s.show_id, s.start_time, s.end_time, m.title
+      SELECT s.show_id, s.start_time, s.end_time, m.title AS movie_title
       FROM SHOWTIME s
       JOIN MOVIE m ON s.movie_id = m.movie_id
       WHERE s.screen_id = ?
         AND s.show_date = ?
-        AND (
-          (s.start_time <= ? AND s.end_time > ?) OR
-          (s.start_time < ? AND s.end_time >= ?) OR
-          (s.start_time >= ? AND s.end_time <= ?)
-        )
-    `, [screen_id, show_date, start_time, start_time, end_time, end_time, start_time, end_time]);
+        AND (s.start_time < ? AND s.end_time > ?)
+    `, [screen_id, show_date, calculatedEndTime, formattedStartTime]);
 
     if (overlapCheck.length > 0) {
+      const conflict = overlapCheck[0];
       return res.status(409).json({
         success: false,
-        message: `Scheduling Conflict: Screen ${screen_id} already has '${overlapCheck[0].title}' scheduled from ${overlapCheck[0].start_time} to ${overlapCheck[0].end_time}. Auditoriums require sequential screenings with buffer time.`
+        conflict: true,
+        message: `Scheduling Conflict: ${screen.screen_name || `Screen ${screen.screen_number}`} at ${screen.theater_name} already has "${conflict.movie_title}" scheduled from ${conflict.start_time.slice(0, 5)} to ${conflict.end_time.slice(0, 5)} on ${show_date}. Auditoriums require sequential screenings with turnaround time.`,
+        conflictDetails: {
+          conflictingShowId: conflict.show_id,
+          conflictingMovie: conflict.movie_title,
+          conflictingStartTime: conflict.start_time,
+          conflictingEndTime: conflict.end_time,
+          screenName: screen.screen_name,
+          theaterName: screen.theater_name
+        }
       });
     }
 
@@ -201,13 +257,57 @@ async function adminCreateShowtime(req, res, next) {
       INSERT INTO SHOWTIME (show_date, start_time, end_time, base_price, movie_id, screen_id)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const result = await query(sql, [show_date, start_time, end_time, parseFloat(base_price), movie_id, screen_id]);
+    const result = await query(sql, [show_date, formattedStartTime, calculatedEndTime, priceNum, movie_id, screen_id]);
 
     res.status(201).json({
       success: true,
-      message: 'Showtime scheduled successfully.',
-      showId: result.insertId
+      message: `Showtime successfully scheduled for "${movie.title}" on ${show_date} at ${formattedStartTime.slice(0, 5)}.`,
+      showId: result.insertId,
+      screening: {
+        showId: result.insertId,
+        movieTitle: movie.title,
+        theaterName: screen.theater_name,
+        screenName: screen.screen_name,
+        showDate: show_date,
+        startTime: formattedStartTime,
+        endTime: calculatedEndTime,
+        basePrice: priceNum
+      }
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * Admin: Delete a showtime
+ * Validates that no active bookings exist
+ */
+async function adminDeleteShowtime(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    // Check for active bookings
+    const bookings = await query(`
+      SELECT booking_id, customer_id, total_amount, booking_status
+      FROM BOOKING
+      WHERE show_id = ? AND booking_status != 'CANCELLED'
+    `, [id]);
+
+    if (bookings.length > 0) {
+      return res.status(409).json({
+        success: false,
+        conflict: true,
+        message: `Cannot delete showtime #${id}. It has ${bookings.length} active customer reservation(s). Cancel the customer bookings first or reassign the schedule.`
+      });
+    }
+
+    const result = await query('DELETE FROM SHOWTIME WHERE show_id = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: 'Showtime not found.' });
+    }
+
+    res.json({ success: true, message: `Showtime #${id} deleted successfully.` });
   } catch (err) {
     next(err);
   }
@@ -216,6 +316,6 @@ async function adminCreateShowtime(req, res, next) {
 module.exports = {
   getShowtimeSeats,
   getAllShowtimes,
-  adminCreateShowtime
+  adminCreateShowtime,
+  adminDeleteShowtime
 };
-
