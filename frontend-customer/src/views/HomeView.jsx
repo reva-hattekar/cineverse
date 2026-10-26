@@ -43,15 +43,11 @@ export default function HomeView({
   // Available unique genres from live movies
   const genres = ['All', ...Array.from(new Set(movies.map((m) => m.genre).filter(Boolean)))];
 
-  // Filtered movies based on navbar search or genre filter
+  // Filtered movies based on genre filter (search suggestions are now presented in the navbar dropdown)
   const filteredMovies = movies.filter((m) => {
-    const matchSearch =
-      !searchQuery ||
-      m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (m.genre && m.genre.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchGenre =
       selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
-    return matchSearch && matchGenre;
+    return matchGenre;
   });
 
   const scrollToMovies = () => {
@@ -149,6 +145,11 @@ export default function HomeView({
 
         {/* Ambient Dark-Crimson Gradient Vignette Scrim */}
         <div className="hero-atmosphere-scrim" />
+
+        {/* Experience 01: Suspended Spider-Web Interaction from Top Edge of Hero */}
+        {currentExp.id === 1 && (
+          <SpiderWebTrigger onClick={() => setShowRealityModal(true)} />
+        )}
 
         {/* Hero Foreground Content */}
         <div className="hero-foreground-grid">
@@ -257,12 +258,8 @@ export default function HomeView({
             </div>
           </div>
 
-          {/* Right Column: Spider-Web Interactive Element (Experience 01) */}
-          {currentExp.id === 1 && (
-            <div className="hero-interactive-portal-badge">
-              <SpiderWebTrigger onClick={() => setShowRealityModal(true)} />
-            </div>
-          )}
+          {/* Right Column Spacer (Preserves negative space for the 3D cinema installation) */}
+          <div className="hero-grid-right-spacer" />
         </div>
 
         {/* Bottom "NOW SHOWING" Cinematic Movie Carousel */}

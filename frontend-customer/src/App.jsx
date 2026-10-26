@@ -9,12 +9,13 @@ export default function App() {
   const [currentView, setCurrentView] = useState('home'); // 'home', 'upcoming', 'booking-flow', 'bookings'
   const [movies, setMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [theaters, setTheaters] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCity, setSelectedCity] = useState('Jaipur');
+  const [selectedCity, setSelectedCity] = useState('Bengaluru');
 
   useEffect(() => {
     loadInitialData();
@@ -23,14 +24,16 @@ export default function App() {
   const loadInitialData = async () => {
     setLoading(true);
     try {
-      const [moviesRes, upcomingRes, customersRes] = await Promise.all([
+      const [moviesRes, upcomingRes, customersRes, theatersRes] = await Promise.all([
         api.getMovies(),
         api.getUpcomingReleases(),
-        api.getCustomers()
+        api.getCustomers(),
+        api.getTheaters()
       ]);
 
       if (moviesRes.success) setMovies(moviesRes.data);
       if (upcomingRes.success) setUpcomingMovies(upcomingRes.data);
+      if (theatersRes.success) setTheaters(theatersRes.data);
       if (customersRes.success) {
         setCustomers(customersRes.data);
         if (customersRes.data.length > 0) {
@@ -76,6 +79,9 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         selectedCity={selectedCity}
         setSelectedCity={setSelectedCity}
+        movies={movies}
+        theaters={theaters}
+        onSelectMovie={handleSelectMovie}
       />
 
       <main>

@@ -4,12 +4,11 @@ import * as THREE from 'three';
 /**
  * CinematicHeroCanvas
  * Redesigned 3D hero scene matching the CINEVERSE visual identity:
- * - Recognisable 16:9 widescreen cinematic projection screen with dark beveled frame and ambient glow
- * - Fluid, glossy obsidian-black & liquid-chrome sculpture wrapping around, emerging beside, and partially framing the screen
- * - Restrained burgundy & silver edge illumination
- * - Composition positioned firmly on the right side, preserving clear negative space for the CINEVERSE heading
- * - Throttles / pauses WebGL rendering loop when not active
- * - Cleans up all WebGL resources on unmount
+ * 1. Recognisable 16:9 widescreen cinematic projection screen with dark beveled frame and ambient glow
+ * 2. Fluid, glossy obsidian-black & liquid-chrome sculpture wrapping around and framing the cinema screen
+ * 3. Restrained burgundy & silver edge illumination (no flat pink panel, no bright pink glare)
+ * 4. Master composition shifted firmly right (~8-12% farther right), leaving ample negative space for text
+ * 5. Throttles / pauses WebGL rendering loop when not active, cleans up all WebGL resources on unmount
  */
 export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
   const containerRef = useRef(null);
@@ -47,9 +46,9 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     scene.fog = new THREE.FogExp2(0x050508, 0.05);
 
     // --- Camera Framing ---
-    // Framed so the widescreen cinema screen and sculpture occupy the right half (x > 0.4)
+    // Camera positioned at center (x: 0), framing the right-shifted installation
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 80);
-    camera.position.set(0.85, 0.1, 5.2);
+    camera.position.set(0.0, 0.06, 5.2);
 
     // --- WebGL Renderer ---
     const renderer = new THREE.WebGLRenderer({
@@ -60,7 +59,7 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
     // --- Studio Reflection Environment Texture ---
@@ -70,147 +69,175 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     const envCtx = envCanvas.getContext('2d');
     const gradient = envCtx.createLinearGradient(0, 0, 0, 256);
     gradient.addColorStop(0.0, '#020204');
-    gradient.addColorStop(0.35, '#18040a');
+    gradient.addColorStop(0.35, '#140308');
     gradient.addColorStop(0.55, '#050508');
-    gradient.addColorStop(0.75, '#450a14');
+    gradient.addColorStop(0.75, '#35060f');
     gradient.addColorStop(0.9, '#c0c5ce');
     gradient.addColorStop(1.0, '#050508');
     envCtx.fillStyle = gradient;
     envCtx.fillRect(0, 0, 512, 256);
 
     // Soft restrained silver specular strip
-    envCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    envCtx.fillRect(160, 90, 110, 10);
-    envCtx.fillStyle = 'rgba(225, 29, 72, 0.4)';
-    envCtx.fillRect(0, 50, 512, 6);
+    envCtx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    envCtx.fillRect(160, 90, 110, 8);
+    envCtx.fillStyle = 'rgba(225, 29, 72, 0.3)';
+    envCtx.fillRect(0, 50, 512, 4);
 
     const envTexture = new THREE.CanvasTexture(envCanvas);
     envTexture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = envTexture;
 
     // --- Cinematic Lighting ---
-    const ambientLight = new THREE.AmbientLight(0x0a0507, 1.5);
+    const ambientLight = new THREE.AmbientLight(0x080406, 1.4);
     scene.add(ambientLight);
 
-    // Key directional light for soft silver highlights on the curves
-    const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.4);
-    keyLight.position.set(4.5, 4.0, 3.2);
+    // Key directional light for soft silver reflections on the liquid curves
+    const keyLight = new THREE.DirectionalLight(0xf8fafc, 2.2);
+    keyLight.position.set(4.8, 3.8, 3.4);
     scene.add(keyLight);
 
-    // Burgundy screen backlight
-    const screenBacklight = new THREE.PointLight(0xbe123c, 4.5, 9.0, 1.8);
-    screenBacklight.position.set(2.4, 0.1, -0.4);
-    scene.add(screenBacklight);
-
-    // Crimson accent light from right
-    const crimsonAccent = new THREE.PointLight(0x881337, 3.8, 8.0, 1.6);
-    crimsonAccent.position.set(4.2, 1.2, 0.6);
-    scene.add(crimsonAccent);
-
-    // Screen surface projection glow
-    const projectionGlow = new THREE.PointLight(0xff3366, 2.5, 5.0, 2.0);
-    projectionGlow.position.set(2.6, 0.15, 0.2);
-    scene.add(projectionGlow);
+    // Soft warm silver rim fill
+    const rimFillLight = new THREE.DirectionalLight(0x94a3b8, 1.0);
+    rimFillLight.position.set(-3.0, 2.0, -1.0);
+    scene.add(rimFillLight);
 
     // =========================================================
-    // 1. WIDESCREEN CINEMA SCREEN (16:9 Aspect Ratio)
+    // MASTER CINEMA INSTALLATION GROUP
+    // (Houses the 16:9 Cinema Screen, Bezel, Sculpture, Ribbon, & Local Lights)
+    // Shifted firmly to the right side of the hero viewport (~8-12% farther right)
+    // =========================================================
+    const cinemaInstallation = new THREE.Group();
+    cinemaInstallation.position.set(2.85, 0.05, -0.2);
+    cinemaInstallation.rotation.y = -0.24; // Subtle cinematic perspective angle
+    scene.add(cinemaInstallation);
+
+    // Local restrained burgundy backlight behind the cinema screen frame
+    const screenBacklight = new THREE.PointLight(0x4c0519, 2.8, 6.0, 1.8);
+    screenBacklight.position.set(0.0, 0.0, -0.3);
+    cinemaInstallation.add(screenBacklight);
+
+    // Subtle edge specular light
+    const edgeGlow = new THREE.PointLight(0x9f1239, 1.8, 4.0, 2.0);
+    edgeGlow.position.set(1.5, 0.8, 0.3);
+    cinemaInstallation.add(edgeGlow);
+
+    // =========================================================
+    // 1. WIDESCREEN CINEMA SCREEN (16:9 PROPORTIONS)
     // =========================================================
     const cinemaScreenGroup = new THREE.Group();
-    // Positioned in the right half of the scene with a subtle cinematic angle
-    cinemaScreenGroup.position.set(2.55, 0.15, -0.6);
-    cinemaScreenGroup.rotation.y = -0.22;
-    cinemaScreenGroup.rotation.x = 0.02;
+    cinemaInstallation.add(cinemaScreenGroup);
 
-    // A. Outer Architectural Cinema Screen Bezel / Frame
-    const screenWidth = 3.2;
-    const screenHeight = 1.8; // 16:9 ratio (3.2 / 1.8 ≈ 1.78)
-    const frameGeo = new THREE.BoxGeometry(screenWidth, screenHeight, 0.14);
+    // A. Outer Architectural Cinema Bezel / Dark Metallic Housing
+    const screenWidth = 3.24;
+    const screenHeight = 1.82; // 16:9 ratio (3.24 / 1.82 ≈ 1.78)
+    const frameGeo = new THREE.BoxGeometry(screenWidth, screenHeight, 0.12);
     const frameMat = new THREE.MeshStandardMaterial({
-      color: 0x080a0f,
-      roughness: 0.35,
-      metalness: 0.85
+      color: 0x090a0f,
+      roughness: 0.28,
+      metalness: 0.88
     });
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     cinemaScreenGroup.add(frameMesh);
 
-    // B. Illuminated Cinema Screen Canvas Surface (Projecting subtle cosmic cinema scene)
+    // B. Inner Matte Masking Border (true cinema acoustic masking)
+    const innerMatteGeo = new THREE.PlaneGeometry(screenWidth - 0.08, screenHeight - 0.08);
+    const innerMatteMat = new THREE.MeshBasicMaterial({ color: 0x030406 });
+    const innerMatteMesh = new THREE.Mesh(innerMatteGeo, innerMatteMat);
+    innerMatteMesh.position.z = 0.062;
+    cinemaScreenGroup.add(innerMatteMesh);
+
+    // C. Dark, Subtly Reflective Screen Surface (Believable cinema projection screen)
     const screenCanvas = document.createElement('canvas');
-    screenCanvas.width = 512;
-    screenCanvas.height = 288; // 16:9
+    screenCanvas.width = 1024;
+    screenCanvas.height = 576; // 16:9
     const sCtx = screenCanvas.getContext('2d');
 
-    // Base cinematic projection gradient
-    const sGrad = sCtx.createRadialGradient(256, 144, 10, 256, 144, 260);
-    sGrad.addColorStop(0, '#2d0612');
-    sGrad.addColorStop(0.35, '#18040a');
-    sGrad.addColorStop(0.7, '#080509');
-    sGrad.addColorStop(1, '#020204');
+    // 1. Base Dark Cinema Projection Field
+    const sGrad = sCtx.createRadialGradient(512, 288, 20, 512, 288, 520);
+    sGrad.addColorStop(0, '#10141e');
+    sGrad.addColorStop(0.4, '#0c0e15');
+    sGrad.addColorStop(0.75, '#07080d');
+    sGrad.addColorStop(1, '#030406');
     sCtx.fillStyle = sGrad;
-    sCtx.fillRect(0, 0, 512, 288);
+    sCtx.fillRect(0, 0, 1024, 576);
 
-    // Anamorphic horizontal lens flare / light streak across screen center
-    const streakGrad = sCtx.createLinearGradient(0, 144, 512, 144);
+    // 2. Scope Aspect Guide Lines (2.39:1 Cinema Markers)
+    sCtx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    sCtx.lineWidth = 1;
+    sCtx.beginPath();
+    sCtx.moveTo(0, 72);
+    sCtx.lineTo(1024, 72);
+    sCtx.moveTo(0, 504);
+    sCtx.lineTo(1024, 504);
+    sCtx.stroke();
+
+    // 3. Faint Optical Projection Bloom (Center pearlescent sheen)
+    const centerBloom = sCtx.createRadialGradient(512, 288, 5, 512, 288, 260);
+    centerBloom.addColorStop(0, 'rgba(255, 255, 255, 0.16)');
+    centerBloom.addColorStop(0.4, 'rgba(225, 29, 72, 0.07)');
+    centerBloom.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    sCtx.fillStyle = centerBloom;
+    sCtx.fillRect(0, 0, 1024, 576);
+
+    // 4. Anamorphic Horizontal Lens Streak Across Screen Center
+    const streakGrad = sCtx.createLinearGradient(0, 288, 1024, 288);
     streakGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    streakGrad.addColorStop(0.3, 'rgba(251, 113, 133, 0.25)');
-    streakGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.65)');
-    streakGrad.addColorStop(0.7, 'rgba(251, 113, 133, 0.25)');
+    streakGrad.addColorStop(0.35, 'rgba(159, 18, 57, 0.18)');
+    streakGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.42)');
+    streakGrad.addColorStop(0.65, 'rgba(159, 18, 57, 0.18)');
     streakGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     sCtx.fillStyle = streakGrad;
-    sCtx.fillRect(0, 138, 512, 12);
+    sCtx.fillRect(0, 286, 1024, 5);
 
-    // Soft celestial mountain silhouette in the projection
-    sCtx.fillStyle = 'rgba(10, 2, 5, 0.85)';
-    sCtx.beginPath();
-    sCtx.moveTo(0, 288);
-    sCtx.lineTo(90, 190);
-    sCtx.lineTo(180, 215);
-    sCtx.lineTo(256, 165);
-    sCtx.lineTo(340, 225);
-    sCtx.lineTo(440, 180);
-    sCtx.lineTo(512, 230);
-    sCtx.lineTo(512, 288);
-    sCtx.closePath();
-    sCtx.fill();
+    // 5. Subtle "C I N E V E R S E" Screen Watermark
+    sCtx.font = '600 24px Georgia, serif';
+    sCtx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+    sCtx.textAlign = 'center';
+    sCtx.textBaseline = 'middle';
+    sCtx.letterSpacing = '8px';
+    sCtx.fillText('C I N E V E R S E', 512, 288);
 
     const screenTexture = new THREE.CanvasTexture(screenCanvas);
-    const screenApertureGeo = new THREE.PlaneGeometry(screenWidth - 0.12, screenHeight - 0.12);
+    const screenApertureGeo = new THREE.PlaneGeometry(screenWidth - 0.14, screenHeight - 0.14);
     const screenApertureMat = new THREE.MeshPhysicalMaterial({
       map: screenTexture,
-      emissive: 0x350814,
-      emissiveIntensity: 0.75,
-      roughness: 0.45,
-      metalness: 0.2,
-      clearcoat: 0.3,
-      clearcoatRoughness: 0.2
+      color: 0x12141a,
+      roughness: 0.32,
+      metalness: 0.15,
+      clearcoat: 0.5,
+      clearcoatRoughness: 0.2,
+      reflectivity: 0.65,
+      emissive: 0x070204, // Very restrained deep dark wine, NO flat pink
+      emissiveIntensity: 0.15
     });
     const screenApertureMesh = new THREE.Mesh(screenApertureGeo, screenApertureMat);
-    screenApertureMesh.position.z = 0.075;
+    screenApertureMesh.position.z = 0.065;
     cinemaScreenGroup.add(screenApertureMesh);
 
-    // C. Fine Restrained Burgundy / Silver Screen Rim Edge Glow
+    // D. Fine Restrained Silver / Burgundy Screen Rim Edge Glow
+    const halfW = screenWidth / 2;
+    const halfH = screenHeight / 2;
     const rimPoints = [
-      new THREE.Vector3(-(screenWidth / 2), -(screenHeight / 2), 0.08),
-      new THREE.Vector3((screenWidth / 2), -(screenHeight / 2), 0.08),
-      new THREE.Vector3((screenWidth / 2), (screenHeight / 2), 0.08),
-      new THREE.Vector3(-(screenWidth / 2), (screenHeight / 2), 0.08),
-      new THREE.Vector3(-(screenWidth / 2), -(screenHeight / 2), 0.08)
+      new THREE.Vector3(-halfW, -halfH, 0.068),
+      new THREE.Vector3(halfW, -halfH, 0.068),
+      new THREE.Vector3(halfW, halfH, 0.068),
+      new THREE.Vector3(-halfW, halfH, 0.068),
+      new THREE.Vector3(-halfW, -halfH, 0.068)
     ];
     const rimLineGeo = new THREE.BufferGeometry().setFromPoints(rimPoints);
     const rimLineMat = new THREE.LineBasicMaterial({
-      color: 0xe11d48,
+      color: 0x9f1239,
       transparent: true,
-      opacity: 0.65
+      opacity: 0.55
     });
     const rimLine = new THREE.Line(rimLineGeo, rimLineMat);
     cinemaScreenGroup.add(rimLine);
 
-    scene.add(cinemaScreenGroup);
-
     // =========================================================
     // 2. THE ORGANIC BLACK-GLASS & LIQUID-CHROME SCULPTURE
-    // (Framing and wrapping around the left edge of the cinema screen)
+    // (Flowing and cradling the bottom-left corner of the cinema screen)
     // =========================================================
-    const sculptureGeo = new THREE.TorusKnotGeometry(0.74, 0.21, 192, 48, 2, 3);
+    const sculptureGeo = new THREE.TorusKnotGeometry(0.76, 0.2, 192, 48, 2, 3);
     const posAttr = sculptureGeo.attributes.position;
     const originalPositions = posAttr.array.slice();
 
@@ -220,63 +247,61 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       metalness: 0.88,
       clearcoat: 1.0,
       clearcoatRoughness: 0.08,
-      reflectivity: 0.9,
-      emissive: 0x220409,
-      emissiveIntensity: 0.35,
+      reflectivity: 0.92,
+      emissive: 0x1f0308,
+      emissiveIntensity: 0.3,
       envMap: envTexture,
       envMapIntensity: 1.6
     });
 
     const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMaterial);
-    // Positioned so it emerges beside and wraps the left corner of the screen
-    sculptureMesh.position.set(1.95, -0.05, 0.2);
+    // Cradles and frames the lower-left border of the cinema screen
+    sculptureMesh.position.set(-1.18, -0.62, 0.24);
     sculptureMesh.rotation.set(0.35, 0.45, -0.12);
-    sculptureMesh.scale.set(0.86, 0.86, 0.86);
-    scene.add(sculptureMesh);
+    sculptureMesh.scale.set(0.78, 0.78, 0.78);
+    cinemaInstallation.add(sculptureMesh);
 
-    // Secondary subtle obsidian flow ribbon weaving around the screen edge
-    const ribbonGeo = new THREE.TorusGeometry(0.56, 0.07, 32, 96);
+    // Secondary subtle liquid-chrome ribbon weaving beneath the bottom bezel
+    const ribbonGeo = new THREE.TorusGeometry(0.68, 0.05, 32, 96);
     const ribbonMat = new THREE.MeshStandardMaterial({
-      color: 0x050608,
+      color: 0x06070a,
       roughness: 0.18,
-      metalness: 0.9,
-      emissive: 0x30050e,
-      emissiveIntensity: 0.4
+      metalness: 0.92,
+      emissive: 0x22040a,
+      emissiveIntensity: 0.35
     });
     const ribbonMesh = new THREE.Mesh(ribbonGeo, ribbonMat);
-    ribbonMesh.position.set(1.95, -0.05, 0.2);
-    ribbonMesh.rotation.set(1.1, 0.2, 0.6);
-    scene.add(ribbonMesh);
+    ribbonMesh.position.set(-0.25, -0.82, 0.16);
+    ribbonMesh.rotation.set(1.2, 0.2, 0.5);
+    cinemaInstallation.add(ribbonMesh);
 
     // =========================================================
-    // 3. SUBTLE FLOATING OBSIDIAN SHARDS & EMBERS
+    // 3. RESTRAINED PERIPHERAL FLOATING SHARDS
     // =========================================================
     const shardGroup = new THREE.Group();
-    const shardGeo = new THREE.DodecahedronGeometry(0.065, 0);
+    const shardGeo = new THREE.DodecahedronGeometry(0.055, 0);
     const shardMat = new THREE.MeshStandardMaterial({
-      color: 0x0c0e14,
+      color: 0x0a0c12,
       metalness: 0.85,
       roughness: 0.25,
-      emissive: 0x150306,
-      emissiveIntensity: 0.3
+      emissive: 0x100205,
+      emissiveIntensity: 0.25
     });
 
     const shardData = [];
     const shardPositions = [
-      [1.4, 0.8, 0.4],
-      [2.8, -0.7, 0.2],
-      [3.3, 0.7, -0.2],
-      [1.3, -0.6, 0.5],
-      [3.6, -0.3, -0.3],
-      [2.2, 1.0, -0.2],
-      [3.8, 0.5, -0.4]
+      [-1.6, 0.5, 0.3],
+      [-1.4, -0.9, 0.4],
+      [1.7, 0.8, -0.2],
+      [-0.8, -1.1, 0.3],
+      [1.9, -0.6, -0.1]
     ];
 
     shardPositions.forEach((pos, idx) => {
       const mesh = new THREE.Mesh(shardGeo, shardMat);
       mesh.position.set(pos[0], pos[1], pos[2]);
       mesh.rotation.set(idx, idx * 0.5, idx * 0.2);
-      const s = 0.6 + (idx % 3) * 0.25;
+      const s = 0.55 + (idx % 3) * 0.2;
       mesh.scale.set(s, s, s);
       shardGroup.add(mesh);
 
@@ -284,33 +309,33 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
         mesh,
         basePos: [...pos],
         rotSpeed: {
-          x: 0.004 + (idx % 3) * 0.002,
-          y: 0.005 + (idx % 2) * 0.003
+          x: 0.003 + (idx % 3) * 0.002,
+          y: 0.004 + (idx % 2) * 0.003
         },
         phase: idx * 1.1
       });
     });
-    scene.add(shardGroup);
+    cinemaInstallation.add(shardGroup);
 
-    // Gentle embers
-    const emberCount = 35;
+    // Gentle floating embers
+    const emberCount = 30;
     const emberPositions = new Float32Array(emberCount * 3);
     for (let i = 0; i < emberCount; i++) {
-      emberPositions[i * 3] = 1.2 + Math.random() * 3.2;
-      emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.0;
-      emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
+      emberPositions[i * 3] = (Math.random() - 0.5) * 3.6;
+      emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 2.4;
+      emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 1.8;
     }
     const emberGeo = new THREE.BufferGeometry();
     emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPositions, 3));
     const emberMat = new THREE.PointsMaterial({
-      color: 0xf43f5e,
-      size: 0.035,
+      color: 0xe11d48,
+      size: 0.03,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending
     });
     const embers = new THREE.Points(emberGeo, emberMat);
-    scene.add(embers);
+    cinemaInstallation.add(embers);
 
     // --- Mouse Parallax Tracking ---
     const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -318,8 +343,8 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       const rect = container.getBoundingClientRect();
       const clientX = e.clientX - rect.left;
       const clientY = e.clientY - rect.top;
-      mouse.targetX = (clientX / width - 0.5) * 1.2;
-      mouse.targetY = -(clientY / height - 0.5) * 1.2;
+      mouse.targetX = (clientX / width - 0.5) * 1.0;
+      mouse.targetY = -(clientY / height - 0.5) * 1.0;
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
@@ -337,9 +362,12 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
 
     // --- Visibility and Intersection Observer ---
     let isVisible = true;
-    const observer = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting && !document.hidden;
-    }, { threshold: 0.05 });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting && !document.hidden;
+      },
+      { threshold: 0.05 }
+    );
     observer.observe(container);
 
     const handleVisibilityChange = () => {
@@ -366,8 +394,8 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       if (!isReducedMotion) {
         // Low-frequency sine wave organic deformation on sculpture
         const posArray = posAttr.array;
-        const speed = elapsed * 0.8;
-        const waveAmp = 0.036;
+        const speed = elapsed * 0.75;
+        const waveAmp = 0.032;
 
         for (let i = 0; i < posArray.length; i += 3) {
           const ox = originalPositions[i];
@@ -384,30 +412,26 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
         sculptureGeo.computeVertexNormals();
 
         // Subtle sculpture rotation wrapping the cinema screen
-        sculptureMesh.rotation.y = 0.45 + Math.sin(elapsed * 0.22) * 0.07 + mouse.x * 0.08;
-        sculptureMesh.rotation.x = 0.35 + Math.cos(elapsed * 0.18) * 0.05 + mouse.y * 0.06;
+        sculptureMesh.rotation.y = 0.45 + Math.sin(elapsed * 0.2) * 0.06 + mouse.x * 0.06;
+        sculptureMesh.rotation.x = 0.35 + Math.cos(elapsed * 0.16) * 0.04 + mouse.y * 0.05;
 
-        ribbonMesh.rotation.y = -elapsed * 0.12;
-        ribbonMesh.rotation.z = 0.6 + Math.sin(elapsed * 0.15) * 0.1;
-
-        // Cinema screen gentle atmospheric projection pulse
-        screenApertureMesh.material.emissiveIntensity = 0.75 + Math.sin(elapsed * 1.8) * 0.12;
-        rimLine.material.opacity = 0.55 + Math.sin(elapsed * 2.2) * 0.15;
+        ribbonMesh.rotation.y = -elapsed * 0.1;
+        ribbonMesh.rotation.z = 0.5 + Math.sin(elapsed * 0.14) * 0.08;
 
         // Subtle shard drift
         shardData.forEach((s) => {
           s.mesh.rotation.x += s.rotSpeed.x;
           s.mesh.rotation.y += s.rotSpeed.y;
-          s.mesh.position.y = s.basePos[1] + Math.sin(elapsed * 0.6 + s.phase) * 0.05;
+          s.mesh.position.y = s.basePos[1] + Math.sin(elapsed * 0.5 + s.phase) * 0.04;
         });
 
-        embers.rotation.y = elapsed * 0.015;
+        embers.rotation.y = elapsed * 0.012;
       }
 
-      // Parallax camera framing looking at the unified cinema screen + sculpture composition
-      camera.position.x = 0.85 + mouse.x * 0.18;
-      camera.position.y = 0.1 + mouse.y * 0.14;
-      camera.lookAt(2.0, 0.1, 0);
+      // Parallax camera framing looking slightly right of center towards installation
+      camera.position.x = 0.0 + mouse.x * 0.15;
+      camera.position.y = 0.06 + mouse.y * 0.12;
+      camera.lookAt(0.7, 0.06, 0);
 
       renderer.render(scene, camera);
     };
@@ -433,6 +457,8 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       ribbonMat.dispose();
       frameGeo.dispose();
       frameMat.dispose();
+      innerMatteGeo.dispose();
+      innerMatteMat.dispose();
       screenApertureGeo.dispose();
       screenApertureMat.dispose();
       rimLineGeo.dispose();
