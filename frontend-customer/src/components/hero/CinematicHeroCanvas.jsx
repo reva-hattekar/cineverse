@@ -5,9 +5,9 @@ import * as THREE from 'three';
  * CinematicHeroCanvas
  * Refined 3D hero scene matching the CINEVERSE visual reference:
  * - Fluid, glossy obsidian-black sculpture with restrained silver reflections & subtle burgundy rim glow
- * - Shifted ~12-15% farther right to ensure complete separation from left-side typography
+ * - Shifted ~5-8% farther right to provide generous negative space for the headline
  * - Smooth, low-frequency organic wave deformation (no jagged facets)
- * - Atmospheric gateway portal with dark translucent aperture and soft rim lighting
+ * - Atmospheric gateway portal positioned coherently on the right
  * - Throttles / pauses WebGL rendering loop when not active (e.g. during video trailer playback)
  * - Responds to reduced motion and cleans up all WebGL resources on unmount
  */
@@ -47,9 +47,9 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     scene.fog = new THREE.FogExp2(0x050508, 0.05);
 
     // --- Camera Framing ---
-    // Framed with clear negative space on the left for editorial headline
+    // Camera looking towards the right-shifted composition
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 80);
-    camera.position.set(0.7, 0.05, 5.2);
+    camera.position.set(0.9, 0.05, 5.2);
 
     // --- WebGL Renderer ---
     const renderer = new THREE.WebGLRenderer({
@@ -93,20 +93,20 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     scene.add(ambientLight);
 
     const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.2);
-    keyLight.position.set(4.0, 4.0, 3.0);
+    keyLight.position.set(4.5, 4.0, 3.0);
     scene.add(keyLight);
 
     const burgundyRimLight = new THREE.PointLight(0xbe123c, 4.2, 8.5, 1.8);
-    burgundyRimLight.position.set(2.0, -1.0, 1.0);
+    burgundyRimLight.position.set(2.4, -1.0, 1.0);
     scene.add(burgundyRimLight);
 
     const crimsonAccent = new THREE.PointLight(0x881337, 3.5, 7.5, 1.6);
-    crimsonAccent.position.set(3.5, 1.2, 0.5);
+    crimsonAccent.position.set(3.9, 1.2, 0.5);
     scene.add(crimsonAccent);
 
     // --- The 3D Sculpture ---
-    // Shifted ~10-15% farther right (from 1.45 to 1.95)
-    const SCULPTURE_CENTER_X = 1.95;
+    // Shifted ~5-8% farther right (from 1.95 to 2.4)
+    const SCULPTURE_CENTER_X = 2.4;
 
     const sculptureGeo = new THREE.TorusKnotGeometry(0.78, 0.22, 192, 48, 2, 3);
     const posAttr = sculptureGeo.attributes.position;
@@ -147,7 +147,7 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
 
     // --- Subtle Atmospheric Gateway Portal (Right Edge) ---
     const portalGroup = new THREE.Group();
-    portalGroup.position.set(3.5, 0.25, -0.9);
+    portalGroup.position.set(3.95, 0.25, -0.9);
     portalGroup.rotation.y = -0.28;
 
     const frameGeo = new THREE.BoxGeometry(1.25, 2.2, 0.15);
@@ -222,13 +222,13 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
 
     const shardData = [];
     const shardPositions = [
-      [1.6, 0.9, 0.4],
-      [2.4, -0.6, 0.2],
-      [2.8, 0.7, -0.3],
-      [1.4, -0.7, 0.5],
-      [3.1, -0.3, -0.4],
-      [2.1, 1.1, -0.2],
-      [3.3, 0.5, -0.5]
+      [2.0, 0.9, 0.4],
+      [2.8, -0.6, 0.2],
+      [3.2, 0.7, -0.3],
+      [1.8, -0.7, 0.5],
+      [3.5, -0.3, -0.4],
+      [2.5, 1.1, -0.2],
+      [3.7, 0.5, -0.5]
     ];
 
     shardPositions.forEach((pos, idx) => {
@@ -255,7 +255,7 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     const emberCount = 35;
     const emberPositions = new Float32Array(emberCount * 3);
     for (let i = 0; i < emberCount; i++) {
-      emberPositions[i * 3] = 1.0 + Math.random() * 3.5;
+      emberPositions[i * 3] = 1.4 + Math.random() * 3.5;
       emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.0;
       emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
     }
@@ -313,7 +313,6 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Only render if element is visible and currently active experience
       if (!isVisible || !activeRef.current) return;
 
       const delta = clock.getDelta();
@@ -362,9 +361,9 @@ export default function CinematicHeroCanvas({ active = true, onSceneReady }) {
       }
 
       // Parallax camera framing looking at the shifted sculpture
-      camera.position.x = 0.7 + mouse.x * 0.2;
+      camera.position.x = 0.9 + mouse.x * 0.2;
       camera.position.y = 0.05 + mouse.y * 0.15;
-      camera.lookAt(1.4, 0.05, 0);
+      camera.lookAt(1.7, 0.05, 0);
 
       renderer.render(scene, camera);
     };

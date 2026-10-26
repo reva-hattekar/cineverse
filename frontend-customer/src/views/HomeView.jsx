@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass } from 'lucide-react';
 import CinematicHeroCanvas from '../components/hero/CinematicHeroCanvas';
 import NowShowingCarousel from '../components/hero/NowShowingCarousel';
 import HeroTrailerPlayer from '../components/hero/HeroTrailerPlayer';
+import SpiderWebTrigger from '../components/hero/SpiderWebTrigger';
+import StepIntoRealityModal from '../components/hero/StepIntoRealityModal';
 import { HERO_EXPERIENCES } from '../config/heroExperiences';
 
 /**
  * HomeView
  * Customer homepage matching the CINEVERSE visual specification.
- * - Interactive 01, 02, 03, 04 indicators switching between 3D Brand experience and featured Movie Trailers
- * - Data-driven trailer integration with configurable video sources and graceful poster fallbacks
- * - Automatic transition into dimmed end-state with prominent "BOOK TICKETS NOW" CTA
+ * - Interactive 01, 02, 03, 04 experiences with timed automatic progression
+ *   (30s for 01, 15s for 02-04, pausing on user engagement or page hide)
+ * - Delicate spider-web interactive element replacing rotating badge
+ * - "STEP INTO ANOTHER REALITY" experiential modal
  * - Continuous charcoal/burgundy atmosphere flowing into database-backed carousel and catalog
  */
 export default function HomeView({
@@ -22,14 +25,19 @@ export default function HomeView({
 }) {
   const [activeSlide, setActiveSlide] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState('All');
-  const [showWorldVideoModal, setShowWorldVideoModal] = useState(false);
+  const [showRealityModal, setShowRealityModal] = useState(false);
+  const [userInteracting, setUserInteracting] = useState(false);
 
   // Current active hero experience from data configuration
   const currentExp = HERO_EXPERIENCES.find((e) => e.id === activeSlide) || HERO_EXPERIENCES[0];
 
   // Match real movie from live database movies array if configured
   const matchedMovie = currentExp.movieId
-    ? movies.find((m) => m.movie_id === currentExp.movieId || m.title?.toLowerCase() === currentExp.fallbackTitle?.toLowerCase())
+    ? movies.find(
+        (m) =>
+          m.movie_id === currentExp.movieId ||
+          m.title?.toLowerCase() === currentExp.fallbackTitle?.toLowerCase()
+      )
     : null;
 
   // Available unique genres from live movies
@@ -54,11 +62,11 @@ export default function HomeView({
   };
 
   const handleBookCurrentExperience = () => {
+    setUserInteracting(true); // Suspend progression when booking
     if (matchedMovie) {
       onSelectMovie(matchedMovie);
     } else if (currentExp.movieId) {
-      // Fallback matching by ID or title
-      const fallbackObj = movies.find(m => m.movie_id === currentExp.movieId) || {
+      const fallbackObj = movies.find((m) => m.movie_id === currentExp.movieId) || {
         movie_id: currentExp.movieId,
         title: currentExp.fallbackTitle
       };
@@ -66,6 +74,54 @@ export default function HomeView({
     } else {
       scrollToMovies();
     }
+  };
+
+  // Timed progression (30s on Experience 01, 15s on Experiences 02, 03, 04)
+  const timerRef = useRef(null);
+
+  const advanceExperience = useCallback(() => {
+    setActiveSlide((prev) => (prev >= 4 ? 1 : prev + 1));
+  }, []);
+
+  useEffect(() => {
+    // Suspend progression if user is actively interacting, or if reduced-motion is preferred
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (userInteracting || mediaQuery.matches) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      return;
+    }
+
+    const duration = activeSlide === 1 ? 30000 : 15000;
+
+    const scheduleTimer = () => {
+      if (document.hidden) return;
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
+        advanceExperience();
+      }, duration);
+    };
+
+    scheduleTimer();
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (timerRef.current) clearTimeout(timerRef.current);
+      } else {
+        scheduleTimer();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [activeSlide, userInteracting, advanceExperience]);
+
+  const handleManualSlideSelect = (id) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setActiveSlide(id);
   };
 
   return (
@@ -83,7 +139,10 @@ export default function HomeView({
             key={currentExp.id}
             experience={currentExp}
             movie={matchedMovie}
-            onSelectMovie={onSelectMovie}
+            onSelectMovie={(m) => {
+              setUserInteracting(true);
+              onSelectMovie(m);
+            }}
             isActive={currentExp.type === 'trailer'}
           />
         )}
@@ -102,7 +161,7 @@ export default function HomeView({
                 aria-selected={activeSlide === exp.id}
                 aria-label={`Experience 0${exp.id}: ${exp.title || exp.fallbackTitle}`}
                 className={`slide-num-btn ${activeSlide === exp.id ? 'active' : ''}`}
-                onClick={() => setActiveSlide(exp.id)}
+                onClick={() => handleManualSlideSelect(exp.id)}
               >
                 0{exp.id}
               </button>
@@ -168,7 +227,7 @@ export default function HomeView({
 
                   <button
                     className="hero-secondary-btn"
-                    onClick={() => setShowWorldVideoModal(true)}
+                    onClick={() => setShowRealityModal(true)}
                   >
                     <span className="play-icon-circle">
                       <Play size={12} fill="currentColor" />
@@ -198,32 +257,10 @@ export default function HomeView({
             </div>
           </div>
 
-          {/* Right Column: Portal Stargate Ring & Interactive Badge (shown in 3D brand mode) */}
+          {/* Right Column: Spider-Web Interactive Element (Experience 01) */}
           {currentExp.id === 1 && (
             <div className="hero-interactive-portal-badge">
-              <div
-                className="rotating-reality-badge"
-                onClick={() => setShowWorldVideoModal(true)}
-                role="button"
-                tabIndex={0}
-                aria-label="Watch CINEVERSE World Experience"
-              >
-                <div className="reality-play-core">
-                  <Play size={16} fill="#fff" />
-                </div>
-                <svg className="rotating-text-svg" viewBox="0 0 100 100">
-                  <path
-                    id="circlePath"
-                    d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                    fill="none"
-                  />
-                  <text fontSize="7.8" fill="#e2e8f0" letterSpacing="2.2">
-                    <textPath href="#circlePath">
-                      STEP INTO ANOTHER REALITY • CINEVERSE •
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
+              <SpiderWebTrigger onClick={() => setShowRealityModal(true)} />
             </div>
           )}
         </div>
@@ -262,7 +299,9 @@ export default function HomeView({
           {/* Search Result Feedback */}
           {searchQuery && (
             <div className="search-feedback-bar">
-              <span>Showing results for &ldquo;<strong>{searchQuery}</strong>&rdquo;</span>
+              <span>
+                Showing results for &ldquo;<strong>{searchQuery}</strong>&rdquo;
+              </span>
               <button
                 className="clear-search-btn"
                 onClick={() => setSearchQuery && setSearchQuery('')}
@@ -280,9 +319,7 @@ export default function HomeView({
                 movie.backdrop_url ||
                 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
 
-              const ratingVal = movie.rating
-                ? parseFloat(movie.rating).toFixed(1)
-                : '8.2';
+              const ratingVal = movie.rating ? parseFloat(movie.rating).toFixed(1) : '8.2';
 
               return (
                 <div
@@ -297,7 +334,8 @@ export default function HomeView({
                       className="catalog-poster-img"
                       loading="lazy"
                       onError={(e) => {
-                        e.target.src = 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
+                        e.target.src =
+                          'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
                       }}
                     />
                     <div className="catalog-badge-overlay">
@@ -359,50 +397,16 @@ export default function HomeView({
       </section>
 
       {/* =========================================================
-          WATCH OUR WORLD VIDEO MODAL
+          "STEP INTO ANOTHER REALITY" EXPERIENTIAL MODAL
          ========================================================= */}
-      {showWorldVideoModal && (
-        <div
-          className="cinema-modal-backdrop"
-          onClick={() => setShowWorldVideoModal(false)}
-        >
-          <div
-            className="cinema-modal-card cinematic-video-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <div className="modal-title-wrap">
-                <Sparkles size={18} color="#e11d48" />
-                <h3>CINEVERSE — Step Into Another Reality</h3>
-              </div>
-              <button
-                className="modal-close-btn"
-                onClick={() => setShowWorldVideoModal(false)}
-              >
-                ×
-              </button>
-            </div>
-            <div className="modal-video-container">
-              <div style={{ padding: '24px', textAlign: 'center', color: '#cbd5e1' }}>
-                <Film size={48} color="#e11d48" style={{ marginBottom: 12 }} />
-                <h4 style={{ color: '#fff', marginBottom: 8, fontSize: '1.2rem' }}>Experience the World of CINEVERSE</h4>
-                <p style={{ fontSize: '0.9rem', color: '#94a3b8', maxWidth: 440, margin: '0 auto 16px' }}>
-                  Ultra-luxurious recliners, IMAX 70mm dual-laser projection, and artisanal concession dining.
-                </p>
-                <button
-                  className="hero-primary-btn"
-                  onClick={() => {
-                    setShowWorldVideoModal(false);
-                    scrollToMovies();
-                  }}
-                >
-                  <Ticket size={15} /> Explore All Screenings
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <StepIntoRealityModal
+        isOpen={showRealityModal}
+        onClose={() => setShowRealityModal(false)}
+        onExploreMovies={() => {
+          setShowRealityModal(false);
+          scrollToMovies();
+        }}
+      />
     </div>
   );
 }
