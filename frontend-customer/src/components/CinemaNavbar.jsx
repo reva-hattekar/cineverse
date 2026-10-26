@@ -40,7 +40,7 @@ export default function CinemaNavbar({
               role="button"
               tabIndex={0}
             >
-              C I N E V E R S E
+              CINEVERSE
             </div>
 
             <div className="nav-divider" />

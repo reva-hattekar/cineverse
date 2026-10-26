@@ -3,8 +3,13 @@ import * as THREE from 'three';
 
 /**
  * CinematicHeroCanvas
- * Procedurally animated 3D hero scene rendering an organic liquid-chrome & black-glass
- * morphing sculpture, glowing dimensional portal, floating space shards, and crimson atmospheric lighting.
+ * Elegantly sculpted 3D hero scene matching the CINEVERSE visual reference:
+ * - Fluid, glossy obsidian-black sculpture with restrained silver reflections & subtle burgundy rim glow
+ * - Smooth, low-frequency organic wave deformation (no jagged facets or harsh color bands)
+ * - Positioned strictly on the right half of the hero space, leaving the left pristine for editorial typography
+ * - Atmospheric gateway portal with dark translucent aperture and soft rim lighting
+ * - Subtle floating obsidian shards & gentle dust embers
+ * - Responds to reduced motion and cleans up all WebGL resources on unmount
  */
 export default function CinematicHeroCanvas({ onSceneReady }) {
   const containerRef = useRef(null);
@@ -30,15 +35,16 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     if (!container) return;
 
     let width = container.clientWidth || window.innerWidth;
-    let height = container.clientHeight || 750;
+    let height = container.clientHeight || 700;
 
     // --- Scene Setup ---
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050508, 0.045);
+    scene.fog = new THREE.FogExp2(0x050508, 0.05);
 
     // --- Camera ---
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(1.5, 0.2, 5.8);
+    // Positioned so the left half (x < 0) has ample negative space for typography
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 80);
+    camera.position.set(0.6, 0.05, 5.2);
 
     // --- WebGL Renderer ---
     const renderer = new THREE.WebGLRenderer({
@@ -47,337 +53,227 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       powerPreference: 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
-    // --- Procedural Reflection Environment Texture ---
-    // Generate a high-contrast studio environment map with crimson and dark tones
+    // --- Studio Reflection Environment Texture ---
+    // Smooth gradient with dark obsidian tones, subtle burgundy horizon, and soft silver key highlight
     const envCanvas = document.createElement('canvas');
     envCanvas.width = 512;
     envCanvas.height = 256;
     const envCtx = envCanvas.getContext('2d');
     const gradient = envCtx.createLinearGradient(0, 0, 0, 256);
-    gradient.addColorStop(0, '#100206');
-    gradient.addColorStop(0.3, '#3b0714');
-    gradient.addColorStop(0.5, '#050508');
-    gradient.addColorStop(0.7, '#e11d48');
-    gradient.addColorStop(0.85, '#ffffff');
-    gradient.addColorStop(1, '#050508');
+    gradient.addColorStop(0.0, '#020204');
+    gradient.addColorStop(0.35, '#18040a');
+    gradient.addColorStop(0.55, '#050508');
+    gradient.addColorStop(0.75, '#450a14');
+    gradient.addColorStop(0.9, '#c0c5ce');
+    gradient.addColorStop(1.0, '#050508');
     envCtx.fillStyle = gradient;
     envCtx.fillRect(0, 0, 512, 256);
 
-    // Add bright horizontal reflection strips for chrome gleam
-    envCtx.fillStyle = '#ffffff';
-    envCtx.fillRect(100, 80, 140, 15);
-    envCtx.fillRect(320, 140, 90, 8);
-    envCtx.fillStyle = '#fb7185';
-    envCtx.fillRect(0, 40, 512, 10);
+    // Soft restrained silver specular strip
+    envCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    envCtx.fillRect(160, 90, 110, 10);
+    envCtx.fillStyle = 'rgba(225, 29, 72, 0.4)';
+    envCtx.fillRect(0, 50, 512, 6);
 
     const envTexture = new THREE.CanvasTexture(envCanvas);
     envTexture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = envTexture;
 
-    // --- Lighting ---
-    const ambientLight = new THREE.AmbientLight(0x18040a, 1.2);
+    // --- Lighting (Restrained & Cinematic) ---
+    const ambientLight = new THREE.AmbientLight(0x0a0507, 1.4);
     scene.add(ambientLight);
 
-    // Key sharp chrome specular light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
-    keyLight.position.set(4, 5, 4);
+    // Key directional light for soft silver highlights on the curves
+    const keyLight = new THREE.DirectionalLight(0xf1f5f9, 2.2);
+    keyLight.position.set(3.5, 4.0, 3.0);
     scene.add(keyLight);
 
-    // Intense Crimson / Burgundy Rim Light
-    const crimsonPointLight = new THREE.PointLight(0xe11d48, 8.5, 12, 1.6);
-    crimsonPointLight.position.set(-1.8, 1.2, 1.5);
-    scene.add(crimsonPointLight);
+    // Subtle burgundy rim light from below/behind the sculpture
+    const burgundyRimLight = new THREE.PointLight(0xbe123c, 4.0, 8.0, 1.8);
+    burgundyRimLight.position.set(1.5, -1.0, 1.0);
+    scene.add(burgundyRimLight);
 
-    // Deep Magenta / Rose Fill Light
-    const magentaLight = new THREE.PointLight(0xbe123c, 6.0, 10, 1.5);
-    magentaLight.position.set(3.2, -1.8, 0.8);
-    scene.add(magentaLight);
+    // Deep crimson accent light from right
+    const crimsonAccent = new THREE.PointLight(0x881337, 3.5, 7.0, 1.6);
+    crimsonAccent.position.set(3.0, 1.2, 0.5);
+    scene.add(crimsonAccent);
 
-    // Monolith Portal Emitter Light
-    const portalLight = new THREE.PointLight(0xf43f5e, 5.0, 8, 1.4);
-    portalLight.position.set(3.4, 0.8, -0.2);
-    scene.add(portalLight);
+    // --- The 3D Sculpture ---
+    // Smooth, flowing organic form: Torus Knot with high subdivision for silk-smooth curvature
+    const sculptureGeo = new THREE.TorusKnotGeometry(0.75, 0.22, 192, 48, 2, 3);
+    
+    // Store original vertex positions for clean, low-frequency procedural sine wave displacement
+    const posAttr = sculptureGeo.attributes.position;
+    const originalPositions = posAttr.array.slice();
 
-    // --- Organic Morphing Sculpture Shader Material ---
-    // Custom vertex & fragment shader creating liquid chrome + obsidian glass refraction
-    const customSculptureMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uNoiseScale: { value: 1.15 },
-        uDisplacement: { value: 0.35 },
-        uEnvMap: { value: envTexture },
-        uCrimsonColor: { value: new THREE.Color(0xe11d48) },
-        uDeepBurgundy: { value: new THREE.Color(0x380612) },
-        uObsidianColor: { value: new THREE.Color(0x060609) },
-        uChromeHighlight: { value: new THREE.Color(0xffffff) },
-        uRoughness: { value: 0.12 }
-      },
-      vertexShader: `
-        uniform float uTime;
-        uniform float uNoiseScale;
-        uniform float uDisplacement;
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        varying vec3 vWorldPosition;
-
-        // Simplex-style 3D periodic noise
-        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-        vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-        vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-        vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-
-        float snoise(vec3 v) {
-          const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-          const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-          vec3 i  = floor(v + dot(v, C.yyy));
-          vec3 x0 = v - i + dot(i, C.xxx);
-          vec3 g = step(x0.yzx, x0.xyz);
-          vec3 l = 1.0 - g;
-          vec3 i1 = min(g.xyz, l.zxy);
-          vec3 i2 = max(g.xyz, l.zxy);
-          vec3 x1 = x0 - i1 + C.xxx;
-          vec3 x2 = x0 - i2 + C.yyy;
-          vec3 x3 = x0 - D.yyy;
-          i = mod289(i);
-          vec4 p = permute(permute(permute(
-                    i.z + vec4(0.0, i1.z, i2.z, 1.0))
-                  + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-                  + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-          float n_ = 0.142857142857;
-          vec3 ns = n_ * D.wyz - D.xzx;
-          vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-          vec4 x_ = floor(j * ns.z);
-          vec4 y_ = floor(j - 7.0 * x_);
-          vec4 x = x_ *ns.x + ns.yyyy;
-          vec4 y = y_ *ns.x + ns.yyyy;
-          vec4 h = 1.0 - abs(x) - abs(y);
-          vec4 b0 = vec4(x.xy, y.xy);
-          vec4 b1 = vec4(x.zw, y.zw);
-          vec4 s0 = floor(b0)*2.0 + 1.0;
-          vec4 s1 = floor(b1)*2.0 + 1.0;
-          vec4 sh = -step(h, vec4(0.0));
-          vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-          vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-          vec3 p0 = vec3(a0.xy, h.x);
-          vec3 p1 = vec3(a0.zw, h.y);
-          vec3 p2 = vec3(a1.xy, h.z);
-          vec3 p3 = vec3(a1.zw, h.w);
-          vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-          p0 *= norm.x;
-          p1 *= norm.y;
-          p2 *= norm.z;
-          p3 *= norm.w;
-          vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-          m = m * m;
-          return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-        }
-
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec3 transformed = position;
-
-          // Multi-octave organic fluid deformation
-          float noiseA = snoise(position * uNoiseScale + vec3(uTime * 0.25, uTime * 0.18, 0.0));
-          float noiseB = snoise(position * (uNoiseScale * 2.2) - vec3(0.0, uTime * 0.35, uTime * 0.2));
-          float displacement = (noiseA * 0.7 + noiseB * 0.3) * uDisplacement;
-
-          transformed += normal * displacement;
-
-          vec4 worldPosition = modelMatrix * vec4(transformed, 1.0);
-          vWorldPosition = worldPosition.xyz;
-          vec4 mvPosition = viewMatrix * worldPosition;
-          vViewPosition = -mvPosition.xyz;
-
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D uEnvMap;
-        uniform vec3 uCrimsonColor;
-        uniform vec3 uDeepBurgundy;
-        uniform vec3 uObsidianColor;
-        uniform vec3 uChromeHighlight;
-        uniform float uRoughness;
-
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        varying vec3 vWorldPosition;
-
-        void main() {
-          vec3 normal = normalize(vNormal);
-          vec3 viewDir = normalize(vViewPosition);
-
-          // Fresnel reflectance term
-          float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.2);
-
-          // Reflection vector for environment sampling
-          vec3 reflectDir = reflect(-viewDir, normal);
-          float u = atan(reflectDir.z, reflectDir.x) / (2.0 * 3.14159265) + 0.5;
-          float v = reflectDir.y * 0.5 + 0.5;
-          vec3 envColor = texture2D(uEnvMap, vec2(u, v)).rgb;
-
-          // Blend obsidian glass core with fluid chrome reflections & crimson specular rims
-          vec3 baseObsidian = mix(uObsidianColor, uDeepBurgundy, fresnel * 0.7);
-          vec3 chromeReflect = envColor * 1.8;
-
-          // Rich hybrid chrome + obsidian glass look
-          vec3 finalColor = mix(baseObsidian, chromeReflect, 0.65 + fresnel * 0.35);
-
-          // Add deep crimson edge scattering
-          finalColor += uCrimsonColor * (pow(fresnel, 2.0) * 1.6);
-
-          // High specular gleam
-          float specular = pow(max(dot(reflectDir, vec3(0.5, 0.8, 0.3)), 0.0), 32.0);
-          finalColor += uChromeHighlight * specular * 1.2;
-
-          gl_FragColor = vec4(finalColor, 0.98);
-        }
-      `,
-      transparent: true,
-      side: THREE.DoubleSide
+    // Material: predominantly glossy obsidian-black with restrained silver reflections and subtle burgundy glow
+    const sculptureMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x08090d,
+      roughness: 0.12,
+      metalness: 0.88,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.9,
+      emissive: 0x220409,
+      emissiveIntensity: 0.35,
+      envMap: envTexture,
+      envMapIntensity: 1.6
     });
 
-    // Main Fluid Sculpture: Torus Knot Geometry
-    const sculptureGeo = new THREE.TorusKnotGeometry(1.2, 0.42, 220, 48, 2, 3);
-    const sculptureMesh = new THREE.Mesh(sculptureGeo, customSculptureMaterial);
-    sculptureMesh.position.set(1.1, 0.1, 0);
-    sculptureMesh.rotation.set(0.4, 0.6, 0.2);
-    sculptureMesh.scale.set(1.05, 1.05, 1.05);
+    const sculptureMesh = new THREE.Mesh(sculptureGeo, sculptureMaterial);
+    // Positioned strictly on the right half of the scene
+    sculptureMesh.position.set(1.45, 0.1, 0.0);
+    sculptureMesh.rotation.set(0.3, 0.4, -0.15);
+    sculptureMesh.scale.set(0.85, 0.85, 0.85);
     scene.add(sculptureMesh);
 
-    // Inner organic core (secondary obsidian ribbon)
-    const innerGeo = new THREE.TorusGeometry(0.85, 0.15, 32, 100);
-    const innerMat = new THREE.MeshPhysicalMaterial({
-      color: 0x050508,
-      emissive: 0x450a14,
-      emissiveIntensity: 0.8,
-      metalness: 0.95,
-      roughness: 0.15,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1
-    });
-    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    innerMesh.position.set(1.1, 0.1, 0);
-    innerMesh.rotation.set(1.2, 0.4, 0.8);
-    scene.add(innerMesh);
-
-    // --- Floating Asteroids / Obsidian Shards ---
-    const shardGroup = new THREE.Group();
-    const shardCount = 22;
-    const shardGeos = [
-      new THREE.DodecahedronGeometry(0.12, 0),
-      new THREE.IcosahedronGeometry(0.09, 0),
-      new THREE.TetrahedronGeometry(0.14, 0)
-    ];
-
-    const shardMat = new THREE.MeshStandardMaterial({
-      color: 0x121216,
-      metalness: 0.85,
-      roughness: 0.3,
-      emissive: 0x22040b,
+    // Secondary subtle obsidian flow ring weaving through the core
+    const ribbonGeo = new THREE.TorusGeometry(0.55, 0.07, 32, 96);
+    const ribbonMat = new THREE.MeshStandardMaterial({
+      color: 0x050608,
+      roughness: 0.18,
+      metalness: 0.9,
+      emissive: 0x30050e,
       emissiveIntensity: 0.4
     });
+    const ribbonMesh = new THREE.Mesh(ribbonGeo, ribbonMat);
+    ribbonMesh.position.set(1.45, 0.1, 0.0);
+    ribbonMesh.rotation.set(1.1, 0.2, 0.6);
+    scene.add(ribbonMesh);
 
-    const shardData = [];
-    for (let i = 0; i < shardCount; i++) {
-      const geo = shardGeos[i % shardGeos.length];
-      const mesh = new THREE.Mesh(geo, shardMat);
-      const angle = (i / shardCount) * Math.PI * 2 + Math.random() * 0.4;
-      const radius = 1.8 + Math.random() * 1.5;
-      const height = (Math.random() - 0.5) * 2.6;
-
-      mesh.position.set(
-        1.1 + Math.cos(angle) * radius,
-        height,
-        Math.sin(angle) * radius * 0.8 - 0.5
-      );
-
-      mesh.rotation.set(
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI
-      );
-
-      const scale = 0.6 + Math.random() * 0.9;
-      mesh.scale.set(scale, scale, scale);
-
-      shardGroup.add(mesh);
-      shardData.push({
-        mesh,
-        rotSpeed: {
-          x: (Math.random() - 0.5) * 0.02,
-          y: (Math.random() - 0.5) * 0.025,
-          z: (Math.random() - 0.5) * 0.015
-        },
-        orbitAngle: angle,
-        orbitRadius: radius,
-        orbitSpeed: 0.002 + Math.random() * 0.003,
-        baseY: height
-      });
-    }
-    scene.add(shardGroup);
-
-    // --- Glowing Dimensional Monolith / Portal on Far Right ---
+    // --- Subtle Atmospheric Gateway Portal (Right Edge) ---
     const portalGroup = new THREE.Group();
-    portalGroup.position.set(3.4, 0.4, -0.6);
-    portalGroup.rotation.y = -0.32;
+    portalGroup.position.set(3.0, 0.25, -0.8);
+    portalGroup.rotation.y = -0.28;
 
-    // Outer Monolith Frame
-    const frameGeo = new THREE.BoxGeometry(1.6, 2.7, 0.22);
+    // Dark architectural monolith frame
+    const frameGeo = new THREE.BoxGeometry(1.25, 2.2, 0.15);
     const frameMat = new THREE.MeshStandardMaterial({
-      color: 0x07070b,
-      roughness: 0.4,
-      metalness: 0.8
+      color: 0x06070a,
+      roughness: 0.55,
+      metalness: 0.7
     });
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     portalGroup.add(frameMesh);
 
-    // Glowing Inner Portal Aperture
-    const apertureGeo = new THREE.PlaneGeometry(1.3, 2.4);
+    // Dark translucent portal interior (atmospheric haze with dark canyon mood)
+    const portalCanvas = document.createElement('canvas');
+    portalCanvas.width = 256;
+    portalCanvas.height = 384;
+    const pCtx = portalCanvas.getContext('2d');
+    const pGrad = pCtx.createLinearGradient(0, 0, 0, 384);
+    pGrad.addColorStop(0, '#050204');
+    pGrad.addColorStop(0.35, '#20050c');
+    pGrad.addColorStop(0.6, '#3a0814');
+    pGrad.addColorStop(0.85, '#150307');
+    pGrad.addColorStop(1, '#050508');
+    pCtx.fillStyle = pGrad;
+    pCtx.fillRect(0, 0, 256, 384);
+
+    // Gentle misty mountain silhouette in portal
+    pCtx.fillStyle = 'rgba(10, 2, 4, 0.75)';
+    pCtx.beginPath();
+    pCtx.moveTo(0, 384);
+    pCtx.lineTo(60, 260);
+    pCtx.lineTo(120, 290);
+    pCtx.lineTo(180, 230);
+    pCtx.lineTo(256, 300);
+    pCtx.lineTo(256, 384);
+    pCtx.closePath();
+    pCtx.fill();
+
+    const portalTexture = new THREE.CanvasTexture(portalCanvas);
+    const apertureGeo = new THREE.PlaneGeometry(1.05, 1.95);
     const apertureMat = new THREE.MeshBasicMaterial({
-      color: 0xff3366,
+      map: portalTexture,
+      transparent: true,
+      opacity: 0.88,
       side: THREE.DoubleSide
     });
     const apertureMesh = new THREE.Mesh(apertureGeo, apertureMat);
-    apertureMesh.position.z = 0.12;
+    apertureMesh.position.z = 0.085;
     portalGroup.add(apertureMesh);
 
-    // Neon Rim border around portal
-    const rimGeo = new THREE.RingGeometry(0.85, 0.9, 32);
-    const rimMat = new THREE.MeshBasicMaterial({
-      color: 0xff1e56,
+    // Soft, delicate burgundy rim around the portal (no harsh flat pink!)
+    const portalRimGeo = new THREE.RingGeometry(0.55, 0.58, 48);
+    const portalRimMat = new THREE.MeshBasicMaterial({
+      color: 0xbe123c,
+      transparent: true,
+      opacity: 0.45,
       side: THREE.DoubleSide
     });
-    const rimMesh = new THREE.Mesh(rimGeo, rimMat);
-    rimMesh.position.set(-0.2, 0.5, 0.13);
-    portalGroup.add(rimMesh);
+    const portalRimMesh = new THREE.Mesh(portalRimGeo, portalRimMat);
+    portalRimMesh.position.set(-0.15, 0.35, 0.09);
+    portalGroup.add(portalRimMesh);
 
     scene.add(portalGroup);
 
-    // --- Atmospheric Crimson Dust Specks / Embers ---
-    const dustCount = 80;
-    const dustPositions = new Float32Array(dustCount * 3);
-    for (let i = 0; i < dustCount; i++) {
-      dustPositions[i * 3] = (Math.random() - 0.3) * 8;
-      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 5;
-      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
+    // --- Subtle Floating Obsidian Shards (Restrained, only 8 pieces) ---
+    const shardGroup = new THREE.Group();
+    const shardGeo = new THREE.DodecahedronGeometry(0.065, 0);
+    const shardMat = new THREE.MeshStandardMaterial({
+      color: 0x0c0e14,
+      metalness: 0.85,
+      roughness: 0.25,
+      emissive: 0x150306,
+      emissiveIntensity: 0.3
+    });
+
+    const shardData = [];
+    const shardPositions = [
+      [1.1, 0.9, 0.4],
+      [1.9, -0.6, 0.2],
+      [2.3, 0.7, -0.3],
+      [0.9, -0.7, 0.5],
+      [2.6, -0.3, -0.4],
+      [1.6, 1.1, -0.2],
+      [2.8, 0.5, -0.5]
+    ];
+
+    shardPositions.forEach((pos, idx) => {
+      const mesh = new THREE.Mesh(shardGeo, shardMat);
+      mesh.position.set(pos[0], pos[1], pos[2]);
+      mesh.rotation.set(idx, idx * 0.5, idx * 0.2);
+      const s = 0.6 + (idx % 3) * 0.25;
+      mesh.scale.set(s, s, s);
+      shardGroup.add(mesh);
+
+      shardData.push({
+        mesh,
+        basePos: [...pos],
+        rotSpeed: {
+          x: 0.004 + (idx % 3) * 0.002,
+          y: 0.005 + (idx % 2) * 0.003
+        },
+        phase: idx * 1.1
+      });
+    });
+    scene.add(shardGroup);
+
+    // --- Gentle Dust Embers (Drifting faintly in background) ---
+    const emberCount = 35;
+    const emberPositions = new Float32Array(emberCount * 3);
+    for (let i = 0; i < emberCount; i++) {
+      emberPositions[i * 3] = 0.5 + Math.random() * 3.5;
+      emberPositions[i * 3 + 1] = (Math.random() - 0.5) * 3.0;
+      emberPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
     }
-    const dustGeo = new THREE.BufferGeometry();
-    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-    const dustMat = new THREE.PointsMaterial({
+    const emberGeo = new THREE.BufferGeometry();
+    emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPositions, 3));
+    const emberMat = new THREE.PointsMaterial({
       color: 0xf43f5e,
-      size: 0.045,
+      size: 0.035,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.5,
       blending: THREE.AdditiveBlending
     });
-    const dustParticles = new THREE.Points(dustGeo, dustMat);
-    scene.add(dustParticles);
+    const embers = new THREE.Points(emberGeo, emberMat);
+    scene.add(embers);
 
     // --- Mouse Parallax Tracking ---
     const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -385,8 +281,8 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       const rect = container.getBoundingClientRect();
       const clientX = e.clientX - rect.left;
       const clientY = e.clientY - rect.top;
-      mouse.targetX = (clientX / width - 0.5) * 2;
-      mouse.targetY = -(clientY / height - 0.5) * 2;
+      mouse.targetX = (clientX / width - 0.5) * 1.2;
+      mouse.targetY = -(clientY / height - 0.5) * 1.2;
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
@@ -394,15 +290,15 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
     const handleResize = () => {
       if (!container) return;
       width = container.clientWidth || window.innerWidth;
-      height = container.clientHeight || 750;
+      height = container.clientHeight || 700;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     };
     window.addEventListener('resize', handleResize);
 
-    // --- Visibility and Intersection Observer to Throttle Offscreen Rendering ---
+    // --- Visibility and Intersection Observer ---
     let isVisible = true;
     const observer = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting && !document.hidden;
@@ -426,48 +322,56 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
-      // Smooth mouse lerp
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+      // Smooth mouse damping
+      mouse.x += (mouse.targetX - mouse.x) * 0.04;
+      mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
-      // Update shader time for organic morphing
-      const speedMultiplier = isReducedMotion ? 0.05 : 1.0;
-      customSculptureMaterial.uniforms.uTime.value = elapsed * 1.1 * speedMultiplier;
-
-      // Subtle dynamic sculpture rotation
       if (!isReducedMotion) {
-        sculptureMesh.rotation.y = 0.5 + Math.sin(elapsed * 0.3) * 0.15 + mouse.x * 0.12;
-        sculptureMesh.rotation.x = 0.35 + Math.cos(elapsed * 0.25) * 0.1 + mouse.y * 0.1;
+        // Smooth, low-frequency organic wave deformation on the sculpture vertices
+        const posArray = posAttr.array;
+        const speed = elapsed * 0.8;
+        const waveAmp = 0.04; // Very restrained amplitude to keep curves silky smooth
 
-        innerMesh.rotation.y = -elapsed * 0.2;
-        innerMesh.rotation.z = elapsed * 0.15;
+        for (let i = 0; i < posArray.length; i += 3) {
+          const ox = originalPositions[i];
+          const oy = originalPositions[i + 1];
+          const oz = originalPositions[i + 2];
 
-        // Floating debris orbit & spin
-        for (let i = 0; i < shardData.length; i++) {
-          const shard = shardData[i];
-          shard.mesh.rotation.x += shard.rotSpeed.x;
-          shard.mesh.rotation.y += shard.rotSpeed.y;
-          shard.mesh.rotation.z += shard.rotSpeed.z;
+          // Gentle low-frequency harmonics
+          const wave = Math.sin(ox * 1.8 + speed) * Math.cos(oy * 1.5 + speed * 0.7) * waveAmp;
 
-          shard.orbitAngle += shard.orbitSpeed;
-          shard.mesh.position.x = 1.1 + Math.cos(shard.orbitAngle) * shard.orbitRadius;
-          shard.mesh.position.z = Math.sin(shard.orbitAngle) * shard.orbitRadius * 0.8 - 0.5;
-          shard.mesh.position.y = shard.baseY + Math.sin(elapsed * 0.8 + i) * 0.1;
+          posArray[i] = ox + ox * wave;
+          posArray[i + 1] = oy + oy * wave;
+          posArray[i + 2] = oz + oz * wave;
         }
+        posAttr.needsUpdate = true;
+        sculptureGeo.computeVertexNormals(); // Recompute smooth normals
 
-        // Slow drift for dust specks
-        dustParticles.rotation.y = elapsed * 0.02;
-        dustParticles.rotation.x = Math.sin(elapsed * 0.015) * 0.05;
+        // Subtle, elegant rotation
+        sculptureMesh.rotation.y = 0.4 + Math.sin(elapsed * 0.22) * 0.08 + mouse.x * 0.1;
+        sculptureMesh.rotation.x = 0.3 + Math.cos(elapsed * 0.18) * 0.06 + mouse.y * 0.08;
 
-        // Portal gentle pulse
-        apertureMesh.scale.x = 1.0 + Math.sin(elapsed * 2.0) * 0.02;
-        portalLight.intensity = 4.5 + Math.sin(elapsed * 3.0) * 1.2;
+        ribbonMesh.rotation.y = -elapsed * 0.12;
+        ribbonMesh.rotation.z = 0.6 + Math.sin(elapsed * 0.15) * 0.1;
+
+        // Subtle shard drift
+        shardData.forEach((s) => {
+          s.mesh.rotation.x += s.rotSpeed.x;
+          s.mesh.rotation.y += s.rotSpeed.y;
+          s.mesh.position.y = s.basePos[1] + Math.sin(elapsed * 0.6 + s.phase) * 0.05;
+        });
+
+        // Slow ember drift
+        embers.rotation.y = elapsed * 0.015;
+
+        // Portal gentle atmospheric breath
+        portalRimMesh.scale.setScalar(1.0 + Math.sin(elapsed * 1.5) * 0.03);
       }
 
-      // Parallax camera tilt
-      camera.position.x = 1.5 + mouse.x * 0.3;
-      camera.position.y = 0.2 + mouse.y * 0.2;
-      camera.lookAt(1.1, 0.1, 0);
+      // Parallax camera tilt (subtle)
+      camera.position.x = 0.6 + mouse.x * 0.2;
+      camera.position.y = 0.05 + mouse.y * 0.15;
+      camera.lookAt(0.9, 0.05, 0);
 
       renderer.render(scene, camera);
     };
@@ -489,20 +393,21 @@ export default function CinematicHeroCanvas({ onSceneReady }) {
 
       // Dispose Geometries & Materials
       sculptureGeo.dispose();
-      customSculptureMaterial.dispose();
-      innerGeo.dispose();
-      innerMat.dispose();
-      shardGeos.forEach(g => g.dispose());
-      shardMat.dispose();
+      sculptureMaterial.dispose();
+      ribbonGeo.dispose();
+      ribbonMat.dispose();
       frameGeo.dispose();
       frameMat.dispose();
       apertureGeo.dispose();
       apertureMat.dispose();
-      rimGeo.dispose();
-      rimMat.dispose();
-      dustGeo.dispose();
-      dustMat.dispose();
+      portalRimGeo.dispose();
+      portalRimMat.dispose();
+      shardGeo.dispose();
+      shardMat.dispose();
+      emberGeo.dispose();
+      emberMat.dispose();
       envTexture.dispose();
+      portalTexture.dispose();
 
       renderer.dispose();
       if (renderer.domElement && renderer.domElement.parentNode) {
