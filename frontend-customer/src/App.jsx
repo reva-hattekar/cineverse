@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import CinemaNavbar from './components/CinemaNavbar';
 import HomeView from './views/HomeView';
+import TheatresView from './views/TheatresView';
 import BookingFlowView from './views/BookingFlowView';
 import MyBookingsView from './views/MyBookingsView';
 import { api } from './services/api';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'upcoming', 'booking-flow', 'bookings'
+  const [currentView, setCurrentView] = useState('home'); // 'home', 'theatres', 'upcoming', 'booking-flow', 'bookings'
   const [movies, setMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [theaters, setTheaters] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [preselectedShowtime, setPreselectedShowtime] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,8 +49,9 @@ export default function App() {
     }
   };
 
-  const handleSelectMovie = (movie) => {
+  const handleSelectMovie = (movie, initialShowtime = null) => {
     setSelectedMovie(movie);
+    setPreselectedShowtime(initialShowtime);
     setCurrentView('booking-flow');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -60,6 +63,7 @@ export default function App() {
 
   const handleBookingFinished = (targetView) => {
     setSelectedMovie(null);
+    setPreselectedShowtime(null);
     setCurrentView(targetView);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -95,6 +99,16 @@ export default function App() {
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
             theaters={theaters}
+          />
+        )}
+
+        {currentView === 'theatres' && (
+          <TheatresView
+            theaters={theaters}
+            movies={movies}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            onSelectMovie={handleSelectMovie}
           />
         )}
 
@@ -139,8 +153,10 @@ export default function App() {
           <BookingFlowView
             movie={selectedMovie}
             currentCustomer={currentCustomer}
+            initialShowtime={preselectedShowtime}
             onBack={() => {
               setSelectedMovie(null);
+              setPreselectedShowtime(null);
               setCurrentView('home');
             }}
             onBookingFinished={handleBookingFinished}

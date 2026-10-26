@@ -131,7 +131,8 @@ export default function CinemaNavbar({
       if (setSelectedCity && suggestion.data.city) {
         setSelectedCity(suggestion.data.city);
       }
-      setShowTheatresModal(true);
+      setCurrentView('theatres');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     setIsSearchOpen(false);
     setActiveSuggestionIndex(-1);
@@ -191,8 +192,11 @@ export default function CinemaNavbar({
                 Experiences
               </button>
               <button
-                className="nav-link-btn"
-                onClick={() => setShowTheatresModal(true)}
+                className={`nav-link-btn ${currentView === 'theatres' ? 'active' : ''}`}
+                onClick={() => {
+                  setCurrentView('theatres');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               >
                 Theatres
               </button>

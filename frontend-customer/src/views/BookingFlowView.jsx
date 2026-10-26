@@ -22,6 +22,7 @@ import AuditoriumSeatMap from '../components/AuditoriumSeatMap';
 export default function BookingFlowView({
   movie,
   currentCustomer,
+  initialShowtime = null,
   onBack,
   onBookingFinished,
   selectedCity = 'Bengaluru',
@@ -62,8 +63,10 @@ export default function BookingFlowView({
       const res = await api.getMovieShowtimes(movie.movie_id);
       if (res.success) {
         setShowtimes(res.data);
-        // Only auto-select showtime if none is actively chosen (prevents wiping active user bookings)
-        if (!selectedShowtime && res.data.length > 0) {
+        if (initialShowtime) {
+          const matched = res.data.find(st => st.show_id === initialShowtime.show_id);
+          handleSelectShowtime(matched || initialShowtime);
+        } else if (!selectedShowtime && res.data.length > 0) {
           const matchingCity = res.data.find(
             st => st.city && st.city.toLowerCase() === selectedCity.toLowerCase()
           );
