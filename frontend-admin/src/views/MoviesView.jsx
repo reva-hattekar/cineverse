@@ -242,7 +242,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                         height: '56px',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        background: '#151a26',
+                        background: 'var(--bg-elevated)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -285,7 +285,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                           {showtimesCount} Scheduled
                         </span>
                       ) : (
-                        <span className="badge" style={{ background: '#1c2438', color: '#94a3b8' }}>
+                        <span className="badge badge-secondary">
                           0 Shows (Unscheduled)
                         </span>
                       )}
@@ -528,13 +528,13 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                     <div style={{
                       maxHeight: '220px',
                       overflowY: 'auto',
-                      border: '1px solid #1f2736',
+                      border: '1px solid var(--border-subtle)',
                       borderRadius: '8px',
-                      background: '#0c1018'
+                      background: 'var(--bg-secondary)'
                     }}>
                       <table style={{ width: '100%', fontSize: '0.82rem' }}>
                         <thead>
-                          <tr style={{ background: '#131826', textAlign: 'left' }}>
+                          <tr style={{ background: 'var(--bg-elevated)', textAlign: 'left' }}>
                             <th style={{ padding: '8px 12px' }}>Show ID</th>
                             <th style={{ padding: '8px 12px' }}>Venue & Auditorium</th>
                             <th style={{ padding: '8px 12px' }}>Screening Schedule</th>
@@ -546,15 +546,15 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                             const bookingsCount = parseInt(st.booking_count, 10) || 0;
                             const hasBookings = bookingsCount > 0;
                             return (
-                              <tr key={st.show_id} style={{ borderBottom: '1px solid #1c2333' }}>
+                              <tr key={st.show_id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                                 <td style={{ padding: '8px 12px', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
                                   #{st.show_id}
                                 </td>
                                 <td style={{ padding: '8px 12px' }}>
-                                  <div style={{ fontWeight: 600, color: '#f1f5f9' }}>{st.theater_name}</div>
-                                  <div style={{ fontSize: '0.74rem', color: '#64748b' }}>Screen {st.screen_number}</div>
+                                  <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{st.theater_name}</div>
+                                  <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Screen {st.screen_number}</div>
                                 </td>
-                                <td style={{ padding: '8px 12px', color: '#cbd5e1' }}>
+                                <td style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>
                                   {formatLocalDateTime(st.show_date, st.start_time)}
                                 </td>
                                 <td style={{ padding: '8px 12px' }}>
@@ -567,8 +567,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                                     </span>
                                   ) : (
                                     <span
-                                      className="badge"
-                                      style={{ background: '#182032', color: '#94a3b8' }}
+                                      className="badge badge-secondary"
                                       title="No customer bookings made yet"
                                     >
                                       0 Bookings (Unsold Slot)
@@ -584,12 +583,12 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                   </div>
                 )}
 
-                <p style={{ color: '#94a3b8', fontSize: '0.8rem', lineHeight: '1.45', marginBottom: '18px' }}>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', lineHeight: '1.45', marginBottom: '18px' }}>
                   <strong>How to resolve:</strong> To delete this movie title, first navigate to <em>Showtime Programming</em> and reassign or delete the associated screening slots.
                 </p>
 
                 {/* Modal Footer with Actions */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #1f2736', paddingTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -653,7 +652,7 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                   </div>
                 )}
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #1f2736', paddingTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
                   <button
                     type="button"
                     className="btn btn-secondary"

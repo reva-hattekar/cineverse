@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
-import { Plus, Calendar, Clock, Film } from 'lucide-react';
+import { Plus, Calendar, Clock, Film, Monitor } from 'lucide-react';
 import { api } from '../services/api';
+
+function getBadgeClass(screenType = '') {
+  const lower = screenType.toLowerCase();
+  if (lower.includes('imax')) return 'badge-imax';
+  if (lower.includes('dolby')) return 'badge-dolby';
+  if (lower.includes('4dx')) return 'badge-4dx';
+  if (lower.includes('vip') || lower.includes('recliner')) return 'badge-vip';
+  return 'badge-info';
+}
 
 export default function ShowtimesView({ showtimes = [], movies = [], theaters = [], onRefresh, showNotification }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    show_date: '2026-10-18',
+    show_date: '2026-10-28',
     start_time: '18:00:00',
     end_time: '21:00:00',
-    base_price: 300,
+    base_price: 350,
     movie_id: '',
     screen_id: ''
   });
@@ -47,7 +56,7 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
       <div className="table-card">
         <div className="table-toolbar">
           <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 800 }}>Showtime Programming</h3>
+            <h3 style={{ fontSize: '1.08rem', fontWeight: 800 }}>Showtime Programming</h3>
             <p style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Schedules, pricing rules, and auditorium slot allocations</p>
           </div>
           <button className="btn btn-primary btn-sm" onClick={handleOpenAdd}>
@@ -63,32 +72,46 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
                 <th>Screening Date</th>
                 <th>Time Window</th>
                 <th>Movie Title</th>
-                <th>Cinema & Screen</th>
+                <th>Cinema Multiplex</th>
+                <th>Auditorium</th>
+                <th>Format</th>
                 <th>Base Ticket Price</th>
               </tr>
             </thead>
             <tbody>
               {showtimes.map(s => (
                 <tr key={s.show_id}>
-                  <td><strong>#{s.show_id}</strong></td>
+                  <td><strong style={{ color: '#f59e0b' }}>#{s.show_id}</strong></td>
                   <td>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}>
-                      <Calendar size={14} color="#38bdf8" /> {s.show_date}
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#f1f5f9' }}>
+                      <Calendar size={13} color="#fb7185" /> {s.show_date}
                     </span>
                   </td>
                   <td>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#94a3b8' }}>
-                      <Clock size={14} /> {s.start_time} - {s.end_time}
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#94a3b8', fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>
+                      <Clock size={13} color="#38bdf8" /> {s.start_time?.slice(0, 5)} – {s.end_time?.slice(0, 5)}
                     </span>
                   </td>
                   <td>
-                    <strong>{s.movie_title}</strong>
+                    <strong style={{ color: '#ffffff' }}>{s.movie_title}</strong>
                   </td>
                   <td>
-                    {s.theater_name} (Screen {s.screen_number})
+                    {s.theater_name}
                   </td>
                   <td>
-                    <strong style={{ color: '#10b981' }}>₹{parseFloat(s.base_price).toFixed(2)}</strong>
+                    <span style={{ color: '#e2e8f0', fontWeight: 600 }}>
+                      {s.screen_name || `Screen ${s.screen_number}`}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={`badge ${getBadgeClass(s.screen_type)}`}>
+                      {s.screen_type || 'Standard'}
+                    </span>
+                  </td>
+                  <td>
+                    <strong style={{ color: '#10b981', fontSize: '0.88rem' }}>
+                      ₹{parseFloat(s.base_price).toFixed(2)}
+                    </strong>
                   </td>
                 </tr>
               ))}
@@ -98,9 +121,9 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
       </div>
 
       {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-dialog">
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '18px' }}>
+        <div className="modal-backdrop" onClick={() => setModalOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-serif)', color: '#ffffff', marginBottom: '18px' }}>
               Schedule New Showtime
             </h3>
             <form onSubmit={handleSubmit}>
@@ -128,13 +151,13 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
                 >
                   {screensList.map(s => (
                     <option key={s.screen_id} value={s.screen_id}>
-                      {s.theater_name} — Screen {s.screen_number} (Capacity: {s.capacity})
+                      {s.theater_name} — {s.screen_name || `Screen ${s.screen_number}`} ({s.screen_type || 'Standard'}, {s.capacity || 142} Seats)
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="form-row">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                 <div className="form-group">
                   <label>Show Date *</label>
                   <input
@@ -156,7 +179,7 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
                 </div>
               </div>
 
-              <div className="form-row">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                 <div className="form-group">
                   <label>Start Time *</label>
                   <input
@@ -177,7 +200,7 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '24px' }}>
                 <button type="button" className="btn btn-secondary" onClick={() => setModalOpen(false)}>
                   Cancel
                 </button>
@@ -192,4 +215,3 @@ export default function ShowtimesView({ showtimes = [], movies = [], theaters = 
     </div>
   );
 }
-

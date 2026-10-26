@@ -39,25 +39,26 @@ export default function SeatAvailabilityView({ showtimes, showNotification }) {
     <div>
       {/* Control & Selector Toolbar */}
       <div style={{
-        backgroundColor: '#121622',
-        border: '1px solid #1f2736',
-        borderRadius: '8px',
-        padding: '16px 20px',
-        marginBottom: '20px',
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: '14px',
+        padding: '18px 24px',
+        marginBottom: '24px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '14px'
+        gap: '16px',
+        boxShadow: 'var(--shadow-card)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <label style={{ fontSize: '0.84rem', fontWeight: 700, color: '#94a3b8' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <label style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
             Select Screening Showtime:
           </label>
           <select
             value={selectedShowId}
             onChange={(e) => handleSelectShow(e.target.value)}
-            style={{ width: 'auto', minWidth: '340px', backgroundColor: '#0e121a' }}
+            style={{ width: 'auto', minWidth: '340px' }}
           >
             {showtimes.map(s => (
               <option key={s.show_id} value={s.show_id}>
@@ -69,13 +70,13 @@ export default function SeatAvailabilityView({ showtimes, showNotification }) {
 
         {seatsData && (
           <div style={{ display: 'flex', gap: '18px', fontSize: '0.84rem' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#10b981', fontWeight: 700 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--status-success)', fontWeight: 700 }}>
               <CheckCircle2 size={15} /> Available: {seatsData.available_seats}
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#f87171', fontWeight: 700 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--primary-crimson)', fontWeight: 700 }}>
               <XCircle size={15} /> Booked: {seatsData.booked_seats}
             </span>
-            <span style={{ color: '#94a3b8' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>
               Capacity: {seatsData.total_seats} Seats
             </span>
           </div>
@@ -83,23 +84,23 @@ export default function SeatAvailabilityView({ showtimes, showNotification }) {
       </div>
 
       {loading && (
-        <div style={{ color: '#94a3b8', padding: '24px', textAlign: 'center' }}>
+        <div style={{ color: 'var(--text-secondary)', padding: '36px', textAlign: 'center' }}>
           Loading auditorium seating matrix...
         </div>
       )}
 
       {seatsData && !loading && (
-        <div className="table-card" style={{ padding: '28px', maxWidth: '920px', margin: '0 auto' }}>
+        <div className="auditorium-container">
           {/* Header Info */}
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '1px', color: '#f59e0b', fontWeight: 700 }}>
-              Auditorium Occupancy Inspection
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#d4af37', fontWeight: 800 }}>
+              Auditorium Occupancy Live Inspection
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginTop: '2px', color: '#f1f5f9' }}>
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 800, marginTop: '4px', color: 'var(--text-primary)', fontFamily: 'var(--font-serif)' }}>
               {seatsData.showtime.movie_title}
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginTop: '4px' }}>
-              {seatsData.showtime.theater_name} • Screen {seatsData.showtime.screen_number} • Base Price: ₹{seatsData.showtime.base_price}
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.84rem', marginTop: '4px' }}>
+              {seatsData.showtime.theater_name} • Screen {seatsData.showtime.screen_number} ({seatsData.showtime.screen_type || 'Standard'}) • Base Price: ₹{seatsData.showtime.base_price}
             </p>
           </div>
 

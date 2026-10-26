@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../services/api';
-import { Lock, Mail, ShieldAlert, Film, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, ShieldAlert, Film, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' }) {
   const [email, setEmail] = useState('admin@cinema.com');
@@ -36,49 +36,66 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '100vh',
-      backgroundColor: '#0b0d13',
-      backgroundImage: 'radial-gradient(circle at 50% 20%, #151a26 0%, #0b0d13 70%)',
-      padding: '20px'
+      backgroundColor: '#050508',
+      backgroundImage: `
+        radial-gradient(circle at 50% 15%, rgba(69, 10, 20, 0.45) 0%, transparent 60%),
+        radial-gradient(circle at 10% 80%, rgba(18, 18, 26, 0.6) 0%, transparent 65%)
+      `,
+      padding: '24px'
     }}>
       <div style={{
-        backgroundColor: '#121622',
-        border: '1px solid #1f2736',
-        borderRadius: '12px',
-        padding: '36px',
+        backgroundColor: '#12121a',
+        backgroundImage: 'radial-gradient(ellipse at top right, rgba(69, 10, 20, 0.3) 0%, transparent 70%)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: '16px',
+        padding: '40px 36px',
         width: '100%',
         maxWidth: '440px',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
+        boxShadow: '0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(69, 10, 20, 0.25)'
       }}>
         {/* Brand header */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '52px',
-            height: '52px',
-            borderRadius: '10px',
-            background: 'rgba(245, 158, 11, 0.12)',
-            border: '1px solid rgba(245, 158, 11, 0.35)',
-            marginBottom: '14px'
+            width: '56px',
+            height: '56px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(225, 29, 72, 0.22) 0%, rgba(69, 10, 20, 0.45) 100%)',
+            border: '1px solid rgba(225, 29, 72, 0.4)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 16px rgba(225, 29, 72, 0.3)'
           }}>
-            <Film size={26} color="#f59e0b" />
+            <Film size={28} color="#e11d48" />
           </div>
-          <h1 style={{ fontSize: '1.45rem', fontWeight: 800, letterSpacing: '1px', color: '#f1f5f9' }}>
+          <h1 style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '1.6rem',
+            fontWeight: 800,
+            letterSpacing: '0.12em',
+            color: '#ffffff',
+            margin: '0 0 4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px'
+          }}>
             CINEVERSE
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#e11d48', display: 'inline-block' }} />
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginTop: '4px' }}>
-            Cinema Operations & Ticketing Management
+          <p style={{ color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
+            Cinema Operations & Ticketing Control
           </p>
         </div>
 
         {error && (
           <div style={{
-            backgroundColor: 'rgba(244, 63, 94, 0.12)',
-            border: '1px solid rgba(244, 63, 94, 0.3)',
-            borderRadius: '6px',
+            backgroundColor: 'rgba(225, 29, 72, 0.12)',
+            border: '1px solid rgba(225, 29, 72, 0.3)',
+            borderRadius: '8px',
             padding: '12px 14px',
-            marginBottom: '20px',
+            marginBottom: '22px',
             color: '#fda4af',
             fontSize: '0.82rem',
             display: 'flex',
@@ -90,10 +107,10 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div className="form-group" style={{ marginBottom: 0 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              <Mail size={13} color="#94a3b8" /> Staff Email
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#cbd5e1' }}>
+              <Mail size={13} color="#fb7185" /> Staff Email Address
             </label>
             <input
               type="email"
@@ -101,13 +118,12 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@cinema.com"
-              style={{ backgroundColor: '#0e121a', borderColor: '#1f2736' }}
             />
           </div>
 
           <div className="form-group" style={{ marginBottom: 0 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              <Lock size={13} color="#94a3b8" /> Password
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.76rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#cbd5e1' }}>
+              <Lock size={13} color="#fb7185" /> Security Password
             </label>
             <input
               type="password"
@@ -115,7 +131,6 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              style={{ backgroundColor: '#0e121a', borderColor: '#1f2736' }}
             />
           </div>
 
@@ -123,24 +138,24 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
             type="submit"
             className="btn btn-primary"
             disabled={loading}
-            style={{ width: '100%', marginTop: '8px', padding: '11px', fontWeight: 700 }}
+            style={{ width: '100%', marginTop: '8px', padding: '12px', fontSize: '0.9rem' }}
           >
-            {loading ? 'Authenticating Credentials...' : 'Authenticate & Enter Portal'}
+            {loading ? 'Authenticating Credentials...' : 'Authenticate & Enter Control Room →'}
           </button>
         </form>
 
         {/* Demo Fast Logins for Testing */}
-        <div style={{ marginTop: '26px', paddingTop: '18px', borderTop: '1px solid #1f2736' }}>
+        <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <div style={{
-            fontSize: '0.72rem',
+            fontSize: '0.7rem',
             color: '#64748b',
             textTransform: 'uppercase',
-            fontWeight: 700,
-            letterSpacing: '0.5px',
+            fontWeight: 800,
+            letterSpacing: '0.08em',
             marginBottom: '10px',
             textAlign: 'center'
           }}>
-            Quick Login Credentials
+            Preloaded Operator Profiles
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
@@ -148,7 +163,7 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={() => setRoleCredentials('admin@cinema.com')}
-              style={{ fontSize: '0.72rem', padding: '6px 4px' }}
+              style={{ fontSize: '0.74rem', padding: '7px 4px' }}
             >
               Admin
             </button>
@@ -156,7 +171,7 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={() => setRoleCredentials('priya.nair@cinema.com')}
-              style={{ fontSize: '0.72rem', padding: '6px 4px' }}
+              style={{ fontSize: '0.74rem', padding: '7px 4px' }}
             >
               Manager
             </button>
@@ -164,7 +179,7 @@ export default function AdminLogin({ onLoginSuccess, returnPath = '/overview' })
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={() => setRoleCredentials('rahul.verma@cinema.com')}
-              style={{ fontSize: '0.72rem', padding: '6px 4px' }}
+              style={{ fontSize: '0.74rem', padding: '7px 4px' }}
             >
               Staff
             </button>
