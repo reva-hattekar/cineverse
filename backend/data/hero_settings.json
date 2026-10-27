@@ -2,8 +2,8 @@
   "manual_overrides": {
     "1": null,
     "2": null,
-    "3": null,
-    "4": null
+    "3": 1,
+    "4": 9
   },
   "movie_trailers": {
     "1": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
@@ -14,7 +14,7 @@
     "6": "https://www.youtube.com/watch?v=ByXuk9QqQkk",
     "7": "https://www.youtube.com/watch?v=cqGjhVJWtEg",
     "8": "https://www.youtube.com/watch?v=8mrVmf239GU",
-    "9": "https://www.youtube.com/watch?v=GY4BgdUSpbE",
+    "9": "https://www.youtube.com/watch?v=irVNGjRFZGk",
     "10": "https://www.youtube.com/watch?v=K0eDlFX9GMc",
     "13": "https://www.youtube.com/watch?v=62bIsvRcPv0"
   },
@@ -27,7 +27,7 @@
     "6": "2001-07-20",
     "7": "2023-06-02",
     "8": "2022-09-30",
-    "9": "2022-03-25",
+    "9": "2026-12-18",
     "10": "2009-12-25",
     "13": "2026-11-27"
   }
