@@ -65,7 +65,8 @@ export default function HomeView({
   }, [movies]);
 
   const comingSoonCount = useMemo(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const d = new Date();
+    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     return movies.filter(
       (m) =>
         (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0) &&
@@ -115,7 +116,8 @@ export default function HomeView({
 
     // Direct derivation from catalog movies if gaps exist
     if (Array.isArray(movies) && movies.length > 0) {
-      const todayStr = new Date().toISOString().split('T')[0];
+      const d = new Date();
+    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
       // Latest releases (release_date <= todayStr, release_date DESC, rating DESC)
       const eligibleLatest = movies
@@ -232,7 +234,8 @@ export default function HomeView({
         selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
       if (!matchGenre) return false;
 
-      const todayStr = new Date().toISOString().split('T')[0];
+      const d = new Date();
+    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const isBookable = m.scheduled_showtimes_count > 0 && m.release_status !== 'Ended';
       const isComingSoon =
         (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0) &&

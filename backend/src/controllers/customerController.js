@@ -47,7 +47,7 @@ async function getCustomerBookings(req, res, next) {
         b.total_amount,
         b.booking_status,
         s.show_id,
-        s.show_date,
+        DATE_FORMAT(s.show_date, '%Y-%m-%d') AS show_date,
         s.start_time,
         m.title AS movie_title,
         m.genre,

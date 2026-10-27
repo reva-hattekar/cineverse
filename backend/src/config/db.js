@@ -13,7 +13,9 @@ const poolConfig = {
   connectionLimit: 10,
   queueLimit: 0,
   enableKeepAlive: true,
-  keepAliveInitialDelay: 0
+  keepAliveInitialDelay: 0,
+  dateStrings: true,
+  timezone: '+05:30'
 };
 
 // Create the connection pool

@@ -49,12 +49,12 @@ async function getAllMovies(req, res, next) {
           m.trailer_url,
           DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
           CASE
-            WHEN COUNT(s.show_id) > 0 THEN 'Now Showing'
+            WHEN COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0 THEN 'Now Showing'
             WHEN m.release_date IS NOT NULL AND m.release_date < CURRENT_DATE() THEN 'Ended'
-            WHEN m.release_date IS NOT NULL AND m.release_date > CURRENT_DATE() THEN 'Coming Soon'
+            WHEN m.release_date IS NOT NULL AND m.release_date >= CURRENT_DATE() THEN 'Coming Soon'
             ELSE 'Unscheduled'
           END AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE 1=1
@@ -73,12 +73,12 @@ async function getAllMovies(req, res, next) {
           NULL AS trailer_url,
           DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
           CASE
-            WHEN COUNT(s.show_id) > 0 THEN 'Now Showing'
+            WHEN COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0 THEN 'Now Showing'
             WHEN m.release_date IS NOT NULL AND m.release_date < CURRENT_DATE() THEN 'Ended'
-            WHEN m.release_date IS NOT NULL AND m.release_date > CURRENT_DATE() THEN 'Coming Soon'
+            WHEN m.release_date IS NOT NULL AND m.release_date >= CURRENT_DATE() THEN 'Coming Soon'
             ELSE 'Unscheduled'
           END AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE 1=1
@@ -96,8 +96,8 @@ async function getAllMovies(req, res, next) {
           m.backdrop_url,
           NULL AS trailer_url,
           NULL AS release_date,
-          IF(COUNT(s.show_id) > 0, 'Now Showing', 'Unscheduled') AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          IF(COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0, 'Now Showing', 'Unscheduled') AS release_status,
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE 1=1
@@ -146,6 +146,8 @@ async function getAllMovies(req, res, next) {
     const movies = await query(sql, params);
     const fallback = loadFallbackSettings();
 
+    const localTodayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+
     // Compute clear metadata and trailer links
     const formattedMovies = movies.map(m => {
       const fallbackTrailer = fallback.movie_trailers[m.movie_id];
@@ -155,13 +157,20 @@ async function getAllMovies(req, res, next) {
       const fallbackDate = fallback.movie_release_dates[m.movie_id];
       const finalDate = m.release_date || (schema.isMigrated ? null : fallbackDate) || null;
 
+      const computedStatus = m.scheduled_showtimes_count > 0
+        ? 'Now Showing'
+        : (finalDate
+            ? (finalDate > localTodayStr ? 'Coming Soon' : 'Ended')
+            : (m.release_status || 'Unscheduled'));
+
       return {
         ...m,
         release_date: finalDate,
+        release_status: computedStatus,
         trailer_url: finalTrailer,
         embed_url: finalTrailer ? getYouTubeEmbedUrl(finalTrailer) : null,
         has_trailer: Boolean(finalTrailer && isValidTrailerUrl(finalTrailer)),
-        is_bookable: m.scheduled_showtimes_count > 0 && m.release_status === 'Now Showing'
+        is_bookable: m.scheduled_showtimes_count > 0 && computedStatus === 'Now Showing'
       };
     });
 
@@ -199,12 +208,12 @@ async function getMovieById(req, res, next) {
           m.trailer_url,
           DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
           CASE
-            WHEN COUNT(s.show_id) > 0 THEN 'Now Showing'
+            WHEN COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0 THEN 'Now Showing'
             WHEN m.release_date IS NOT NULL AND m.release_date < CURRENT_DATE() THEN 'Ended'
-            WHEN m.release_date IS NOT NULL AND m.release_date > CURRENT_DATE() THEN 'Coming Soon'
+            WHEN m.release_date IS NOT NULL AND m.release_date >= CURRENT_DATE() THEN 'Coming Soon'
             ELSE 'Unscheduled'
           END AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE m.movie_id = ?
@@ -224,12 +233,12 @@ async function getMovieById(req, res, next) {
           NULL AS trailer_url,
           DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
           CASE
-            WHEN COUNT(s.show_id) > 0 THEN 'Now Showing'
+            WHEN COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0 THEN 'Now Showing'
             WHEN m.release_date IS NOT NULL AND m.release_date < CURRENT_DATE() THEN 'Ended'
-            WHEN m.release_date IS NOT NULL AND m.release_date > CURRENT_DATE() THEN 'Coming Soon'
+            WHEN m.release_date IS NOT NULL AND m.release_date >= CURRENT_DATE() THEN 'Coming Soon'
             ELSE 'Unscheduled'
           END AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE m.movie_id = ?
@@ -248,8 +257,8 @@ async function getMovieById(req, res, next) {
           m.backdrop_url,
           NULL AS trailer_url,
           NULL AS release_date,
-          IF(COUNT(s.show_id) > 0, 'Now Showing', 'Unscheduled') AS release_status,
-          COUNT(s.show_id) AS scheduled_showtimes_count
+          IF(COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) > 0, 'Now Showing', 'Unscheduled') AS release_status,
+          COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
         FROM MOVIE m
         LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
         WHERE m.movie_id = ?
@@ -272,13 +281,21 @@ async function getMovieById(req, res, next) {
     const fallbackDate = fallback.movie_release_dates[raw.movie_id];
     const finalDate = raw.release_date || (schema.isMigrated ? null : fallbackDate) || null;
 
+    const localTodayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+    const computedStatus = raw.scheduled_showtimes_count > 0
+      ? 'Now Showing'
+      : (finalDate
+          ? (finalDate > localTodayStr ? 'Coming Soon' : 'Ended')
+          : (raw.release_status || 'Unscheduled'));
+
     const movie = {
       ...raw,
       release_date: finalDate,
+      release_status: computedStatus,
       trailer_url: finalTrailer,
       embed_url: finalTrailer ? getYouTubeEmbedUrl(finalTrailer) : null,
       has_trailer: Boolean(finalTrailer && isValidTrailerUrl(finalTrailer)),
-      is_bookable: raw.scheduled_showtimes_count > 0 && raw.release_status === 'Now Showing'
+      is_bookable: raw.scheduled_showtimes_count > 0 && computedStatus === 'Now Showing'
     };
 
     res.json({ success: true, schemaMigrated: schema.isMigrated, data: movie });
