@@ -27,10 +27,11 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+~$*
+*.tmp
 
 # Vite dependency cache
 .vite/
 */.vite/
 node_modules/.vite/
 */node_modules/.vite/
-

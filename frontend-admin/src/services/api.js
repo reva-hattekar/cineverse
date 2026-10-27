@@ -100,6 +100,32 @@ export const api = {
     return handleResponse(res);
   },
 
+  // Hero Trailer Management
+
+  getHeroSlots: async () => {
+    const res = await fetch(`${BASE_URL}/admin/hero/slots`, {
+      headers: { ...getAuthHeader() }
+    });
+    return handleResponse(res);
+  },
+
+  updateHeroSlot: async (slot_id, override_movie_id) => {
+    const res = await fetch(`${BASE_URL}/admin/hero/slots`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+      body: JSON.stringify({ slot_id, override_movie_id })
+    });
+    return handleResponse(res);
+  },
+
+  resetHeroSlots: async () => {
+    const res = await fetch(`${BASE_URL}/admin/hero/slots/reset`, {
+      method: 'POST',
+      headers: { ...getAuthHeader() }
+    });
+    return handleResponse(res);
+  },
+
   // Theaters & Screens
   getTheaters: async () => {
     const res = await fetch(`${BASE_URL}/theaters`);

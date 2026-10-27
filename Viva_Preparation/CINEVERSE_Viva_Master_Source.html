@@ -1,0 +1,1853 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CINEVERSE — Master Viva Preparation Guide</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 11pt;
+      line-height: 1.5;
+      color: #111827;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 20pt;
+      color: #0f172a;
+      border-bottom: 2px solid #1e293b;
+      padding-bottom: 6px;
+      margin-top: 24pt;
+      page-break-before: always;
+    }
+    h1:first-of-type {
+      page-break-before: avoid;
+    }
+    h2 {
+      font-size: 14pt;
+      color: #1e3a8a;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 4px;
+      margin-top: 18pt;
+    }
+    h3 {
+      font-size: 12pt;
+      color: #0f172a;
+      margin-top: 14pt;
+    }
+    h4 {
+      font-size: 11pt;
+      color: #991b1b;
+      margin-top: 10pt;
+      margin-bottom: 2pt;
+    }
+    p {
+      margin-top: 4pt;
+      margin-bottom: 6pt;
+      text-align: justify;
+    }
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9.5pt;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #1e3a8a;
+      padding: 8pt;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9pt;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin: 6pt 0;
+    }
+    table.viva-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12pt 0;
+      font-size: 9.5pt;
+    }
+    table.viva-table th, table.viva-table td {
+      border: 1px solid #94a3b8;
+      padding: 6pt 8pt;
+      text-align: left;
+    }
+    table.viva-table th {
+      background: #f1f5f9;
+      font-weight: bold;
+    }
+    li {
+      margin-bottom: 3pt;
+    }
+    .cover-page {
+      height: 95vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      page-break-after: always;
+    }
+    .cover-title {
+      font-size: 26pt;
+      font-weight: bold;
+      color: #0f172a;
+      margin-bottom: 12pt;
+    }
+    .cover-subtitle {
+      font-size: 15pt;
+      color: #475569;
+      margin-bottom: 24pt;
+    }
+    .cover-meta {
+      font-size: 11pt;
+      color: #334155;
+      margin-top: 36pt;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cover-page">
+  <div class="cover-title">CINEVERSE</div>
+  <div class="cover-subtitle">Complete RDBMS Project Evaluation & Viva Voce Preparation Master Guide</div>
+  <hr style="width: 60%; margin: 20px auto; border: 1px solid #94a3b8;"/>
+  <div class="cover-meta">
+    <strong>Course:</strong> Relational Database Management Systems Laboratory (CSE)<br/>
+    <strong>Institution:</strong> Manipal University Jaipur (MUJ)<br/>
+    <strong>Database:</strong> MySQL 8.0 (InnoDB) — <code>MovieTheaterDB</code><br/>
+    <strong>Technology Stack:</strong> Node.js, Express, React, Vite, Three.js<br/>
+    <strong>Date of Evaluation:</strong> October 2026
+  </div>
+</div>
+
+<div class="section-eval">
+  <h1>CINEVERSE — Comprehensive RDBMS Project Evaluation</h1>
+<strong>Academic Lab Project Assessment &amp; Defence Audit</strong>  
+<strong>Course:</strong> Relational Database Management Systems Laboratory (CSE Department)  
+<strong>Institution:</strong> Manipal University Jaipur (MUJ)  
+<strong>Evaluated Database:</strong> MySQL 8.0 (<code>MovieTheaterDB</code> — InnoDB Engine)  
+<strong>Evaluated Architecture:</strong> Multi-Tier Architecture (MySQL &harr; Node.js/Express &harr; React Client Applications)  
+<strong>Evaluation Date:</strong> October 2026  
+
+<hr/>
+
+<h2>Executive Summary &amp; Marking Matrix</h2>
+
+This evaluation assesses the CINEVERSE Movie Theatre Booking and Management System strictly against university-level RDBMS criteria. Every score is based on verified codebase artifacts, live schema introspection, SQL query profiling, and transaction traces. No marks are awarded based on user interface claims or unverified documentation.
+
+<h3>Evaluation Scorecard (18 Core Areas)</h3>
+
+<table class="viva-table"><thead><tr><th>Area #</th><th>Evaluated Area</th><th>Score (out of 10)</th><th>Implementation Status</th><th>Key Strength / Primary Risk</th></tr></thead><tbody><tr><td><strong>1</strong></td><td>Problem Statement &amp; Domain Relevance</td><td><strong>9.0 / 10</strong></td><td>Verified Complete</td><td>Excellent enterprise domain model with real multi-city scaling.</td></tr><tr><td><strong>2</strong></td><td>System Architecture &amp; Tier Separation</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Clean separation of Admin (5173), Customer (5174), and API (5000).</td></tr><tr><td><strong>3</strong></td><td>Database Design &amp; Relational Modeling</td><td><strong>9.0 / 10</strong></td><td>Verified Complete</td><td>15 base tables cleanly separating static venue from dynamic schedules.</td></tr><tr><td><strong>4</strong></td><td>ER Diagram Correctness &amp; Cardinality</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>All cardinalities, PKs, FKs, and junction tables accurately mapped.</td></tr><tr><td><strong>5</strong></td><td>Relational Schema &amp; Data Types</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Strict typing (DECIMAL, TIME, DATE, TIMESTAMP); no loose VARCHARs.</td></tr><tr><td><strong>6</strong></td><td>Primary, Foreign &amp; Unique Key Design</td><td><strong>9.5 / 10</strong></td><td>Verified Complete</td><td>Exceptional composite PKs and multi-column UNIQUE constraints.</td></tr><tr><td><strong>7</strong></td><td>Relationship Cardinalities (1:1, 1:N, M:N)</td><td><strong>9.0 / 10</strong></td><td>Verified Complete</td><td>Perfect junction tables for M:N relationships; explicit 1:1 constraints.</td></tr><tr><td><strong>8</strong></td><td>Normalization &amp; Functional Dependencies</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Strict 3NF across all core tables; zero multi-valued dependencies.</td></tr><tr><td><strong>9</strong></td><td>Referential Integrity &amp; Constraints</td><td><strong>9.5 / 10</strong></td><td>Verified Complete</td><td>22 CHECK constraints; explicit ON DELETE CASCADE and RESTRICT rules.</td></tr><tr><td><strong>10</strong></td><td>SQL Query Quality &amp; Efficiency</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Multi-table INNER/LEFT JOINs, aggregate rollups, parameterized statements.</td></tr><tr><td><strong>11</strong></td><td>CRUD Operations Implementation</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Full CRUD on movies, showtimes, venues, bookings, and concessions.</td></tr><tr><td><strong>12</strong></td><td>Transaction Management &amp; ACID Properties</td><td><strong>8.0 / 10</strong></td><td>Partial Implementation</td><td>Multi-statement ACID transaction in booking; missing lock on seat check.</td></tr><tr><td><strong>13</strong></td><td>Backend Database Driver &amp; Integration</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Connection pooling (<code>mysql2/promise</code>), keepalive, prepared statements.</td></tr><tr><td><strong>14</strong></td><td>Admin &amp; Customer Frontend Integration</td><td><strong>8.5 / 10</strong></td><td>Verified Complete</td><td>Real-time synchronization of bookings, seat maps, and catalog changes.</td></tr><tr><td><strong>15</strong></td><td>Booking &amp; Seat Availability Consistency</td><td><strong>7.5 / 10</strong></td><td>Partial Implementation</td><td>Dynamic availability calculated from DB; concurrency race condition risk.</td></tr><tr><td><strong>16</strong></td><td>Payment &amp; Financial Settlement Handling</td><td><strong>7.0 / 10</strong></td><td>Verified Simulation</td><td>Simulated ledger with 1:1 FK; lacks live external payment gateway.</td></tr><tr><td><strong>17</strong></td><td>Testing, Validation &amp; Edge Cases</td><td><strong>8.0 / 10</strong></td><td>Verified Complete</td><td>37 integration tests pass 100%; lacks unit tests with mock DB fixtures.</td></tr><tr><td><strong>18</strong></td><td>Documentation, Report &amp; Demo Readiness</td><td><strong>9.0 / 10</strong></td><td>Verified Complete</td><td>29-page IEEE/academic PDF report; running dev servers; fast response.</td></tr><tr><td><strong>--</strong></td><td><strong>Overall Evaluated Score</strong></td><td><strong>8.56 / 10</strong></td><td><strong>Grade: A (Distinction)</strong></td><td><strong>Highly Defensible University RDBMS Lab Project</strong></td></tr></tbody></table>
+<hr/>
+
+<h2>Detailed Evaluation by Area</h2>
+
+<h3>1. Problem Statement and Objectives</h3>
+<em> <strong>Score:</strong> 9.0 / 10
+</em> <strong>What is Implemented:</strong> CINEVERSE solves the challenge of centralizing multiplex theater management, scheduling conflicting screenings across physical auditoriums, calculating live seat availability without denormalization, and reconciling ticket and snack revenue.
+<em> <strong>Evidence:</strong>
+<li><code>database/01_create_database.sql</code> to <code>database/11_add_movie_trailer_and_hero_settings.sql</code></li>
+<li><code>backend/src/controllers/showtimeController.js</code> (Lines 176–260: scheduling conflict engine)</li>
+<li><code>backend/src/controllers/bookingController.js</code> (Lines 136–350: atomic multi-seat booking)</li>
+</em> <strong>Design Strengths:</strong> Does not treat cinema booking as a toy single-theater model. Accurately maps 8 multiplexes across 5 Indian cities (Bengaluru, Mumbai, Delhi, Hyderabad, Chennai) with 32 auditoriums and 4,544 physical seats.
+<em> <strong>Potential Weaknesses:</strong> Does not incorporate dynamic pricing algorithms based on time-until-showtime or historical demand, though tiered base pricing by seat category (<code>VIP</code>, <code>Premium</code>, <code>Standard</code>) is fully operational.
+</em> <strong>Examiner Challenge:</strong> <em>"Why build a bespoke system when commercial SaaS platforms like BookMyShow exist?"</em>
+<li><strong>Defense:</strong> Commercial aggregators charge heavy convenience fees and lock theaters out of their raw operational data. CINEVERSE gives theater circuits internal control over auditorium hardware mapping, physical inventory, turnover buffers, and concession margins.</li>
+<em> <strong>Concrete Improvement:</strong> Implement a loyalty point redemption engine during checkout to complete the customer retention loop.
+
+<hr/>
+
+<h3>2. System Architecture</h3>
+</em> <strong>Score:</strong> 8.5 / 10
+<em> <strong>What is Implemented:</strong> Three-tier client-server architecture with completely decoupled presentation, application, and persistence layers.
+</em> <strong>Evidence:</strong>
+<li>Presentation (Admin): <code>frontend-admin/</code> running on Vite / React 18 at <code>http://localhost:5173</code></li>
+<li>Presentation (Customer): <code>frontend-customer/</code> running on Vite / React 18 at <code>http://localhost:5174</code></li>
+<li>Application Layer: <code>backend/src/server.js</code> running Node.js v20 / Express 4.19 at <code>http://localhost:5000</code></li>
+<li>Database Layer: MySQL 8.0 <code>MovieTheaterDB</code> on port 3306 managed by InnoDB engine</li>
+<em> <strong>Design Strengths:</strong> Complete separation between the public consumer browsing portal and the administrative back-office control room. The frontends communicate exclusively via JSON over REST; no direct database credentials or queries reside in client code.
+</em> <strong>Potential Weaknesses:</strong> The backend serves as a monolithic REST API. While ideal for a laboratory project, a distributed enterprise deployment would decouple the booking transaction engine from catalog reporting.
+<em> <strong>Examiner Challenge:</strong> </em>"Why run two separate React frontends on different ports instead of role-based route guards in a single app?"<em>
+<li><strong>Defense:</strong> Strict security boundary separation. The admin bundle includes staff authentication, inventory control, and scheduling collision interfaces that should never be sent over the wire to retail customer browsers.</li>
+</em> <strong>Concrete Improvement:</strong> Add an API Gateway (or Nginx reverse proxy) to expose a unified domain on port 80/443 with path-based routing (<code>/api</code>, <code>/admin</code>, <code>/</code>).
+
+<hr/>
+
+<h3>3. Database Design</h3>
+<em> <strong>Score:</strong> 9.0 / 10
+</em> <strong>What is Implemented:</strong> 15 base relational tables organized into three distinct architectural domains:
+<li><em>Infrastructure Domain:</em> <code>THEATER</code>, <code>SCREEN</code>, <code>SEAT</code>, <code>ADMIN_STAFF</code></li>
+<li><em>Theatrical Programming Domain:</em> <code>MOVIE</code>, <code>SHOWTIME</code></li>
+<li><em>Transactional Commercial Domain:</em> <code>CUSTOMER</code>, <code>ACCOUNT</code>, <code>LOYALTY_ACCOUNT</code>, <code>BOOKING</code>, <code>BOOKED_SEAT</code>, <code>PAYMENT</code>, <code>SNACK</code>, <code>SNACK_ORDER</code>, <code>SNACK_ORDER_ITEM</code></li>
+<em> <strong>Evidence:</strong>
+<li>Live table count verified via <code>SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'</code></li>
+<li>Total physical database rows: 5,699 records across 15 tables.</li>
+</em> <strong>Design Strengths:</strong> Clean separation between static venue assets and dynamic show schedules. A physical seat is modeled once in <code>SEAT</code> and never modified or flagged with a text state during booking; availability is determined relationally through <code>BOOKED_SEAT</code>.
+<em> <strong>Potential Weaknesses:</strong> Absence of database views (<code>VIEW</code>) or stored procedures (<code>PROCEDURE</code>), as business logic is currently encapsulated in backend controllers.
+</em> <strong>Examiner Challenge:</strong> <em>"Why isn't seat availability stored as a boolean column <code>is_available</code> directly inside the <code>SEAT</code> table?"</em>
+<li><strong>Defense:</strong> Storing <code>is_available</code> on <code>SEAT</code> violates relational principles. A physical seat is available or booked relative to a specific <em>showtime</em>, not in perpetuity. Storing status in <code>SEAT</code> would prevent scheduling concurrent or future screenings in that auditorium.</li>
+<em> <strong>Concrete Improvement:</strong> Create a MySQL View <code>vw_live_seat_availability</code> joining <code>SHOWTIME</code>, <code>SEAT</code>, and <code>BOOKED_SEAT</code>.
+
+<hr/>
+
+<h3>4. ER Diagram Correctness</h3>
+</em> <strong>Score:</strong> 8.5 / 10
+<em> <strong>What is Implemented:</strong> Entity-Relationship diagram completely captures all 15 entities, primary keys, foreign key lines, and Crow's Foot cardinality notations.
+</em> <strong>Evidence:</strong>
+<li><code>CINEVERSE_ER_Diagram.mmd</code> (Mermaid code)</li>
+<li><code>report_assets/cineverse_er_diagram.svg</code> and <code>report_assets/fig_3_1_er_diagram.png</code></li>
+<li>Verified relationship lines: 15 explicit foreign key relationships.</li>
+<em> <strong>Design Strengths:</strong> Accurate modeling of associative entities (junction tables) <code>BOOKED_SEAT</code> and <code>SNACK_ORDER_ITEM</code> resolving Many-to-Many relationships.
+</em> <strong>Potential Weaknesses:</strong> The Mermaid ER diagram models <code>CUSTOMER</code> &harr; <code>ACCOUNT</code> as a 1:1 relationship, but the ER notation in standard Chen notation could distinguish the total vs partial participation.
+<em> <strong>Examiner Challenge:</strong> </em>"Which entities in your ER diagram are strong entities and which are weak entities?"<em>
+<li><strong>Defense:</strong> <code>THEATER</code>, <code>MOVIE</code>, <code>CUSTOMER</code>, and <code>SNACK</code> are strong entities (exist independently). <code>SCREEN</code> and <code>SEAT</code> can be considered structurally dependent on <code>THEATER</code> and <code>SCREEN</code> respectively (existence dependency). <code>BOOKED_SEAT</code> is an associative entity whose identity depends on <code>BOOKING</code> and <code>SEAT</code>.</li>
+</em> <strong>Concrete Improvement:</strong> Add Chen ER diagram notation side-by-side with Crow's Foot to demonstrate dual theoretical mastery.
+
+<hr/>
+
+<h3>5. Relational Schema and Data Types</h3>
+<em> <strong>Score:</strong> 8.5 / 10
+</em> <strong>What is Implemented:</strong> Explicit data typing utilizing appropriate relational primitives:
+<li>Monetary values: <code>DECIMAL(10,2)</code> for zero round-off error</li>
+<li>Time tracking: <code>TIME</code> for start/end, <code>DATE</code> for show date, <code>TIMESTAMP</code> with <code>CURRENT_TIMESTAMP</code> for audit logging</li>
+<li>Text fields: Bounded <code>VARCHAR(100)</code> to <code>VARCHAR(150)</code>; no unbounded <code>TEXT</code> fields</li>
+<li>Numerical counts: <code>INT</code> with <code>capacity &gt; 0</code> and <code>duration &gt; 0</code></li>
+<em> <strong>Evidence:</strong>
+<li>Verified via <code>INFORMATION_SCHEMA.COLUMNS</code> across all 15 tables.</li>
+</em> <strong>Design Strengths:</strong> Zero use of floating-point types (<code>FLOAT</code> or <code>DOUBLE</code>) for financial data, preventing binary floating-point rounding anomalies during revenue aggregation.
+<em> <strong>Potential Weaknesses:</strong> Movie ratings use <code>DECIMAL(3,1)</code> allowing values up to 99.9 if unchecked, though constrained to $\le 10.0$ by check constraint <code>chk_movie_rating</code>.
+</em> <strong>Examiner Challenge:</strong> <em>"Why use <code>DECIMAL(10,2)</code> instead of <code>FLOAT</code> or <code>DOUBLE</code> for ticket prices?"</em>
+<li><strong>Defense:</strong> <code>FLOAT</code> and <code>DOUBLE</code> use IEEE 754 binary floating-point representation, which cannot precisely represent fractional decimal powers (e.g., $0.10$). In financial ledgers, accumulating rounding discrepancies violates accounting standards. <code>DECIMAL</code> stores numbers as fixed-point exact integers.</li>
+<em> <strong>Concrete Improvement:</strong> Standardize currency ISO codes by adding a <code>currency_code CHAR(3) DEFAULT 'INR'</code> column to <code>THEATER</code>.
+
+<hr/>
+
+<h3>6. Primary and Foreign Keys</h3>
+</em> <strong>Score:</strong> 9.5 / 10
+<em> <strong>What is Implemented:</strong> Every table possesses a declared Primary Key. All 15 foreign key constraints are enforced by the InnoDB engine with explicit constraint names.
+</em> <strong>Evidence:</strong>
+<li>Verified via <code>INFORMATION_SCHEMA.KEY_COLUMN_USAGE</code></li>
+<li>Composite Primary Keys:</li>
+    <em> <code>BOOKED_SEAT</code>: <code>PRIMARY KEY (booking_id, seat_id)</code>
+    </em> <code>SNACK_ORDER_ITEM</code>: <code>PRIMARY KEY (snack_order_id, snack_id)</code>
+<li>Composite Unique Constraints:</li>
+    <em> <code>SCREEN</code>: <code>UNIQUE KEY uq_theater_screen (theater_id, screen_number)</code>
+    </em> <code>SEAT</code>: <code>UNIQUE KEY uq_screen_seat (screen_id, seat_number)</code>
+<em> <strong>Design Strengths:</strong> Composite unique keys prevent real-world duplication: Screen 1 cannot exist twice within the same theater; Seat A1 cannot exist twice within the same auditorium screen.
+</em> <strong>Potential Weaknesses:</strong> None found. Primary and foreign key architecture is exemplary.
+<em> <strong>Examiner Challenge:</strong> </em>"What is the difference between a Primary Key and a Unique Constraint?"<em>
+<li><strong>Defense:</strong> A table can have only one Primary Key, which strictly forbids <code>NULL</code> values. A table can possess multiple <code>UNIQUE</code> constraints. In CINEVERSE, <code>seat_id</code> is the surrogate PK, while <code>(screen_id, seat_number)</code> is an alternate/candidate key enforced via a <code>UNIQUE</code> constraint.</li>
+</em> <strong>Concrete Improvement:</strong> None required.
+
+<hr/>
+
+<h3>7. Relationship Cardinalities</h3>
+<em> <strong>Score:</strong> 9.0 / 10
+</em> <strong>What is Implemented:</strong>
+<li><strong>One-to-One (1:1):</strong> <code>CUSTOMER</code> &harr; <code>ACCOUNT</code> (enforced by <code>UNIQUE (customer_id)</code> on <code>ACCOUNT</code>), <code>CUSTOMER</code> &harr; <code>LOYALTY_ACCOUNT</code> (enforced by <code>UNIQUE (customer_id)</code> on <code>LOYALTY_ACCOUNT</code>), <code>BOOKING</code> &harr; <code>PAYMENT</code> (enforced by <code>UNIQUE (booking_id)</code> on <code>PAYMENT</code>).</li>
+<li><strong>One-to-Many (1:N):</strong> <code>THEATER</code> &rarr; <code>SCREEN</code>, <code>SCREEN</code> &rarr; <code>SEAT</code>, <code>MOVIE</code> &rarr; <code>SHOWTIME</code>, <code>SCREEN</code> &rarr; <code>SHOWTIME</code>, <code>CUSTOMER</code> &rarr; <code>BOOKING</code>, <code>SHOWTIME</code> &rarr; <code>BOOKING</code>, <code>BOOKING</code> &rarr; <code>SNACK_ORDER</code>.</li>
+<li><strong>Many-to-Many (M:N):</strong> <code>BOOKING</code> &harr; <code>SEAT</code> (via <code>BOOKED_SEAT</code>), <code>SNACK_ORDER</code> &harr; <code>SNACK</code> (via <code>SNACK_ORDER_ITEM</code>).</li>
+<em> <strong>Evidence:</strong>
+<li>Live constraint definitions inspected in <code>INFORMATION_SCHEMA.STATISTICS</code> and <code>KEY_COLUMN_USAGE</code>.</li>
+</em> <strong>Design Strengths:</strong> Realizes 1:1 relationships using unique foreign keys rather than merging attributes into a bloated mega-table, preserving separation of concerns (patron demographics vs salted password credentials).
+<em> <strong>Potential Weaknesses:</strong> None. Cardinalities faithfully mirror the business rules of cinema multiplex operations.
+</em> <strong>Examiner Challenge:</strong> <em>"Why is the relationship between BOOKING and SEAT Many-to-Many if a seat can only be booked once for a showtime?"</em>
+<li><strong>Defense:</strong> A physical seat (e.g., Seat 101) can be booked across <em>hundreds</em> of different showtimes over the year. Simultaneously, a single booking reservation can encompass <em>multiple</em> seats (e.g., a family booking 4 seats). Therefore, the relationship between the <code>BOOKING</code> entity and the physical <code>SEAT</code> entity is Many-to-Many ($M:N$), necessitating the <code>BOOKED_SEAT</code> junction table.</li>
+<em> <strong>Concrete Improvement:</strong> None required.
+
+<hr/>
+
+<h3>8. Normalization and Functional Dependencies</h3>
+</em> <strong>Score:</strong> 8.5 / 10
+<em> <strong>What is Implemented:</strong> The schema satisfies 1NF, 2NF, and 3NF across all 15 tables.
+</em> <strong>Evidence:</strong>
+<li><strong>1NF:</strong> All attributes are atomic (no comma-separated seats or array types).</li>
+<li><strong>2NF:</strong> In tables with composite keys (<code>BOOKED_SEAT</code> and <code>SNACK_ORDER_ITEM</code>), non-key attributes (<code>ticket_price</code>, <code>quantity</code>, <code>unit_price</code>) depend on the <em>entire</em> composite key, not a proper subset.</li>
+<li><strong>3NF:</strong> No non-key attribute is transitively dependent on the primary key via another non-key attribute. For example, <code>SCREEN</code> contains <code>theater_id</code>, while theater address and city remain strictly in <code>THEATER</code>.</li>
+<em> <strong>Design Strengths:</strong> High structural integrity. Modifying a theater's street address requires updating exactly one row in <code>THEATER</code>, eliminating update anomalies across screens and showtimes.
+</em> <strong>Potential Weaknesses:</strong> Controlled denormalization: <code>BOOKED_SEAT</code> stores <code>ticket_price</code> at the moment of reservation. This is an intentional historical financial snapshot, not an unnormalized redundancy anomaly.
+<em> <strong>Examiner Challenge:</strong> </em>"Does <code>BOOKED_SEAT.ticket_price</code> violate 3NF since base price is already stored in <code>SHOWTIME</code>?"<em>
+<li><strong>Defense:</strong> No. In transactional accounting, recording the executed ticket price is mandatory. If ticket base prices in <code>SHOWTIME</code> or tier multipliers change in the future, historical accounting records must reflect the exact price paid by the customer at the time of purchase. Storing this value preserves immutable financial history.</li>
+</em> <strong>Concrete Improvement:</strong> Formally document this design decision in the project report as intentional temporal snapshot denormalization.
+
+<hr/>
+
+<h3>9. Referential Integrity and Constraints</h3>
+<em> <strong>Score:</strong> 9.5 / 10
+</em> <strong>What is Implemented:</strong> Comprehensive integrity protection at both schema and database engine levels:
+<li><strong>22 Active CHECK Constraints:</strong> Validating email formatting, rating bounds ($0.0 \le rating \le 10.0$), positive quantities, and allowed ENUM-like sets (<code>membership_level</code>, <code>payment_method</code>, <code>booking_status</code>, <code>seat_type</code>).</li>
+<li><strong>Cascading Deletions:</strong> <code>ON DELETE CASCADE</code> on <code>account</code>, <code>loyalty_account</code>, <code>screen</code>, <code>seat</code>, <code>booked_seat</code>, <code>payment</code>, <code>snack_order</code>, <code>snack_order_item</code>.</li>
+<li><strong>Restrictive Deletions:</strong> <code>ON DELETE RESTRICT</code> on <code>booking -&gt; customer</code>, <code>booking -&gt; showtime</code>, <code>showtime -&gt; movie</code>, <code>showtime -&gt; screen</code>, preventing catastrophic accidental deletion of commercial records.</li>
+<em> <strong>Evidence:</strong>
+<li>Audited directly via <code>INFORMATION_SCHEMA.CHECK_CONSTRAINTS</code> and <code>INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS</code>.</li>
+</em> <strong>Design Strengths:</strong> Industry-grade referential integrity. Deleting a Movie that has scheduled showtimes or bookings is rejected outright by the MySQL engine.
+<em> <strong>Potential Weaknesses:</strong> None found.
+</em> <strong>Examiner Challenge:</strong> <em>"What happens if an admin tries to delete a Movie that has active ticket bookings?"</em>
+<li><strong>Defense:</strong> The operation fails at two levels: First, <code>backend/src/controllers/movieController.js</code> performs a pre-flight query checking <code>SELECT show_id FROM SHOWTIME WHERE movie_id = ?</code> and returns HTTP 409 Conflict. Second, even if bypassed, MySQL's foreign key constraint <code>fk_showtime_movie</code> enforces <code>ON DELETE RESTRICT</code> and aborts the query with Error 1451.</li>
+<em> <strong>Concrete Improvement:</strong> None required.
+
+<hr/>
+
+<h3>10. SQL Query Quality</h3>
+</em> <strong>Score:</strong> 8.5 / 10
+<em> <strong>What is Implemented:</strong> SQL queries demonstrate high proficiency in relational operations:
+<li>Multi-table INNER JOINs spanning up to 6 tables (<code>BOOKING</code>, <code>CUSTOMER</code>, <code>SHOWTIME</code>, <code>MOVIE</code>, <code>SCREEN</code>, <code>THEATER</code>)</li>
+<li>Aggregations: <code>SUM</code>, <code>AVG</code>, <code>COUNT(DISTINCT ...)</code>, <code>COALESCE</code></li>
+<li>Grouping and Filtering: <code>GROUP BY</code> with <code>HAVING</code>, <code>WHERE 1=1</code> dynamic filtering</li>
+<li>String manipulation: <code>GROUP_CONCAT(st.seat_number ORDER BY st.seat_number SEPARATOR ', ')</code></li>
+<li>100% Parameterized query execution using <code>?</code> placeholders preventing SQL injection.</li>
+</em> <strong>Evidence:</strong>
+<li><code>backend/src/controllers/bookingController.js</code> (Lines 9–51, 65–125)</li>
+<li><code>backend/src/controllers/reportController.js</code> (Lines 9–40: revenue rollups)</li>
+<em> <strong>Design Strengths:</strong> Prepared statements (<code>pool.execute()</code>) leverage the MySQL binary protocol for query plan caching and injection immunity.
+</em> <strong>Potential Weaknesses:</strong> Subqueries could be leveraged more heavily in place of multiple sequential round trips in certain controller functions.
+<em> <strong>Examiner Challenge:</strong> </em>"What is the performance drawback of <code>GROUP_CONCAT</code> in your <code>getAllBookings</code> query?"<em>
+<li><strong>Defense:</strong> <code>GROUP_CONCAT</code> is subject to MySQL's <code>group_concat_max_len</code> system variable (default 1024 bytes). For bookings with an unusually high number of seats, seat strings exceeding this limit would be silently truncated. In production, this can be mitigated by adjusting <code>group_concat_max_len</code> or querying seat allocations in a dedicated child query.</li>
+</em> <strong>Concrete Improvement:</strong> Add query indexing on <code>SHOWTIME(show_date, start_time)</code> to optimize screening range lookups.
+
+<hr/>
+
+<h3>11. CRUD Implementation</h3>
+<em> <strong>Score:</strong> 8.5 / 10
+</em> <strong>What is Implemented:</strong> Full Create, Read, Update, Delete capabilities exposed through REST endpoints:
+<li><strong>Movies:</strong> Create (<code>POST /api/admin/movies</code>), Read (<code>GET /api/movies</code>), Update (<code>PUT /api/admin/movies/:id</code>), Delete (<code>DELETE /api/admin/movies/:id</code>)</li>
+<li><strong>Showtimes:</strong> Create with collision check (<code>POST /api/admin/showtimes</code>), Read (<code>GET /api/showtimes</code>), Delete (<code>DELETE /api/admin/showtimes/:id</code>)</li>
+<li><strong>Bookings:</strong> Create (<code>POST /api/bookings</code>), Read (<code>GET /api/bookings</code>), Cancel/Update (<code>PUT /api/bookings/:id/cancel</code>)</li>
+<em> <strong>Evidence:</strong>
+<li><code>backend/src/routes/api.js</code></li>
+<li><code>backend/src/controllers/movieController.js</code></li>
+<li><code>backend/src/controllers/showtimeController.js</code></li>
+<li><code>backend/src/controllers/bookingController.js</code></li>
+</em> <strong>Design Strengths:</strong> Input sanitization and conflict validation precede all DML execution.
+<em> <strong>Potential Weaknesses:</strong> Customer profile updates are not fully exposed in the retail frontend (customers cannot edit phone/email in the UI).
+</em> <strong>Examiner Challenge:</strong> <em>"How does your system handle booking deletion?"</em>
+<li><strong>Defense:</strong> We do not physically execute <code>DELETE FROM BOOKING</code>. Deleting financial transactions destroys audit trails. Instead, we perform a logical/soft cancellation: <code>UPDATE BOOKING SET booking_status = 'CANCELLED'</code> and <code>UPDATE PAYMENT SET payment_status = 'REFUNDED'</code>. This immediately releases the seats for re-booking while preserving financial history.</li>
+<em> <strong>Concrete Improvement:</strong> Implement customer profile self-service editing endpoints.
+
+<hr/>
+
+<h3>12. Transaction Management and Concurrency</h3>
+</em> <strong>Score:</strong> 8.0 / 10
+<em> <strong>What is Implemented:</strong> Multi-statement ACID transactions implemented via <code>conn.beginTransaction()</code>, <code>conn.commit()</code>, and <code>conn.rollback()</code> in <code>bookingController.js</code> and <code>showtimeController.js</code>.
+</em> <strong>Evidence:</strong>
+<li><code>backend/src/controllers/bookingController.js</code> (Lines 154–351: <code>createBooking</code>)</li>
+<li><code>backend/src/controllers/bookingController.js</code> (Lines 363–407: <code>cancelBooking</code>)</li>
+<em> <strong>Design Strengths:</strong> Atomicity is strictly respected. If snack inventory deduction fails after seat reservation, or payment fails, the entire transaction rolls back completely, leaving zero orphan rows.
+</em> <strong>Potential Weaknesses:</strong> Concurrency race condition on seat selection! Step 5 of <code>createBooking</code> queries <code>BOOKED_SEAT</code> without an explicit row lock (<code>FOR UPDATE</code>) or serializable isolation. Two simultaneous requests checking the same seat could both see it as available before either commits.
+<em> <strong>Examiner Challenge:</strong> </em>"What happens if two users click 'Confirm Booking' for the exact same seat at the exact same millisecond?"<em>
+<li><strong>Defense (Honest &amp; Defensible):</strong> In the current implementation, because the seat conflict query in Step 5 does not execute <code>SELECT ... FOR UPDATE</code>, and MySQL's default isolation level is <code>REPEATABLE READ</code>, both transactions could pass the conflict check and attempt insertion. While the application checks conflicts, under high concurrency a race condition is theoretically possible. To make this 100% concurrency-proof at the database engine level, we must either add <code>FOR UPDATE</code> to the seat validation query, or enforce an engine-level unique key constraint on <code>(show_id, seat_id)</code>.</li>
+</em> <strong>Concrete Improvement:</strong> Add <code>FOR UPDATE</code> to the seat conflict check query or create a reservation lock table.
+
+<hr/>
+
+<h3>13. Backend Database Driver and Integration</h3>
+<em> <strong>Score:</strong> 8.5 / 10
+</em> <strong>What is Implemented:</strong> Connection pooling implemented via <code>mysql2/promise</code> with configuration parameters loaded from environment variables (<code>.env</code>).
+<em> <strong>Evidence:</strong>
+<li><code>backend/src/config/db.js</code></li>
+<li>Connection Pool Config: <code>connectionLimit: 10</code>, <code>queueLimit: 0</code>, <code>waitForConnections: true</code>, <code>enableKeepAlive: true</code>.</li>
+</em> <strong>Design Strengths:</strong> Asynchronous non-blocking I/O using native ES6 <code>async/await</code>. Connection pooling prevents socket exhaustion under bursts of HTTP requests.
+<em> <strong>Potential Weaknesses:</strong> Connection pool size is fixed at 10; could be tuned dynamically based on production CPU cores.
+</em> <strong>Examiner Challenge:</strong> <em>"Why use connection pooling instead of opening a new <code>mysql.createConnection()</code> for each incoming HTTP request?"</em>
+<li><strong>Defense:</strong> Establishing a new TCP handshake and MySQL authentication session takes 20–50ms per request. Under 100 concurrent requests, creating individual connections exhausts server sockets and crashes MySQL. A connection pool keeps a pool of authenticated, ready-to-use connections alive, drastically reducing query latency to sub-2ms.</li>
+<em> <strong>Concrete Improvement:</strong> Implement pool health monitoring and alert logging if queue wait time exceeds 200ms.
+
+<hr/>
+
+<h3>14. Admin and Customer Frontend Integration</h3>
+</em> <strong>Score:</strong> 8.5 / 10
+<em> <strong>What is Implemented:</strong> Two dedicated Single-Page Applications (SPAs) built with React 18, utilizing modern hooks (<code>useState</code>, <code>useEffect</code>, <code>useMemo</code>, <code>useCallback</code>) and Axios API service abstraction.
+</em> <strong>Evidence:</strong>
+<li><code>frontend-admin/src/views/</code> (<code>MoviesView.jsx</code>, <code>ShowtimesView.jsx</code>, <code>TheatersView.jsx</code>, <code>HeroTrailersView.jsx</code>)</li>
+<li><code>frontend-customer/src/views/</code> (<code>HomeView.jsx</code>, <code>TheatresView.jsx</code>, <code>BookingFlowView.jsx</code>, <code>MyBookingsView.jsx</code>)</li>
+<em> <strong>Design Strengths:</strong> Rich interactive experiences: dynamic 3D WebGL canvas (<code>Three.js</code>), interactive theater seat picker with tier colors, and instant feedback.
+</em> <strong>Potential Weaknesses:</strong> State management uses prop-drilling and local component state rather than a global Redux/Zustand store.
+<em> <strong>Examiner Challenge:</strong> </em>"How does the customer seat map update when an admin schedules a new showtime or cancels a screening?"<em>
+<li><strong>Defense:</strong> The customer frontend fetches showtime seats dynamically upon navigating to <code>/booking-flow</code> by issuing <code>GET /api/showtimes/:id/seats</code>. This hits the database directly, returning the up-to-the-second seat map.</li>
+</em> <strong>Concrete Improvement:</strong> Introduce WebSockets (<code>Socket.io</code>) for real-time live seat holding across multiple active user browsers.
+
+<hr/>
+
+<h3>15. Booking and Seat Availability Consistency</h3>
+<em> <strong>Score:</strong> 7.5 / 10
+</em> <strong>What is Implemented:</strong> Dynamic seat calculation:
+<li><code>total_seats = seats.length</code></li>
+<li><code>booked_seats = bookedSeatIds.size</code> (from active bookings <code>booking_status != 'CANCELLED'</code>)</li>
+<li><code>available_seats = total_seats - booked_seats</code></li>
+<em> <strong>Evidence:</strong>
+<li><code>backend/src/controllers/showtimeController.js</code> (Lines 48–94: <code>getShowtimeSeats</code>)</li>
+</em> <strong>Design Strengths:</strong> Does not rely on stale counters or cached seat states. Seat availability is dynamically derived from the relational ledger.
+<em> <strong>Potential Weaknesses:</strong> No temporary "Seat Holding / Cart Reservation" mechanism. If a user selects a seat, it is not held while they fill in payment details; it is only secured upon final booking submission.
+</em> <strong>Examiner Challenge:</strong> <em>"What prevents a user from holding 10 seats indefinitely without paying?"</em>
+<li><strong>Defense:</strong> In CINEVERSE, seats are not locked during selection; they are committed to the database only when the transaction succeeds. This guarantees that seats are never locked up by abandoned carts. However, in high-volume ticketing, an industry improvement is to implement an ephemeral 5-minute Redis TTL seat lock.</li>
+<em> <strong>Concrete Improvement:</strong> Implement an expiring seat-reservation token with a 5-minute timeout.
+
+<hr/>
+
+<h3>16. Payment Data Handling</h3>
+</em> <strong>Score:</strong> 7.0 / 10
+<em> <strong>What is Implemented:</strong> Simulated payment settlement engine. When a booking request is submitted, a <code>PAYMENT</code> row is inserted with <code>payment_status = 'COMPLETED'</code>, <code>payment_method</code> (<code>UPI</code>, <code>Credit Card</code>, <code>Debit Card</code>, <code>Net Banking</code>, <code>Cash</code>), and amount matching the booking total.
+</em> <strong>Evidence:</strong>
+<li><code>backend/src/controllers/bookingController.js</code> (Lines 305–311)</li>
+<li><code>database/02_create_tables.sql</code> (<code>PAYMENT</code> table definition with <code>uq_payment_booking</code>)</li>
+<em> <strong>Design Strengths:</strong> Relational integrity is strictly enforced via <code>uq_payment_booking UNIQUE (booking_id)</code> ensuring a 1:1 relationship between ticket invoices and payment receipts.
+</em> <strong>Potential Weaknesses:</strong> Does not communicate with a real banking payment gateway (e.g., Razorpay or Stripe) over webhook callbacks.
+<em> <strong>Examiner Challenge:</strong> </em>"Is your payment gateway real or simulated? What PCI-DSS risks would exist if this went live?"<em>
+<li><strong>Defense:</strong> It is an internal academic simulation. If deployed commercially, storing raw credit card details or handling payments without PCI-DSS compliance is illegal. A production deployment would use hosted checkout sessions (e.g., Stripe/Razorpay) where credit card numbers never touch our servers, and our database only stores the gateway's tokenized transaction ID.</li>
+</em> <strong>Concrete Improvement:</strong> Integrate Razorpay Test Sandbox with webhook-verified signature validation.
+
+<hr/>
+
+<h3>17. Testing and Validation</h3>
+<em> <strong>Score:</strong> 8.0 / 10
+</em> <strong>What is Implemented:</strong> 37 automated integration tests verifying database release status queries, conflict-free scheduling, admin trailer CRUD, URL normalization, and seat isolation. 100% pass rate.
+<em> <strong>Evidence:</strong>
+<li><code>REPORT_VERIFICATION.md</code> (Section 4: Test Execution)</li>
+<li><code>scratch/comprehensive_test.js</code> (37 passed, 0 failed)</li>
+<li>Production build verifications: <code>npm run build</code> succeeds with 0 errors across both React frontends.</li>
+</em> <strong>Design Strengths:</strong> Tests are executed against live running servers and live MySQL database, not mocked memory stubs.
+<em> <strong>Potential Weaknesses:</strong> Lacks an automated continuous integration test runner (e.g., Jest or Vitest) configured in <code>backend/package.json</code> scripts.
+</em> <strong>Examiner Challenge:</strong> <em>"How did you verify that your scheduling collision detection works for adjacent and overlapping time slots?"</em>
+<li><strong>Defense:</strong> We validated the mathematical interval condition $(s_{start} &lt; end_{calc} \land s_{end} &gt; start_{form})$ against multiple test scenarios: identical start time, screening starting inside an existing screening, screening ending after another starts, and sequential screening with insufficient turnaround buffer (&lt; 15 mins). All invalid cases were rejected with HTTP 409 Conflict.</li>
+<em> <strong>Concrete Improvement:</strong> Add Jest test scripts to <code>backend/package.json</code> with code coverage reports.
+
+<hr/>
+
+<h3>18. Documentation, Report and Demo Readiness</h3>
+</em> <strong>Score:</strong> 9.0 / 10
+<em> <strong>What is Implemented:</strong> Complete academic deliverables package:
+<li>29-page publication-quality PDF report (<code>CINEVERSE_RDBMS_Project_Report.pdf</code>) matching Manipal University Jaipur formatting.</li>
+<li>Fully editable Word document (<code>CINEVERSE_RDBMS_Project_Report.docx</code>).</li>
+<li>High-resolution ER diagram vector SVG and raster PNG (<code>report_assets/</code>).</li>
+<li>Live servers running locally on ports 5000, 5173, and 5174 ready for immediate inspection.</li>
+</em> <strong>Evidence:</strong>
+<li>Verified deliverables on disk in <code>d:\Desktop\Projects\RDBMS\</code>.</li>
+<em> <strong>Design Strengths:</strong> Report contains zero placeholder text in technical chapters, verified table row counts, and authentic screenshots.
+</em> <strong>Potential Weaknesses:</strong> Cover page requires student registration details to be filled in.
+<em> <strong>Examiner Challenge:</strong> </em>"Can you show me the exact database rows that support your admin dashboard KPIs?"<em>
+<li><strong>Defense:</strong> Yes. The admin dashboard queries <code>SELECT COUNT(</em>) FROM MOVIE</code> (13), <code>SHOWTIME</code> (1008), <code>BOOKING</code> (19), and <code>CUSTOMER</code> (10). We can verify these numbers live in MySQL CLI during the viva.</li>
+<em> <strong>Concrete Improvement:</strong> Fill in student personal details on the cover page.
+
+<hr/>
+
+<h2>Examiner Challenges &amp; Strategic Improvement Plan</h2>
+
+<h3>Top 5 Examiner Vulnerabilities to Defend</h3>
+<li><strong>Seat Booking Concurrency (Race Condition):</strong></li>
+<li></em>Risk:<em> No <code>SELECT ... FOR UPDATE</code> on <code>BOOKED_SEAT</code> during Step 5 of <code>createBooking</code>.</li>
+<li></em>Defense:<em> Acknowledge the theoretical limitation under high concurrent volume. Explain that MySQL's InnoDB transactions and the application conflict check handle sequential and isolated requests cleanly, but an enterprise deployment requires <code>FOR UPDATE</code> row locking or an engine-level unique key constraint on <code>(show_id, seat_id)</code>.</li>
+<li><strong>Simulated Payment Gateway:</strong></li>
+<li></em>Risk:<em> No real third-party payment gateway integration.</li>
+<li></em>Defense:<em> Clarify that the project's primary scope is RDBMS schema design and transactional data reconciliation. Financial reconciliation is accurately modeled via <code>PAYMENT</code> with 1:1 constraints and <code>COMPLETED</code>/<code>REFUNDED</code> status transitions.</li>
+<li><strong>Absence of Database Triggers and Stored Procedures:</strong></li>
+<li></em>Risk:<em> Examiner expects stored procedures or triggers in an RDBMS lab.</li>
+<li></em>Defense:<em> Explain that modern enterprise software engineering often places business validation in the application service layer for portability, unit testability, and horizontal scaling. However, demonstrate your mastery of SQL by offering the exact DDL/SQL code for a stored procedure or trigger (provided in Section E &amp; J of the Viva Pack).</li>
+<li><strong>Movie Catalog Fallback Settings:</strong></li>
+<li></em>Risk:<em> <code>trailer_url</code> and release dates are supplemented by <code>backend/data/hero_settings.json</code> when columns are absent in the initial base migration.</li>
+<li></em>Defense:<em> Migration scripts <code>10_add_movie_release_management.sql</code> and <code>11_add_movie_trailer_and_hero_settings.sql</code> have been prepared to add these columns natively. The JSON fallback ensures backwards compatibility without executing destructive unverified migrations.</li>
+<li><strong>No Ephemeral Seat Holding (Cart Lock):</strong></li>
+<li></em>Risk:<em> Seat availability is instantaneous rather than held for 5 minutes during checkout.</li>
+<li></em>Defense:* Explain that in an ACID RDBMS model, long-lived locks in the database reduce transaction throughput. Commercial systems use Redis in-memory caches for 5-minute cart locks, which sits outside the scope of a core relational database evaluation.</li>
+
+</div>
+
+<div class="section-qa">
+  <h1>CINEVERSE — Comprehensive Viva Voce Question Bank</h1>
+<strong>Official Examination Preparation Pack</strong>  
+<strong>Course:</strong> Relational Database Management Systems Laboratory (CSE Department)  
+<strong>Institution:</strong> Manipal University Jaipur (MUJ)  
+<strong>Target Project:</strong> CINEVERSE Movie Theatre Booking &amp; Management System  
+<strong>Database:</strong> MySQL 8.0 (<code>MovieTheaterDB</code>) | <strong>Stack:</strong> Node.js, Express, React, Vite  
+
+<hr/>
+
+<h2>Guide for the Viva Voce</h2>
+<em> <strong>How to Speak:</strong> Deliver your answers with confidence. Keep the first sentence direct and punchy, followed by the specific database concept (table name, key, constraint, or SQL clause).
+</em> <strong>Grounding in Code:</strong> Always reference the actual project tables (<code>SHOWTIME</code>, <code>BOOKED_SEAT</code>, <code>PAYMENT</code>, etc.) rather than speaking abstractly.
+<em> <strong>Separation of Facts:</strong> Distinguish between what is implemented in the database vs. what is handled by the application logic.
+
+<hr/>
+
+<h2>Section A: Project Overview &amp; Motivation</h2>
+
+<h4>Q1. What is CINEVERSE, and what primary problem does it solve?</h4>
+<strong>Spoken Answer:</strong>  
+"CINEVERSE is an enterprise-grade multiplex theater booking and management system. It solves the operational complexity of managing multi-city cinema complexes, scheduling collision-free screenings across auditoriums, calculating live seat availability without data redundancy, and executing atomic ticket and concession purchases."
+
+<h4>Q2. Why did you choose a cinema ticketing system for an RDBMS lab project?</h4>
+<strong>Spoken Answer:</strong>  
+"Because cinema ticketing exhibits classic transactional relational challenges: Many-to-Many relationships between bookings and physical seats, strict scheduling constraints to prevent auditorium overlap, inventory control for concessions, and the absolute requirement for ACID transactions to prevent double-booking and financial discrepancies."
+
+<h4>Q3. What are the key functional modules in CINEVERSE?</h4>
+<strong>Spoken Answer:</strong>  
+"The project comprises four core modules:
+<li><strong>Venue Infrastructure Module:</strong> Managing theaters, screens, and tiered physical seating.</li>
+<li><strong>Theatrical Programming Module:</strong> Movie cataloging and showtime scheduling with automated turnaround buffers.</li>
+<li><strong>Customer Ticketing &amp; Booking Engine:</strong> Real-time seat map selection, concession add-ons, and checkout.</li>
+<li><strong>Administrative Back-Office Control Room:</strong> Staff authentication, catalog CRUD, scheduling conflict prevention, and revenue reporting."</li>
+
+<h4>Q4. Who are the primary target users of the system?</h4>
+<strong>Spoken Answer:</strong>  
+"There are two distinct user roles:
+<li><strong>Retail Moviegoers (Customers):</strong> Who browse movies, select theaters by city, pick seats from an interactive auditorium layout, and receive confirmed booking invoices.</li>
+<li><strong>Cinema Operations Staff &amp; Managers (Admins):</strong> Who manage the movie catalog, configure screens, schedule showtimes, and audit ticket and snack revenues."</li>
+
+<h4>Q5. Why is a Relational Database Management System (RDBMS) necessary for this project instead of a simple file system or spreadsheets?</h4>
+<strong>Spoken Answer:</strong>  
+"A file system or spreadsheet lacks concurrent multi-user access control, cannot enforce referential integrity across related tables, does not support ACID transactions, and suffers from data redundancy and update anomalies. An RDBMS enforces schema constraints, indexes data for fast retrieval, and guarantees atomicity during multi-seat reservations."
+
+<h4>Q6. What is the scope of CINEVERSE, and what are its current boundaries?</h4>
+<strong>Spoken Answer:</strong>  
+"The current scope encompasses 8 multiplex venues across 5 Indian cities, 32 auditorium screens, 4,544 physical seats, and over 1,000 scheduled screenings. Its current boundaries are that payment processing is an internal ledger simulation rather than a live banking gateway, and seat holds are instantaneous upon transaction commitment rather than an ephemeral 5-minute cart timer."
+
+<h4>Q7. What was your individual contribution to the project?</h4>
+<strong>Spoken Answer:</strong>  
+"I designed the 3NF relational schema in MySQL, authored the DDL scripts with 22 check constraints and foreign keys, developed the Node.js/Express backend API with connection pooling and ACID transaction rollback, created the scheduling conflict algorithm, and built the React customer and admin web applications."
+
+<h4>Q8. What was the most technically challenging database problem you solved?</h4>
+<strong>Spoken Answer:</strong>  
+"Designing the seat reservation model. Instead of denormalizing an <code>is_available</code> flag onto the physical <code>SEAT</code> table—which would prevent scheduling future screenings—I implemented an associative junction table <code>BOOKED_SEAT</code> linked to <code>BOOKING</code> and <code>SHOWTIME</code>. Live seat availability is calculated dynamically by relationally subtracting booked seats from total auditorium seats for that specific screening."
+
+<h4>Q9. How does CINEVERSE handle multi-city multiplex operations?</h4>
+<strong>Spoken Answer:</strong>  
+"Through the hierarchical relationship: <code>THEATER</code> &rarr; <code>SCREEN</code> &rarr; <code>SEAT</code>. The <code>THEATER</code> table stores venue city and address. Customer queries filter screens and showtimes based on the chosen city, allowing patrons in Bengaluru, Mumbai, or Delhi to view only locally scheduled screenings."
+
+<h4>Q10. How does the system handle movies that have no scheduled showtimes?</h4>
+<strong>Spoken Answer:</strong>  
+"A movie can exist in the <code>MOVIE</code> catalog independently of <code>SHOWTIME</code>. If a movie has zero scheduled showtimes, the customer frontend categorizes it as 'Coming Soon' or 'Showtimes TBA'. It only becomes bookable once an administrator schedules at least one valid showtime in an auditorium."
+
+<hr/>
+
+<h2>Section B: Architecture &amp; Technology Stack</h2>
+
+<h4>Q11. What is the architecture of the CINEVERSE application?</h4>
+<strong>Spoken Answer:</strong>  
+"CINEVERSE follows a decoupled Three-Tier Architecture:
+<li><strong>Presentation Tier:</strong> Two React 18 single-page applications built with Vite (Admin on port 5173, Customer on port 5174).</li>
+<li><strong>Application Tier:</strong> Node.js v20 with Express 4.19 REST API running on port 5000.</li>
+<li><strong>Data Tier:</strong> MySQL 8.0 running on port 3306 with the InnoDB storage engine."</li>
+
+<h4>Q12. Why did you separate the Admin and Customer frontends into two different applications?</h4>
+<strong>Spoken Answer:</strong>  
+"For security and domain separation. The admin application contains sensitive control room components—such as JWT authentication, scheduling conflict engines, and revenue reporting—that should never be delivered in the JavaScript bundle to public retail users."
+
+<h4>Q13. Why did you choose MySQL over a NoSQL database like MongoDB?</h4>
+<strong>Spoken Answer:</strong>  
+"Cinema ticketing is fundamentally relational and requires strict ACID compliance. NoSQL document stores permit denormalization and eventual consistency, which creates severe risks of double-booking under concurrent reservations. MySQL provides foreign key referential integrity, multi-table joins, and InnoDB row-level locking to guarantee zero data corruption."
+
+<h4>Q14. How does the Node.js backend connect to the MySQL database?</h4>
+<strong>Spoken Answer:</strong>  
+"We use the <code>mysql2/promise</code> driver with connection pooling. In <code>backend/src/config/db.js</code>, we initialize a pool with 10 connections, keepalive enabled, and queue limit zero. Queries are executed asynchronously using <code>async/await</code> and parameterized prepared statements."
+
+<h4>Q15. What is the role of Express.js in this architecture?</h4>
+<strong>Spoken Answer:</strong>  
+"Express serves as the HTTP routing and middleware framework. It parses incoming JSON request payloads, manages CORS headers between ports, handles JWT authorization headers via middleware, routes requests to dedicated controllers, and catches errors in a centralized error-handling middleware."
+
+<h4>Q16. Can you trace what happens from the moment a user clicks 'Book Seats' to the database?</h4>
+<strong>Spoken Answer:</strong>  
+"1. The React frontend sends an HTTP <code>POST</code> request with a JSON body (<code>customer_id</code>, <code>show_id</code>, <code>seat_ids</code>, <code>payment_method</code>, <code>snacks</code>) to <code>/api/bookings</code>.
+<li>Express routes this to <code>createBooking</code> in <code>bookingController.js</code>.</li>
+<li>The controller obtains a dedicated connection from the pool and calls <code>conn.beginTransaction()</code>.</li>
+<li>It validates the customer and showtime, checks that seats belong to the scheduled screen, and verifies no active booking already claims those seats.</li>
+<li>It inserts into <code>BOOKING</code>, loops over seats inserting into <code>BOOKED_SEAT</code>, inserts a <code>PAYMENT</code> record, deducts snack inventory, and calls <code>conn.commit()</code>.</li>
+<li>It releases the connection back to the pool and returns HTTP 201 Created."</li>
+
+<h4>Q17. What is a REST API, and how does CINEVERSE implement it?</h4>
+<strong>Spoken Answer:</strong>  
+"A REST API (Representational State Transfer) uses standard HTTP methods (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>) to perform operations on URI-identified resources. In CINEVERSE, <code>GET /api/movies</code> retrieves the catalog, <code>POST /api/bookings</code> creates a reservation, and <code>PUT /api/bookings/:id/cancel</code> performs a logical cancellation."
+
+<h4>Q18. How do environment variables protect your database configuration?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>backend/.env</code>, we store <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code>, and <code>JWT_SECRET</code>. We load them using the <code>dotenv</code> package. This keeps sensitive database credentials out of version control (<code>.gitignore</code>), preventing security leaks."
+
+<h4>Q19. What is Vite, and why did you use it instead of Create React App?</h4>
+<strong>Spoken Answer:</strong>  
+"Vite is a modern frontend build tool that leverages native ES modules in the browser. It provides instantaneous server startup (&lt; 900ms) and lightning-fast Hot Module Replacement (HMR) compared to the deprecated Webpack-based Create React App."
+
+<h4>Q20. What storage engine does MySQL use for CINEVERSE, and why?</h4>
+<strong>Spoken Answer:</strong>  
+"We strictly use InnoDB. InnoDB is MySQL's ACID-compliant storage engine that supports foreign key constraints, row-level locking, and crash recovery. Legacy engines like MyISAM only support table-level locking and do not enforce foreign keys."
+
+<hr/>
+
+<h2>Section C: ER Diagram &amp; Relational Model</h2>
+
+<h4>Q21. What is an Entity in an ER diagram? Give examples from CINEVERSE.</h4>
+<strong>Spoken Answer:</strong>  
+"An entity is a real-world object or concept that has an independent existence and about which data is stored. In CINEVERSE, <code>MOVIE</code>, <code>THEATER</code>, <code>CUSTOMER</code>, and <code>SNACK</code> are strong entities."
+
+<h4>Q22. What is the difference between an Entity and an Attribute?</h4>
+<strong>Spoken Answer:</strong>  
+"An entity is the distinct object itself (e.g., <code>MOVIE</code>), whereas an attribute is a characteristic or property that describes that entity (e.g., <code>title</code>, <code>duration</code>, <code>genre</code>, <code>rating</code>)."
+
+<h4>Q23. What are Strong and Weak Entities? Are there any weak entities in your schema?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>THEATER</code> and <code>MOVIE</code> are strong entities because they have independent primary keys. <code>SCREEN</code> and <code>SEAT</code> exhibit existence dependency—a screen cannot exist without a theater, and a seat cannot exist without an auditorium screen. However, because we assign surrogate primary keys (<code>screen_id</code>, <code>seat_id</code>), they are implemented as regular relational tables with foreign keys and composite unique constraints."
+
+<h4>Q24. What is a Composite Key? Where is it used in CINEVERSE?</h4>
+<strong>Spoken Answer:</strong>  
+"A composite key is a primary key that consists of two or more columns combined to uniquely identify a record. In CINEVERSE:
+<li><code>BOOKED_SEAT</code> uses <code>PRIMARY KEY (booking_id, seat_id)</code>.</li>
+<li><code>SNACK_ORDER_ITEM</code> uses <code>PRIMARY KEY (snack_order_id, snack_id)</code>."</li>
+
+<h4>Q25. What is a Candidate Key? Give an example from your tables.</h4>
+<strong>Spoken Answer:</strong>  
+"A candidate key is any minimal set of attributes that can uniquely identify a tuple in a relation. In our <code>CUSTOMER</code> table, both <code>customer_id</code> and <code>email</code> are candidate keys. We selected <code>customer_id</code> as the Primary Key and enforced <code>email</code> as an alternate key using a <code>UNIQUE</code> constraint."
+
+<h4>Q26. What is a Surrogate Key versus a Natural Key?</h4>
+<strong>Spoken Answer:</strong>  
+"A natural key is an attribute that exists inherently in the real-world domain, like a customer's email or a movie title. A surrogate key is an artificially generated identifier, such as an <code>AUTO_INCREMENT INT</code> (<code>movie_id</code>, <code>booking_id</code>). We use surrogate keys for faster integer index joins and to isolate the database from real-world data changes."
+
+<h4>Q27. What is a Junction Table (Associative Entity), and why is it necessary?</h4>
+<strong>Spoken Answer:</strong>  
+"A junction table maps a Many-to-Many relationship between two tables into two One-to-Many relationships. Relational databases cannot directly implement M:N relationships without creating repeating groups or multi-valued columns. <code>BOOKED_SEAT</code> is our junction table connecting <code>BOOKING</code> and <code>SEAT</code>."
+
+<h4>Q28. How did you map the 1:1 relationship between CUSTOMER and ACCOUNT?</h4>
+<strong>Spoken Answer:</strong>  
+"We placed <code>customer_id</code> as a foreign key inside the <code>ACCOUNT</code> table and applied a <code>UNIQUE</code> constraint (<code>uq_account_customer</code>). This guarantees that each customer can have at most one login account, enforcing strict 1:1 cardinality."
+
+<h4>Q29. How is the 1:1 relationship between BOOKING and PAYMENT enforced?</h4>
+<strong>Spoken Answer:</strong>  
+"In the <code>PAYMENT</code> table, <code>booking_id</code> is defined with a <code>UNIQUE</code> constraint (<code>uq_payment_booking</code>) and references <code>BOOKING(booking_id)</code>. This ensures that each booking ticket can have exactly one financial settlement record."
+
+<h4>Q30. Explain the cardinality between THEATER and SCREEN.</h4>
+<strong>Spoken Answer:</strong>  
+"It is a One-to-Many ($1:N$) relationship. One theater complex contains multiple screens ($1 \dots N$), but each screen belongs to exactly one physical theater complex ($1:1$). The foreign key <code>theater_id</code> resides in <code>SCREEN</code>."
+
+<h4>Q31. Explain the cardinality between SCREEN and SHOWTIME.</h4>
+<strong>Spoken Answer:</strong>  
+"It is One-to-Many ($1:N$). An auditorium screen hosts many showtimes over time ($1 \dots N$), but each specific screening event occurs in exactly one auditorium ($1:1$). The foreign key <code>screen_id</code> resides in <code>SHOWTIME</code>."
+
+<h4>Q32. Explain the cardinality between MOVIE and SHOWTIME.</h4>
+<strong>Spoken Answer:</strong>  
+"It is One-to-Many ($1:N$). One movie title can be scheduled across multiple showtimes in various screens and dates, but each scheduled showtime features exactly one movie. The foreign key <code>movie_id</code> resides in <code>SHOWTIME</code>."
+
+<h4>Q33. What does Crow's Foot notation represent in your ER diagram?</h4>
+<strong>Spoken Answer:</strong>  
+"Crow's Foot notation visually denotes relationship cardinality. A single vertical line represents 'one', a circle represents 'zero' (optionality), and a three-pronged fork (crow's foot) represents 'many'. For example, the line from <code>SCREEN</code> to <code>SEAT</code> ends with a crow's foot, representing that one screen has many seats."
+
+<h4>Q34. What is Referential Integrity?</h4>
+<strong>Spoken Answer:</strong>  
+"Referential integrity is a database rule ensuring that a foreign key value in one table must always match an existing primary key value in the referenced table, or be null. It prevents invalid pointers and orphan records."
+
+<h4>Q35. What is an Orphan Record, and how does your database prevent them?</h4>
+<strong>Spoken Answer:</strong>  
+"An orphan record is a child row whose foreign key references a parent row that no longer exists (for example, a showtime referencing a deleted movie). CINEVERSE prevents orphans using <code>ON DELETE RESTRICT</code> on critical relationships like <code>SHOWTIME -&gt; MOVIE</code> and <code>BOOKING -&gt; CUSTOMER</code>."
+
+<hr/>
+
+<h2>Section D: Normalization &amp; Functional Dependencies</h2>
+
+<h4>Q36. What is Normalization, and what is its primary objective?</h4>
+<strong>Spoken Answer:</strong>  
+"Normalization is a systematic technique for organizing relational database tables to minimize data redundancy and eliminate update, insertion, and deletion anomalies while preserving data dependencies and lossless joins."
+
+<h4>Q37. What is First Normal Form (1NF)? Does CINEVERSE satisfy 1NF?</h4>
+<strong>Spoken Answer:</strong>  
+"A relation is in 1NF if every attribute contains only atomic (indivisible) values, each column has a unique name, and there are no repeating groups. CINEVERSE satisfies 1NF because seats are never stored as comma-separated strings inside <code>BOOKING</code>; each seat is stored as an individual row in <code>BOOKED_SEAT</code>."
+
+<h4>Q38. What is a Functional Dependency? Give an example from your project.</h4>
+<strong>Spoken Answer:</strong>  
+"A functional dependency $X \rightarrow Y$ means that the value of attribute $X$ uniquely determines the value of attribute $Y$. In our <code>CUSTOMER</code> table, <code>customer_id</code> $\rightarrow$ <code>(customer_name, phone, email)</code>. Knowing the <code>customer_id</code> uniquely identifies the customer's name, phone, and email."
+
+<h4>Q39. What is Second Normal Form (2NF)?</h4>
+<strong>Spoken Answer:</strong>  
+"A relation is in 2NF if it is in 1NF and no non-prime attribute is partially dependent on any candidate key. That is, every non-key attribute must depend on the </em>entire<em> primary key, not a subset."
+
+<h4>Q40. Demonstrate how CINEVERSE satisfies 2NF using BOOKED_SEAT.</h4>
+<strong>Spoken Answer:</strong>  
+"<code>BOOKED_SEAT</code> has a composite primary key: <code>(booking_id, seat_id)</code>. Its non-key attribute is <code>ticket_price</code>. The <code>ticket_price</code> depends on </em>both<em> the booking instance and the specific physical seat tier. It does not depend solely on <code>booking_id</code> or <code>seat_id</code> alone. Therefore, there are no partial dependencies, satisfying 2NF."
+
+<h4>Q41. Demonstrate how SNACK_ORDER_ITEM satisfies 2NF.</h4>
+<strong>Spoken Answer:</strong>  
+"<code>SNACK_ORDER_ITEM</code> has a composite primary key: <code>(snack_order_id, snack_id)</code>. Non-key attributes are <code>quantity</code> and <code>unit_price</code>. Both attributes describe the line item and depend on both the specific order and the specific snack. Hence, it is fully in 2NF."
+
+<h4>Q42. What is Third Normal Form (3NF)?</h4>
+<strong>Spoken Answer:</strong>  
+"A relation is in 3NF if it is in 2NF and no non-prime attribute is transitively dependent on the primary key via another non-prime attribute ($X \rightarrow Y$ and $Y \rightarrow Z$ where $Z$ is non-key)."
+
+<h4>Q43. Demonstrate how CINEVERSE satisfies 3NF using the SCREEN and THEATER tables.</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>SCREEN</code>, the attributes are <code>screen_id</code>, <code>screen_number</code>, <code>screen_name</code>, <code>screen_type</code>, <code>capacity</code>, and <code>theater_id</code>. Notice that theater details—such as <code>theater_name</code>, <code>city</code>, and <code>address</code>—are </em>not<em> stored in <code>SCREEN</code>. If they were, we would have <code>screen_id</code> $\rightarrow$ <code>theater_id</code> and <code>theater_id</code> $\rightarrow$ <code>city</code>, a transitive dependency. By isolating theater attributes in <code>THEATER</code>, we eliminate transitive dependencies and satisfy 3NF."
+
+<h4>Q44. What is Boyce-Codd Normal Form (BCNF)?</h4>
+<strong>Spoken Answer:</strong>  
+"BCNF is a stricter version of 3NF. A relation is in BCNF if, for every non-trivial functional dependency $X \rightarrow Y$, the determinant $X$ is a superkey. All of our tables with single-column surrogate primary keys naturally satisfy BCNF."
+
+<h4>Q45. What is an Insertion Anomaly? Give an example of how your design prevents it.</h4>
+<strong>Spoken Answer:</strong>  
+"An insertion anomaly occurs when certain attributes cannot be inserted without the presence of other unrelated attributes. For example, if movies and showtimes were merged into one table, you could not insert an upcoming movie into the catalog until a showtime was scheduled. Our design separates <code>MOVIE</code> from <code>SHOWTIME</code>, allowing us to add movies with zero scheduled showtimes."
+
+<h4>Q46. What is a Deletion Anomaly?</h4>
+<strong>Spoken Answer:</strong>  
+"A deletion anomaly occurs when deleting one piece of data unintentionally removes unrelated data. If theaters and screens were combined, deleting the last screen in a venue would accidentally delete the entire theater's address and record. In CINEVERSE, deleting a screen preserves the <code>THEATER</code> record."
+
+<h4>Q47. What is an Update Anomaly?</h4>
+<strong>Spoken Answer:</strong>  
+"An update anomaly occurs when data redundancy forces the same value to be updated in multiple rows, risking data inconsistency. If theater addresses were duplicated across every showtime row, changing an address would require updating thousands of records. In 3NF, the address exists in exactly one row in <code>THEATER</code>."
+
+<h4>Q48. Is there any intentional Denormalization in CINEVERSE?</h4>
+<strong>Spoken Answer:</strong>  
+"Yes, in <code>BOOKED_SEAT.ticket_price</code>. While the base price originates in <code>SHOWTIME</code>, recording <code>ticket_price</code> in <code>BOOKED_SEAT</code> represents an immutable financial snapshot at the time of purchase. If ticket base prices change tomorrow, past booking revenues remain historically accurate."
+
+<h4>Q49. What is a Lossless Join Decomposition?</h4>
+<strong>Spoken Answer:</strong>  
+"A decomposition of relation $R$ into $R_1$ and $R_2$ is lossless if joining $R_1$ and $R_2$ on their common attribute yields the exact original relation $R$ without generating spurious tuples. In our schema, $R_1 \cap R_2$ always forms a superkey for at least one relation, guaranteeing lossless joins."
+
+<h4>Q50. What is Dependency Preservation?</h4>
+<strong>Spoken Answer:</strong>  
+"Dependency preservation means that all functional dependencies of the original relation can be enforced simply by checking the constraints on the individual decomposed tables, without needing to perform a join. Our schema preserves all dependencies."
+
+<hr/>
+
+<h2>Section E: SQL, MySQL Engine &amp; Relational Theory</h2>
+
+<h4>Q51. What are the five major categories of SQL commands?</h4>
+<strong>Spoken Answer:</strong>  
+"1. <strong>DDL (Data Definition Language):</strong> <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>RENAME</code>, <code>TRUNCATE</code>.
+<li><strong>DML (Data Manipulation Language):</strong> <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</li>
+<li><strong>DQL (Data Query Language):</strong> <code>SELECT</code>.</li>
+<li><strong>DCL (Data Control Language):</strong> <code>GRANT</code>, <code>REVOKE</code>.</li>
+<li><strong>TCL (Transaction Control Language):</strong> <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code>."</li>
+
+<h4>Q52. What is the difference between TRUNCATE and DELETE?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>DELETE</code> is a DML command that removes rows one by one, logs individual row deletions in the transaction log, fires delete triggers, and can be rolled back. <code>TRUNCATE</code> is a DDL command that deallocates the table's data pages, resets auto-increment counters, is faster, and cannot be rolled back in some configurations."
+
+<h4>Q53. What is an INNER JOIN versus a LEFT OUTER JOIN?</h4>
+<strong>Spoken Answer:</strong>  
+"An <code>INNER JOIN</code> returns only rows that have matching values in both tables. A <code>LEFT JOIN</code> returns all rows from the left table, and the matched rows from the right table; if no match exists, NULL values are returned for the right table's columns. In CINEVERSE, we use <code>LEFT JOIN BOOKING</code> when querying all customers so that customers with zero bookings are still included."
+
+<h4>Q54. What are Aggregate Functions in SQL? Name the five core functions.</h4>
+<strong>Spoken Answer:</strong>  
+"Aggregate functions perform a calculation on a set of rows and return a single summary value. The five core functions are:
+<code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, and <code>MAX()</code>. In <code>reportController.js</code>, we use <code>SUM(total_amount)</code> to compute gross theater revenue."
+
+<h4>Q55. What is the difference between WHERE and HAVING clauses?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>WHERE</code> filters individual rows </em>before<em> any grouping or aggregation takes place. <code>HAVING</code> filters aggregated groups </em>after<em> the <code>GROUP BY</code> clause has been evaluated. For example, <code>WHERE booking_status = 'CONFIRMED' GROUP BY movie_id HAVING COUNT(</em>) &gt; 5</code>."
+
+<h4>Q56. What are the ACID properties in database transactions?</h4>
+<strong>Spoken Answer:</strong>  
+"- <strong>Atomicity:</strong> All statements in the transaction succeed, or the entire transaction is rolled back ('all or nothing').
+<li><strong>Consistency:</strong> The database transitions from one valid state to another, satisfying all schema constraints.</li>
+<li><strong>Isolation:</strong> Concurrent transactions execute without interfering with one another.</li>
+<li><strong>Durability:</strong> Once committed, changes are permanently written to non-volatile storage and survive power failures."</li>
+
+<h4>Q57. How are ACID properties maintained during CINEVERSE ticket booking?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>createBooking</code>, we execute <code>await conn.beginTransaction()</code>. If seat validation, customer check, seat insertion, payment simulation, or snack deduction fails, <code>await conn.rollback()</code> is triggered. Changes are only made permanent when <code>await conn.commit()</code> executes."
+
+<h4>Q58. What is a Clustered Index versus a Secondary (Non-Clustered) Index in MySQL InnoDB?</h4>
+<strong>Spoken Answer:</strong>  
+"In InnoDB, the primary key forms the <strong>Clustered Index</strong>, meaning table rows are physically stored on disk in the B+ Tree order of the primary key. A <strong>Secondary Index</strong> stores the index column and points to the clustered index primary key. When querying by secondary index, InnoDB looks up the secondary index first, then traverses the clustered index (index lookup)."
+
+<h4>Q59. What secondary indexes exist in your CINEVERSE database?</h4>
+<strong>Spoken Answer:</strong>  
+"Our foreign keys and search columns have secondary B-Tree indexes:
+<li><code>idx_showtime_date</code> on <code>SHOWTIME(show_date)</code></li>
+<li><code>idx_showtime_movie</code> on <code>SHOWTIME(movie_id)</code></li>
+<li><code>idx_showtime_screen</code> on <code>SHOWTIME(screen_id)</code></li>
+<li><code>idx_booking_customer</code> on <code>BOOKING(customer_id)</code></li>
+<li><code>idx_booking_showtime</code> on <code>BOOKING(show_id)</code></li>
+<li><code>idx_booking_status</code> on <code>BOOKING(booking_status)</code>"</li>
+
+<h4>Q60. What is a Subquery? What is the difference between a Correlated and Non-Correlated subquery?</h4>
+<strong>Spoken Answer:</strong>  
+"A subquery is a <code>SELECT</code> query nested inside another query. A <strong>non-correlated subquery</strong> executes once independently, and its result is used by the outer query. A <strong>correlated subquery</strong> references columns from the outer query and must be evaluated repeatedly for each row processed by the outer query."
+
+<h4>Q61. What does the COALESCE() function do?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>COALESCE()</code> accepts a list of arguments and returns the first non-NULL value. In our revenue reporting queries, we write <code>COALESCE(SUM(b.total_amount), 0.00)</code> so that if a movie has zero confirmed bookings, the query returns <code>0.00</code> instead of <code>NULL</code>."
+
+<h4>Q62. Does your live database have any Triggers, Views, or Stored Procedures?</h4>
+<strong>Spoken Answer:</strong>  
+"No, live schema introspection confirms <code>TRIGGERS: []</code>, <code>PROCEDURES: []</code>, and <code>VIEWS: []</code>. In CINEVERSE, business validations and multi-statement workflows are implemented in the Express backend controllers (<code>bookingController.js</code>, <code>showtimeController.js</code>) for better code versioning, unit testing, and horizontal scalability."
+
+<h4>Q63. If asked to write a trigger, how would you write a trigger to update snack stock after an order?</h4>
+<strong>Spoken Answer:</strong>  
+"<pre><code class="language-sql">
+CREATE TRIGGER trg_after_snack_item_insert
+AFTER INSERT ON SNACK_ORDER_ITEM
+FOR EACH ROW
+BEGIN
+    UPDATE SNACK 
+    SET stock_quantity = stock_quantity - NEW.quantity
+    WHERE snack_id = NEW.snack_id;
+END;
+</code></pre>"
+
+<h4>Q64. If asked to write a Stored Procedure, how would you write one to get a movie's revenue?</h4>
+<strong>Spoken Answer:</strong>  
+"<pre><code class="language-sql">
+CREATE PROCEDURE sp_get_movie_revenue(IN p_movie_id INT, OUT p_revenue DECIMAL(10,2))
+BEGIN
+    SELECT COALESCE(SUM(b.total_amount), 0.00) INTO p_revenue
+    FROM BOOKING b
+    JOIN SHOWTIME s ON b.show_id = s.show_id
+    WHERE s.movie_id = p_movie_id AND b.booking_status = 'CONFIRMED';
+END;
+</code></pre>"
+
+<h4>Q65. What is the SQL CHECK constraint? Give two examples from CINEVERSE.</h4>
+<strong>Spoken Answer:</strong>  
+"A <code>CHECK</code> constraint specifies a boolean condition that every row in the table must satisfy. In CINEVERSE:
+<li><code>chk_movie_rating</code>: <code>CHECK (rating &gt;= 0.0 AND rating &lt;= 10.0)</code> prevents invalid IMDb scores.</li>
+<li><code>chk_booking_status</code>: <code>CHECK (booking_status IN ('CONFIRMED', 'CANCELLED', 'PENDING'))</code> prevents invalid lifecycle states."</li>
+
+<hr/>
+
+<h2>Section F: Code Walkthrough &amp; Database Implementation</h2>
+
+<h4>Q66. Where is the database connection configured in the backend?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>backend/src/config/db.js</code>. It exports <code>pool</code>, <code>query(sql, params)</code>, <code>getConnection()</code>, and <code>checkDbConnection()</code>. The pool uses <code>mysql2/promise</code> with configuration pulled from <code>process.env</code>."
+
+<h4>Q67. How are SQL injection attacks prevented in your backend?</h4>
+<strong>Spoken Answer:</strong>  
+"We strictly execute parameterized queries using the <code>?</code> placeholder syntax in <code>pool.execute(sql, params)</code>. The <code>mysql2</code> driver prepares the statement on the database server using MySQL's binary protocol, separating the SQL syntax tree from the data inputs. Malicious strings like <code>' OR '1'='1</code> are treated purely as literal strings, completely neutralizing SQL injection."
+
+<h4>Q68. What function handles showtime conflict prevention, and in which file?</h4>
+<strong>Spoken Answer:</strong>  
+"Function <code>adminCreateShowtime</code> in <code>backend/src/controllers/showtimeController.js</code> (lines 176–260). It queries for overlapping screenings on the same screen using interval overlap logic."
+
+<h4>Q69. What mathematical condition detects an auditorium scheduling conflict?</h4>
+<strong>Spoken Answer:</strong>  
+"Two time intervals $[A_{start}, A_{end}]$ and $[B_{start}, B_{end}]$ overlap if and only if:
+$A_{start} &lt; B_{end} \land A_{end} &gt; B_{start}$.
+In SQL, we write:
+<code>WHERE s.screen_id = ? AND s.show_date = ? AND (s.start_time &lt; ? AND s.end_time &gt; ?)</code> where the parameters are the calculated end time and requested start time."
+
+<h4>Q70. How does the backend calculate a screening's end time?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>showtimeController.js</code>, helper function <code>computeEndTime</code> takes <code>start_time</code>, <code>movie.duration</code> (in minutes), and adds a mandatory 15-minute turnaround buffer (<code>turnaroundMins = 15</code>) to allow auditorium cleaning between audiences."
+
+<h4>Q71. How does the backend calculate dynamic seat pricing?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>bookingController.js</code> (lines 234–244), the server fetches <code>base_price</code> from <code>SHOWTIME</code>. It then iterates through the verified seats:
+<li><code>Standard</code> seat: <code>base_price</code></li>
+<li><code>Premium</code> seat: <code>Math.round(base_price <em> 1.2)</code> (+20%)</li>
+<li><code>VIP</code> / <code>Recliner</code>: <code>Math.round(base_price </em> 1.4)</code> (+40%).</li>
+Pricing is strictly calculated server-side; client-submitted totals are ignored."
+
+<h4>Q72. Where are administrative dashboard metrics calculated?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>backend/src/controllers/adminController.js</code> under <code>getAdminDashboard</code>. It executes aggregate count queries on <code>MOVIE</code>, <code>SHOWTIME</code>, <code>BOOKING</code>, and <code>CUSTOMER</code>."
+
+<h4>Q73. How does password hashing work for admin staff and customer accounts?</h4>
+<strong>Spoken Answer:</strong>  
+"We use <code>bcryptjs</code>. When creating accounts, plain passwords are salted with a work factor of 10 (<code>bcrypt.hash(password, 10)</code>). During login, <code>bcrypt.compare(password, staff.password_hash)</code> verifies the hash without ever storing or logging plain-text passwords."
+
+<h4>Q74. How does the system handle booking cancellation?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>bookingController.js</code> under <code>cancelBooking</code>, it executes an atomic transaction with a row lock: <code>SELECT booking_id FROM BOOKING WHERE booking_id = ? FOR UPDATE</code>. It updates <code>BOOKING.booking_status = 'CANCELLED'</code> and <code>PAYMENT.payment_status = 'REFUNDED'</code>. This immediately frees the seats for other customers while maintaining the transaction log."
+
+<h4>Q75. How are database errors handled across the API?</h4>
+<strong>Spoken Answer:</strong>  
+"All async controller functions wrap their logic in <code>try ... catch</code> blocks and forward caught errors to <code>next(err)</code>. In <code>server.js</code>, an Express centralized error-handling middleware catches <code>err</code>, checks MySQL error codes (such as <code>ER_DUP_ENTRY</code> for duplicate emails or <code>ER_ROW_IS_REFERENCED_2</code> for foreign key violations), and returns clean, structured JSON error messages."
+
+<hr/>
+
+<h2>Section G: Movie, Theatre &amp; Showtime Management</h2>
+
+<h4>Q76. How does the system prevent an auditorium from being double-booked for two movies at the same time?</h4>
+<strong>Spoken Answer:</strong>  
+"When an admin attempts to schedule a screening, <code>adminCreateShowtime</code> checks the database for any existing showtime on that screen and date where $(s_{start} &lt; end_{calc} \land s_{end} &gt; start_{form})$. If a conflict is found, the server rejects the request with HTTP 409 Conflict and names the conflicting movie and time slot."
+
+<h4>Q77. Can a movie exist in the database without any showtimes?</h4>
+<strong>Spoken Answer:</strong>  
+"Yes. In our relational schema, <code>SHOWTIME</code> holds the foreign key <code>movie_id</code> referencing <code>MOVIE</code>. <code>MOVIE</code> does not hold a foreign key to <code>SHOWTIME</code>. Thus, movies can be inserted into the catalog months ahead of release."
+
+<h4>Q78. Can a showtime exist without a movie or screen?</h4>
+<strong>Spoken Answer:</strong>  
+"No. In <code>SHOWTIME</code>, both <code>movie_id</code> and <code>screen_id</code> are defined as <code>INT NOT NULL</code> foreign keys. The MySQL engine will reject any showtime insertion where either identifier is null or references a non-existent row."
+
+<h4>Q79. What happens if an admin tries to delete a movie that already has scheduled showtimes?</h4>
+<strong>Spoken Answer:</strong>  
+"The operation is rejected. First, the backend controller checks <code>SELECT show_id FROM SHOWTIME WHERE movie_id = ?</code> and returns HTTP 409. Second, at the database level, <code>fk_showtime_movie</code> enforces <code>ON DELETE RESTRICT</code>, throwing MySQL Error 1451."
+
+<h4>Q80. How is auditorium screen seating configured?</h4>
+<strong>Spoken Answer:</strong>  
+"Screens have capacity ranging from 112 to 160 seats. Physical rows are assigned letters (A through K), and numbers (1 to 16). Rows A–D are <code>Standard</code>, E–H are <code>Premium</code>, and I–K are <code>VIP</code>/<code>Recliner</code>. The unique constraint <code>uq_screen_seat (screen_id, seat_number)</code> prevents duplicate seat labels in the same auditorium."
+
+<h4>Q81. How does the customer website discover which movies are playing in a specific city?</h4>
+<strong>Spoken Answer:</strong>  
+"The customer frontend queries <code>GET /api/theaters</code>. When the user selects a city (e.g., 'Bengaluru'), the UI filters showtimes by joining <code>THEATER</code> on <code>city = 'Bengaluru'</code>, displaying only screenings occurring in multiplexes within that metropolitan area."
+
+<h4>Q82. What is the difference between screen capacity and seat count?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>capacity</code> is an integer column on <code>SCREEN</code> indicating total permitted audience. <code>SEAT</code> contains the individual physical rows for that screen. In our database, the count of rows in <code>SEAT WHERE screen_id = X</code> exactly equals <code>SCREEN.capacity</code>."
+
+<h4>Q83. What is movie release status, and how is it derived?</h4>
+<strong>Spoken Answer:</strong>  
+"A movie is 'Now Showing' if it has at least one active, scheduled showtime in the database. It is 'Coming Soon' if its release date is in the future and it has zero current showtimes. Release status is dynamically derived from relational showtime counts."
+
+<h4>Q84. Why does the <code>MOVIE</code> table store <code>duration</code> as an integer?</h4>
+<strong>Spoken Answer:</strong>  
+"It stores duration in total minutes (e.g., 180 for Oppenheimer). Storing duration as an integer allows simple arithmetic addition with start times and turnaround buffers to compute precise screening end times."
+
+<h4>Q85. How do you prevent deleting a theater that has active staff assigned?</h4>
+<strong>Spoken Answer:</strong>  
+"The foreign key constraint <code>fk_admin_theater</code> on <code>ADMIN_STAFF(theater_id)</code> is configured with <code>ON DELETE RESTRICT</code>. MySQL prevents deleting the theater record until all assigned staff members are reassigned or removed."
+
+<hr/>
+
+<h2>Section H: Seat Selection, Booking Logic &amp; Concurrency</h2>
+
+<h4>Q86. How are physical seats mapped to a booking in the database?</h4>
+<strong>Spoken Answer:</strong>  
+"Via the associative junction table <code>BOOKED_SEAT</code>. For every seat selected in a booking, a row is inserted with <code>(booking_id, seat_id, ticket_price)</code>. The composite primary key <code>(booking_id, seat_id)</code> prevents the same seat from being inserted twice within the same booking."
+
+<h4>Q87. How does the system calculate how many seats are available for a showtime?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>getShowtimeSeats</code>, the query counts all physical seats for the screen:
+<code>SELECT COUNT(<em>) FROM SEAT WHERE screen_id = ?</code>.
+It then queries:
+<code>SELECT bs.seat_id FROM BOOKED_SEAT bs JOIN BOOKING b ON bs.booking_id = b.booking_id WHERE b.show_id = ? AND b.booking_status != 'CANCELLED'</code>.
+Available seats = Total Seats $-$ Booked Seats."
+
+<h4>Q88. How does the backend prevent a user from booking a seat that belongs to a different screen?</h4>
+<strong>Spoken Answer:</strong>  
+"In Step 4 of <code>createBooking</code>, the server queries the <code>SEAT</code> table for all requested <code>seat_ids</code> and verifies that every returned seat's <code>screen_id</code> matches the showtime's assigned <code>screen_id</code>. If a mismatch is detected, the transaction aborts with HTTP 400."
+
+<h4>Q89. How does the system prevent two users from booking the same seat for the same showtime?</h4>
+<strong>Spoken Answer:</strong>  
+"In Step 5 of <code>createBooking</code>, within an active transaction, the server queries <code>BOOKED_SEAT</code> joined with <code>BOOKING</code> for the target <code>show_id</code> and selected <code>seat_ids</code> where <code>booking_status != 'CANCELLED'</code>. If any seats are returned, the transaction rolls back with HTTP 409 Conflict ('Seats already booked')."
+
+<h4>Q90. What is a race condition in seat reservation? Does your current implementation completely prevent it?</h4>
+<strong>Spoken Answer (Honest &amp; Defensible):</strong>  
+"A race condition occurs when two concurrent requests read seat availability simultaneously before either writes. In our current implementation, the seat conflict query uses standard <code>SELECT</code> without <code>FOR UPDATE</code>. Under high concurrent load, two requests could theoretically read the seats as available at the exact same millisecond. To make it 100% race-condition proof, we should add <code>SELECT ... FOR UPDATE</code> on the seat rows or enforce a unique constraint on <code>(show_id, seat_id)</code>."
+
+<h4>Q91. What is the purpose of the <code>FOR UPDATE</code> clause in SQL?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>SELECT ... FOR UPDATE</code> acquires an exclusive row-level lock on the read rows within an InnoDB transaction. Any other concurrent transaction attempting to read or update those locked rows is blocked until the first transaction commits or rolls back. In CINEVERSE, we use <code>FOR UPDATE</code> on <code>SNACK</code> inventory and <code>BOOKING</code> cancellation."
+
+<h4>Q92. What are the four ANSI SQL Transaction Isolation Levels?</h4>
+<strong>Spoken Answer:</strong>  
+"1. <strong>Read Uncommitted:</strong> Permitted dirty reads.
+<li><strong>Read Committed:</strong> Prevents dirty reads; non-repeatable reads possible.</li>
+<li><strong>Repeatable Read:</strong> (MySQL InnoDB default) Prevents dirty and non-repeatable reads; phantom reads mitigated by Next-Key Locking.</li>
+<li><strong>Serializable:</strong> Highest isolation; fully serializes access using range locks."</li>
+
+<h4>Q93. What is a Dirty Read, Non-Repeatable Read, and Phantom Read?</h4>
+<strong>Spoken Answer:</strong>  
+"- <strong>Dirty Read:</strong> A transaction reads uncommitted changes made by another transaction that might later be rolled back.
+<li><strong>Non-Repeatable Read:</strong> A transaction reads the same row twice and observes different data because another transaction committed an update in between.</li>
+<li><strong>Phantom Read:</strong> A transaction re-executes a query returning a range of rows and finds new 'phantom' rows inserted and committed by another transaction."</li>
+
+<h4>Q94. Why don't you delete rows from <code>BOOKED_SEAT</code> when a booking is cancelled?</h4>
+<strong>Spoken Answer:</strong>  
+"Because <code>BOOKING.booking_status</code> is updated to <code>'CANCELLED'</code>. Our seat availability queries filter <code>WHERE b.booking_status != 'CANCELLED'</code>. By leaving the rows in <code>BOOKED_SEAT</code>, the seats are immediately released for new bookings while preserving complete historical audit trails of who originally reserved the seats."
+
+<h4>Q95. How does the frontend seat map visually distinguish seat categories?</h4>
+<strong>Spoken Answer:</strong>  
+"The customer frontend seat picker fetches seat objects with <code>seat_type</code>. The UI assigns distinct visual color schemes: Silver for Standard, Gold for Premium, and Purple/Rose for VIP Recliners, displaying corresponding price badges."
+
+<hr/>
+
+<h2>Section I: Payments &amp; Concession Orders</h2>
+
+<h4>Q96. How is concession (snack) ordering integrated with ticket booking?</h4>
+<strong>Spoken Answer:</strong>  
+"Snack orders are tied directly to the ticket reservation via <code>SNACK_ORDER(booking_id)</code>. The grand total of the booking combines the ticket total and snack total. Concession line items are stored in <code>SNACK_ORDER_ITEM</code>."
+
+<h4>Q97. How does CINEVERSE prevent selling snacks that are out of stock?</h4>
+<strong>Spoken Answer:</strong>  
+"In Step 7 of <code>createBooking</code>, for every snack ordered, the server executes:
+<code>SELECT stock_quantity FROM SNACK WHERE snack_id = ? FOR UPDATE</code>.
+If <code>stock_quantity &lt; requested_quantity</code>, the transaction rolls back immediately with HTTP 400 ('Insufficient stock'). If sufficient, it decrements inventory:
+<code>UPDATE SNACK SET stock_quantity = stock_quantity - ? WHERE snack_id = ?</code>."
+
+<h4>Q98. Is the payment gateway live or simulated?</h4>
+<strong>Spoken Answer:</strong>  
+"It is an internal transactional simulation. The <code>PAYMENT</code> table records the transaction amount, method (<code>UPI</code>, <code>Credit Card</code>, <code>Debit Card</code>, <code>Net Banking</code>, <code>Cash</code>), timestamp, and status (<code>COMPLETED</code>). The relational integrity and financial reconciliation are fully modeled, but without external bank API webhooks."
+
+<h4>Q99. What happens to the payment record if a booking is cancelled?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>cancelBooking</code>, the payment record's status is updated:
+<code>UPDATE PAYMENT SET payment_status = 'REFUNDED' WHERE booking_id = ?</code>.
+This preserves financial accountability for auditing purposes."
+
+<h4>Q100. How does the schema guarantee that one booking cannot have two conflicting payments?</h4>
+<strong>Spoken Answer:</strong>  
+"The <code>PAYMENT</code> table defines a unique constraint <code>uq_payment_booking UNIQUE (booking_id)</code>. Any attempt to insert a duplicate payment receipt for the same booking ID is rejected by the database engine."
+
+<h4>Q101. What payment methods are supported by database constraints?</h4>
+<strong>Spoken Answer:</strong>  
+"The check constraint <code>chk_payment_method</code> restricts values to:
+<code>'UPI'</code>, <code>'Credit Card'</code>, <code>'Debit Card'</code>, <code>'Net Banking'</code>, or <code>'Cash'</code>. Inserting any other string throws a check constraint violation."
+
+<h4>Q102. How do you calculate total concession revenue versus ticket revenue?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>reportController.js</code>:
+<li>Ticket Revenue: <code>SELECT SUM(total_amount) FROM BOOKING WHERE booking_status = 'CONFIRMED'</code>.</li>
+<li>Concession Revenue: <code>SELECT SUM(total_price) FROM SNACK_ORDER WHERE order_status = 'COMPLETED'</code>."</li>
+
+<hr/>
+
+<h2>Section K: Testing, Debugging &amp; Edge Cases</h2>
+
+<h4>Q103. How was the CINEVERSE application tested?</h4>
+<strong>Spoken Answer:</strong>  
+"We tested the application through 37 automated integration tests in <code>scratch/comprehensive_test.js</code> covering database release statuses, scheduling collision detection, admin trailer CRUD, and multi-seat transaction rollback. We also verified frontend production builds with zero compiler errors."
+
+<h4>Q104. What happens if the MySQL database server crashes or loses connection?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>backend/src/config/db.js</code>, <code>checkDbConnection</code> detects connection failures, captures the error code (<code>ECONNREFUSED</code>), and logs a structured diagnostic message. The API endpoints return HTTP 500 with a clean error message rather than crashing the Node.js process."
+
+<h4>Q105. What happens if a user submits a negative ticket price or negative snack quantity?</h4>
+<strong>Spoken Answer:</strong>  
+"The operation is rejected at two levels: First, controller input validation checks <code>if (price &lt;= 0) return res.status(400)</code>. Second, MySQL schema constraints <code>chk_showtime_base_price (base_price &gt;= 0.00)</code> and <code>chk_snack_item_qty (quantity &gt; 0)</code> enforce non-negative values at the engine level."
+
+<h4>Q106. What happens if a customer attempts to book zero seats?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>bookingController.js</code> line 142, the server validates:
+<code>if (!seat_ids || !Array.isArray(seat_ids) || seat_ids.length === 0)</code>.
+It immediately rejects the request with HTTP 400 Bad Request before opening a database transaction."
+
+<h4>Q107. How did you debug SQL syntax and execution errors during development?</h4>
+<strong>Spoken Answer:</strong>  
+"We monitored Node.js server console logs and MySQL query logs. We isolated queries and tested them directly in the MySQL command line client using <code>EXPLAIN</code> to inspect query execution plans, verify index usage, and measure execution times."
+
+<h4>Q108. What is the output of <code>EXPLAIN SELECT ...</code> in MySQL?</h4>
+<strong>Spoken Answer:</strong>  
+"<code>EXPLAIN</code> displays the query execution plan chosen by MySQL's query optimizer. Key columns include:
+<li><code>type</code>: Join type (<code>ALL</code> full table scan, <code>ref</code> index lookup, <code>eq_ref</code> unique index lookup).</li>
+<li><code>possible_keys</code>: Indexes MySQL could use.</li>
+<li><code>key</code>: The actual index chosen.</li>
+<li><code>rows</code>: Estimated number of rows MySQL must examine."</li>
+
+<h4>Q109. What happens if an admin schedules a showtime with end time before start time?</h4>
+<strong>Spoken Answer:</strong>  
+"The scheduling collision engine computes <code>end_time = computeEndTime(start_time, duration, 15)</code>. Since duration is constrained by <code>chk_movie_duration (duration &gt; 0)</code>, the calculated end time is strictly guaranteed to be after the start time."
+
+<h4>Q110. How did you verify referential integrity under cascading deletes?</h4>
+<strong>Spoken Answer:</strong>  
+"In a test environment, deleting a test <code>SCREEN</code> automatically cascade-deleted all associated <code>SEAT</code> rows (<code>ON DELETE CASCADE</code>), while attempting to delete a <code>MOVIE</code> with active showtimes was blocked (<code>ON DELETE RESTRICT</code>)."
+
+<hr/>
+
+<h2>Section L: Security, Reliability &amp; Performance</h2>
+
+<h4>Q111. How does CINEVERSE prevent Cross-Site Scripting (XSS)?</h4>
+<strong>Spoken Answer:</strong>  
+"React automatically escapes all variables rendered inside JSX expressions <code>{movie.title}</code>, treating input as plain strings rather than executable HTML. Additionally, backend inputs are validated and sanitized."
+
+<h4>Q112. How does the system handle Admin Authentication?</h4>
+<strong>Spoken Answer:</strong>  
+"In <code>adminController.js</code>, when staff log in with email and password, the server verifies the bcrypt salted password hash. Upon success, it issues a signed JSON Web Token (JWT) containing <code>staff_id</code>, <code>email</code>, and <code>role</code>, valid for 8 hours."
+
+<h4>Q113. How does the backend authorize protected administrative routes?</h4>
+<strong>Spoken Answer:</strong>  
+"Using JWT verification middleware in <code>backend/src/middleware/auth.js</code>. Protected routes inspect the <code>Authorization: Bearer &lt;token&gt;</code> header. If the token is missing, expired, or tampered with, the request is rejected with HTTP 401 Unauthorized."
+
+<h4>Q114. How would you optimize query performance if your database grew to 10 million bookings?</h4>
+<strong>Spoken Answer:</strong>  
+"1. <strong>Partitioning:</strong> Partition the <code>BOOKING</code> and <code>BOOKED_SEAT</code> tables by range on <code>booking_date</code> (e.g., yearly/monthly partitions).
+<li><strong>Composite Indexing:</strong> Add composite indexes on <code>(show_id, booking_status)</code>.</li>
+<li><strong>Archiving:</strong> Move completed bookings older than 2 years into a cold historical archive table.</li>
+<li><strong>Caching:</strong> Cache movie catalog and theater venue data in Redis."</li>
+
+<h4>Q115. Why is connection pooling crucial for backend reliability?</h4>
+<strong>Spoken Answer:</strong>  
+"Creating a new database connection for every HTTP request incurs heavy TCP handshake and authentication overhead, exhausting database ports under traffic spikes. A connection pool reuses active connections, capping database load and preventing out-of-memory crashes."
+
+<h4>Q116. What sensitive customer data is stored, and how is it protected?</h4>
+<strong>Spoken Answer:</strong>  
+"We store customer name, phone, email, and password hash. Password hashes use salted bcrypt (<code>$2a$10$...</code>), rendering them resistant to rainbow table and brute-force attacks. No raw credit card or CVV numbers are ever stored."
+
+<h4>Q117. What is Database Connection Starvation, and how do you prevent it?</h4>
+<strong>Spoken Answer:</strong>  
+"Connection starvation occurs when long-running queries or unreleased connections exhaust the pool, causing incoming requests to hang indefinitely. We prevent this by strictly using <code>try ... finally { conn.release(); }</code> to guarantee that connections return to the pool immediately upon request completion."
+
+<h4>Q118. What is Deadlock in MySQL, and how does InnoDB handle it?</h4>
+<strong>Spoken Answer:</strong>  
+"A deadlock occurs when two transactions hold locks that the other needs, creating a circular wait where neither can proceed. InnoDB automatically detects deadlocks using a wait-for graph, immediately aborts the transaction with fewer row locks (the lower-cost transaction), and rolls it back, allowing the other to complete."
+
+<hr/>
+
+<h2>Section M: Critical &amp; Difficult Examiner Questions</h2>
+
+<h4>Q119. Why did you choose MySQL instead of PostgreSQL?</h4>
+<strong>Spoken Answer:</strong>  
+"MySQL 8.0 with InnoDB provides enterprise ACID compliance, native B-Tree indexing, robust foreign key constraint enforcement, and straightforward replication. While PostgreSQL offers advanced object-relational features, MySQL is the industry standard for high-throughput commercial web backends and perfectly fits our relational ticketing model."
+
+<h4>Q120. If an examiner claims: "Your seat booking logic is flawed because two users can book the same seat simultaneously," how do you respond?</h4>
+<strong>Spoken Answer (Defensible &amp; Masterful):</strong>  
+"You are highlighting an essential concurrency consideration. In our current implementation, we execute an application-level conflict check inside a multi-statement transaction, which handles typical sequential traffic. However, because our conflict query does not use <code>SELECT ... FOR UPDATE</code>, under extreme millisecond concurrency, two transactions could experience a race condition under MySQL's default <code>REPEATABLE READ</code> isolation. To solve this completely, we can add <code>FOR UPDATE</code> to lock the seat rows during validation or add an engine-level unique key constraint on <code>(show_id, seat_id)</code>."
+
+<h4>Q121. What happens if payment succeeds but booking creation fails?</h4>
+<strong>Spoken Answer:</strong>  
+"In our architecture, payment recording and booking creation occur within the </em>exact same* ACID transaction. If booking creation fails, the transaction rolls back before payment is committed. In a commercial deployment with an external payment gateway, we would implement a Two-Phase Commit or Webhook Reconciliation worker: if a payment succeeds but the booking fails, the system automatically triggers an immediate gateway refund."
+
+<h4>Q122. Why did you use surrogate integer keys (<code>movie_id</code>, <code>show_id</code>) instead of natural keys (<code>title</code>, <code>start_time</code>)?</h4>
+<strong>Spoken Answer:</strong>  
+"Natural keys like movie titles or timestamps are wide strings that consume significant index page space, degrade B-Tree performance, and can change in the real world (e.g., a movie title correction). Surrogate integer keys are compact (4 bytes), immutable, highly performant for B-Tree index traversal, and simplify multi-table joins."
+
+<h4>Q123. Can your database schema support ticket price discounts or promo coupons?</h4>
+<strong>Spoken Answer:</strong>  
+"Yes. We can introduce a <code>DISCOUNT_COUPON</code> table with <code>(coupon_id, coupon_code, discount_pct, expiry_date)</code> and add an optional nullable foreign key <code>coupon_id</code> to <code>BOOKING</code>. The total amount in <code>BOOKING</code> would reflect the net price after coupon deduction."
+
+<h4>Q124. How would your schema handle seat reservation for users with disabilities (wheelchair access)?</h4>
+<strong>Spoken Answer:</strong>  
+"The <code>SEAT</code> table already includes a <code>seat_type</code> column constrained by <code>chk_seat_type</code>. We can simply extend the allowed set in <code>chk_seat_type</code> to include <code>'Accessible'</code> or <code>'Wheelchair'</code> and flag these seats in the frontend with specialized icons and priority booking rules."
+
+<h4>Q125. Why did you write raw SQL queries in your backend controllers instead of using an ORM like Prisma or Sequelize?</h4>
+<strong>Spoken Answer:</strong>  
+"Writing raw SQL queries via <code>mysql2/promise</code> was a deliberate academic choice. ORMs abstract away relational mechanics, often generating inefficient, bloated joins. Writing raw SQL allowed us to explicitly design and demonstrate multi-table joins, aggregations, parameterized queries, and ACID transaction boundaries as mandated by the RDBMS laboratory syllabus."
+
+<h4>Q126. What would you change in the database design if you had one more week?</h4>
+<strong>Spoken Answer:</strong>  
+"Three specific enhancements:
+<li>Add an engine-level unique constraint on <code>(show_id, seat_id)</code> or an ephemeral 5-minute reservation lock table to make seat selection 100% race-condition proof.</li>
+<li>Implement database Views for complex reporting queries like <code>vw_movie_revenue_summary</code>.</li>
+<li>Add a loyalty point redemption transaction table to complete the customer rewards loop."</li>
+
+<h4>Q127. Which part of your project demonstrates the strongest RDBMS concepts?</h4>
+<strong>Spoken Answer:</strong>  
+"The <code>createBooking</code> transaction and the junction table design for <code>BOOKED_SEAT</code>. It integrates 1NF-to-3NF normalization, composite primary keys, composite unique keys, foreign key cascading and restriction, server-side dynamic price calculations, and multi-statement ACID transaction rollback across three related tables."
+
+<h4>Q128. Why does <code>BOOKING</code> have a <code>show_id</code> foreign key if <code>BOOKED_SEAT</code> already links to <code>SEAT</code>?</h4>
+<strong>Spoken Answer:</strong>  
+"Because <code>SEAT</code> represents a physical chair in an auditorium, not a screening event. A physical seat exists across hundreds of showtimes. Without <code>show_id</code> on <code>BOOKING</code>, it would be impossible to know which specific movie screening the customer purchased tickets for."
+
+<h4>Q129. How does CINEVERSE protect against data loss in the event of a sudden power outage?</h4>
+<strong>Spoken Answer:</strong>  
+"Through MySQL InnoDB's write-ahead logging (WAL) mechanism known as the <strong>Redo Log</strong> (<code>ib_logfile</code>). Before changes are flushed to the main data tablespace, transactions are written sequentially to the redo log. Upon restarting after a crash, InnoDB reads the redo log and automatically rolls forward committed transactions while rolling back uncommitted ones."
+
+<h4>Q130. What is the difference between Database Authentication and Application Authorization?</h4>
+<strong>Spoken Answer:</strong>  
+"Database Authentication verifies the Node.js backend's credentials (<code>root</code> user and password) when establishing a connection pool to MySQL. Application Authorization verifies the human user's identity and privileges (e.g., verifying a JWT token to determine if an admin staff member is authorized to schedule showtimes)."
+
+</div>
+
+<div class="section-sql">
+  <h1>CINEVERSE — Practical SQL Viva Voce Question Bank</h1>
+<strong>Hands-On SQL Query Tasks &amp; Code Breakdown</strong>  
+<strong>Course:</strong> Relational Database Management Systems Laboratory (CSE Department)  
+<strong>Institution:</strong> Manipal University Jaipur (MUJ)  
+<strong>Database:</strong> MySQL 8.0 (<code>MovieTheaterDB</code>)  
+
+<hr/>
+
+<h2>Guide for Practical SQL Viva</h2>
+When an examiner asks you to write or explain an SQL query on paper or in MySQL Workbench:
+<li><strong>Name the Target Tables First:</strong> Explain which tables contain the necessary attributes and how they join.</li>
+<li><strong>State Join Conditions Explicitly:</strong> Emphasize primary key to foreign key matches (<code>ON t1.id = t2.t1_id</code>).</li>
+<li><strong>Clarify Aggregate Filters:</strong> Distinguish between <code>WHERE</code> (row-level filter before grouping) and <code>HAVING</code> (group-level filter after aggregation).</li>
+<li><strong>Explain Output:</strong> Describe what each row of the result set represents in the cinema domain.</li>
+
+<hr/>
+
+<h3>Task 1: List All Movies with Ratings and Runtimes</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to retrieve all movies, showing their title, genre, runtime in minutes, and rating, ordered from highest rated to lowest rated."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      movie_id,
+      title,
+      genre,
+      duration AS duration_mins,
+      rating
+  FROM MOVIE
+  ORDER BY rating DESC, title ASC;
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li><code>SELECT movie_id, title, ...</code>: Selects the relevant movie identification and descriptive attributes.</li>
+<li><code>FROM MOVIE</code>: Queries the base strong entity table storing the cinematic catalog.</li>
+<li><code>ORDER BY rating DESC, title ASC</code>: Sorts the catalog primarily by audience rating descending (highest rated first), using alphabetical title ascending as a tiebreaker.</li>
+</em> <strong>Expected Result:</strong>
+  Returns 13 rows displaying titles like <em>The Dark Knight</em> (9.0), <em>Inception</em> (8.8), and <em>Interstellar</em> (8.7).
+<em> <strong>Relational Concept:</strong> Basic DQL projection, attribute aliasing, and multi-column sorting.
+
+<hr/>
+
+<h3>Task 2: Count Screens and Total Auditorium Capacity Per Multiplex Theater</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to list each theater's name, city, total number of screens, and total seating capacity across all its screens."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      t.theater_id,
+      t.theater_name,
+      t.city,
+      COUNT(s.screen_id) AS total_screens,
+      COALESCE(SUM(s.capacity), 0) AS total_theater_capacity
+  FROM THEATER t
+  LEFT JOIN SCREEN s ON t.theater_id = s.theater_id
+  GROUP BY t.theater_id, t.theater_name, t.city
+  ORDER BY total_theater_capacity DESC;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li><code>SELECT t.theater_id, ...</code>: Selects the theater identifier, name, and city.</li>
+<li><code>COUNT(s.screen_id)</code>: Aggregates the total number of physical screens belonging to that theater.</li>
+<li><code>COALESCE(SUM(s.capacity), 0)</code>: Sums the capacity column across all associated screens, defaulting to 0 if a theater has no screens.</li>
+<li><code>FROM THEATER t LEFT JOIN SCREEN s ON t.theater_id = s.theater_id</code>: Performs a Left Outer Join so theaters with zero screens are not excluded.</li>
+<li><code>GROUP BY t.theater_id, t.theater_name, t.city</code>: Groups by all non-aggregated select columns to comply with SQL standard grouping rules.</li>
+<em> <strong>Expected Result:</strong>
+  Returns 8 rows (one per multiplex). Each theater in Bengaluru, Mumbai, Delhi, Hyderabad, and Chennai shows 4 screens with total capacities around 500–600 seats.
+</em> <strong>Relational Concept:</strong> One-to-Many join, aggregate summation, <code>GROUP BY</code>, and <code>COALESCE</code> null-handling.
+
+<hr/>
+
+<h3>Task 3: Find All Available Seats for a Specific Showtime</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Given a showtime ID (e.g., <code>show_id = 1</code>), write a query to list all physical seats that are currently available to be booked."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      st.seat_id,
+      st.seat_number,
+      st.seat_type
+  FROM SHOWTIME sh
+  JOIN SEAT st ON sh.screen_id = st.screen_id
+  WHERE sh.show_id = 1
+    AND st.seat_id NOT IN (
+        SELECT bs.seat_id
+        FROM BOOKED_SEAT bs
+        JOIN BOOKING b ON bs.booking_id = b.booking_id
+        WHERE b.show_id = 1 
+          AND b.booking_status != 'CANCELLED'
+    )
+  ORDER BY 
+      SUBSTRING(st.seat_number, 1, 1) ASC,
+      CAST(SUBSTRING(st.seat_number, 2) AS UNSIGNED) ASC;
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li><code>SELECT st.seat_id, ...</code>: Projects the seat identifier, row/number label, and tier.</li>
+<li><code>FROM SHOWTIME sh JOIN SEAT st ON sh.screen_id = st.screen_id</code>: Joins the showtime to its scheduled auditorium screen to retrieve all physical seats belonging to that auditorium.</li>
+<li><code>WHERE sh.show_id = 1</code>: Focuses on the target screening.</li>
+<li><code>AND st.seat_id NOT IN (...)</code>: Subquery filtering out seats that already have an active, non-cancelled reservation for that specific showtime.</li>
+<li><code>ORDER BY SUBSTRING(...)</code>: Natural sort ordering letters (A to K) and numbers (1 to 16).</li>
+</em> <strong>Expected Result:</strong>
+  Returns all unreserved seats in that auditorium. If the screen has 142 seats and 4 are booked, exactly 138 rows are returned.
+<em> <strong>Relational Concept:</strong> Set difference using subquery with <code>NOT IN</code>, correlated screening logic, and string sorting.
+
+<hr/>
+
+<h3>Task 4: Total Revenue Generated by Each Movie</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to calculate total ticket revenue generated by each movie from confirmed bookings, ordered by revenue descending."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      m.movie_id,
+      m.title,
+      m.genre,
+      COUNT(DISTINCT b.booking_id) AS confirmed_bookings_count,
+      COUNT(bs.seat_id) AS total_tickets_sold,
+      COALESCE(SUM(b.total_amount), 0.00) AS gross_ticket_revenue
+  FROM MOVIE m
+  JOIN SHOWTIME s ON m.movie_id = s.movie_id
+  LEFT JOIN BOOKING b ON s.show_id = b.show_id AND b.booking_status = 'CONFIRMED'
+  LEFT JOIN BOOKED_SEAT bs ON b.booking_id = bs.booking_id
+  GROUP BY m.movie_id, m.title, m.genre
+  ORDER BY gross_ticket_revenue DESC;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li><code>SELECT m.movie_id, ...</code>: Projects movie details.</li>
+<li><code>COUNT(DISTINCT b.booking_id)</code>: Counts unique reservation orders to avoid counting duplicate bookings across multiple seats.</li>
+<li><code>COUNT(bs.seat_id)</code>: Counts individual tickets sold.</li>
+<li><code>COALESCE(SUM(b.total_amount), 0.00)</code>: Calculates total revenue, ensuring movies with zero bookings display 0.00 rather than NULL.</li>
+<li><code>LEFT JOIN BOOKING b ... AND b.booking_status = 'CONFIRMED'</code>: Only tallies valid confirmed revenue, excluding cancelled orders.</li>
+<li><code>GROUP BY m.movie_id, m.title, m.genre</code>: Standard grouping by primary key and attributes.</li>
+<em> <strong>Expected Result:</strong>
+  Returns a list of movies ranked by gross ticket sales, led by popular blockbusters.
+</em> <strong>Relational Concept:</strong> Multi-table join across 4 tables, distinct counting, conditional join filtering, and aggregate summation.
+
+<hr/>
+
+<h3>Task 5: Customer Booking History and Invoice Summary</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to fetch complete booking history for a specific customer (e.g., <code>customer_id = 1</code>), including movie title, show date, theater, screen number, payment method, and comma-separated seat numbers."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      b.booking_id,
+      b.booking_date,
+      m.title AS movie_title,
+      t.theater_name,
+      t.city,
+      sc.screen_number,
+      s.show_date,
+      s.start_time,
+      b.total_amount,
+      b.booking_status,
+      p.payment_method,
+      p.payment_status,
+      GROUP_CONCAT(st.seat_number ORDER BY st.seat_number SEPARATOR ', ') AS reserved_seats
+  FROM BOOKING b
+  JOIN SHOWTIME s ON b.show_id = s.show_id
+  JOIN MOVIE m ON s.movie_id = m.movie_id
+  JOIN SCREEN sc ON s.screen_id = sc.screen_id
+  JOIN THEATER t ON sc.theater_id = t.theater_id
+  LEFT JOIN PAYMENT p ON b.booking_id = p.booking_id
+  LEFT JOIN BOOKED_SEAT bs ON b.booking_id = bs.booking_id
+  LEFT JOIN SEAT st ON bs.seat_id = st.seat_id
+  WHERE b.customer_id = 1
+  GROUP BY b.booking_id, b.booking_date, m.title, t.theater_name, t.city, sc.screen_number, s.show_date, s.start_time, b.total_amount, b.booking_status, p.payment_method, p.payment_status
+  ORDER BY b.booking_date DESC;
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li>Connects <code>BOOKING</code> across 7 tables to reconstitute the full commercial invoice.</li>
+<li><code>GROUP_CONCAT(st.seat_number ...)</code>: Aggregates multiple individual seat rows (e.g., A1, A2) into a single readable string per booking invoice.</li>
+<li><code>WHERE b.customer_id = 1</code>: Restricts results to the targeted patron.</li>
+</em> <strong>Expected Result:</strong>
+  Returns all booking orders made by customer 1 with complete theater, timing, and seat assignment details.
+<em> <strong>Relational Concept:</strong> Complex multi-table equijoin, string aggregation with <code>GROUP_CONCAT</code>, and relational projection.
+
+<hr/>
+
+<h3>Task 6: Detect Scheduling Conflicts on the Same Auditorium Screen</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to verify whether scheduling a screening on Screen ID 3 on date '2026-10-30' from '18:00:00' to '21:15:00' conflicts with any existing screening."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      s.show_id,
+      m.title AS conflicting_movie,
+      s.start_time,
+      s.end_time
+  FROM SHOWTIME s
+  JOIN MOVIE m ON s.movie_id = m.movie_id
+  WHERE s.screen_id = 3
+    AND s.show_date = '2026-10-30'
+    AND (s.start_time &lt; '21:15:00' AND s.end_time &gt; '18:00:00');
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li><code>WHERE s.screen_id = 3 AND s.show_date = '2026-10-30'</code>: Isolates screenings scheduled in the exact same physical auditorium on that calendar day.</li>
+<li><code>AND (s.start_time &lt; '21:15:00' AND s.end_time &gt; '18:00:00')</code>: The mathematical interval overlap condition. If any existing showtime starts before the candidate ends, AND ends after the candidate starts, an overlap exists.</li>
+<em> <strong>Expected Result:</strong>
+  Returns empty result set if the time slot is clear, or returns the conflicting movie title and hours if occupied.
+</em> <strong>Relational Concept:</strong> Interval comparison logic, range overlap detection, and domain integrity enforcement.
+
+<hr/>
+
+<h3>Task 7: Concession Sales Revenue Breakdown by Snack Item</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to calculate total quantity sold and total revenue earned for each snack item, showing top-selling items first."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      sn.snack_id,
+      sn.snack_name,
+      sn.price AS current_unit_price,
+      sn.stock_quantity AS remaining_stock,
+      COALESCE(SUM(soi.quantity), 0) AS total_units_sold,
+      COALESCE(SUM(soi.quantity <em> soi.unit_price), 0.00) AS total_concession_revenue
+  FROM SNACK sn
+  LEFT JOIN SNACK_ORDER_ITEM soi ON sn.snack_id = soi.snack_id
+  LEFT JOIN SNACK_ORDER so ON soi.snack_order_id = so.snack_order_id AND so.order_status = 'COMPLETED'
+  GROUP BY sn.snack_id, sn.snack_name, sn.price, sn.stock_quantity
+  ORDER BY total_concession_revenue DESC;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li><code>FROM SNACK sn LEFT JOIN SNACK_ORDER_ITEM soi ...</code>: Left joins concessions so items with zero sales are still listed.</li>
+<li><code>COALESCE(SUM(soi.quantity <em> soi.unit_price), 0.00)</code>: Multiplies recorded line item quantities by historical purchase prices to calculate accurate historical revenue.</li>
+<li><code>ORDER BY total_concession_revenue DESC</code>: Sorts top revenue-earning snacks first.</li>
+</em> <strong>Expected Result:</strong>
+  Returns 10 rows showing items like <em>Caramel Popcorn (L)</em> and <em>Cheese Nachos</em> leading in units and revenue.
+<em> <strong>Relational Concept:</strong> Many-to-Many junction aggregation, calculated column summation, and inventory auditing.
+
+<hr/>
+
+<h3>Task 8: Find Customers with Zero Bookings (Inactive Patrons)</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to identify all registered customers who have never made a single ticket booking."</em>
+<em> <strong>SQL Query (Method 1: LEFT JOIN with NULL check):</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      c.customer_id,
+      c.customer_name,
+      c.email,
+      c.phone
+  FROM CUSTOMER c
+  LEFT JOIN BOOKING b ON c.customer_id = b.customer_id
+  WHERE b.booking_id IS NULL;
+  </code></pre>
+</em> <strong>Alternative Query (Method 2: NOT EXISTS Correlated Subquery):</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      c.customer_id,
+      c.customer_name,
+      c.email,
+      c.phone
+  FROM CUSTOMER c
+  WHERE NOT EXISTS (
+      SELECT 1 
+      FROM BOOKING b 
+      WHERE b.customer_id = c.customer_id
+  );
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li>Method 1 joins customers to bookings; if a customer has no bookings, the right table columns are <code>NULL</code>. <code>WHERE b.booking_id IS NULL</code> filters strictly for those non-matching rows.</li>
+<li>Method 2 uses <code>NOT EXISTS</code>, which returns true if the subquery returns zero rows for that customer.</li>
+</em> <strong>Expected Result:</strong>
+  Returns customers in the database who registered an account or profile but have not yet purchased tickets.
+<em> <strong>Relational Concept:</strong> Outer joins for non-existence matching versus correlated <code>NOT EXISTS</code> subqueries.
+
+<hr/>
+
+<h3>Task 9: Overall Financial Reconciliation (Tickets, Snacks, Refunds)</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write an executive financial summary query showing total confirmed ticket revenue, total concession revenue, total refunded amount, and net gross revenue."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      ticket_summary.confirmed_tickets,
+      concession_summary.total_concessions,
+      ticket_summary.refunded_amount,
+      (ticket_summary.confirmed_tickets + concession_summary.total_concessions) AS net_gross_revenue
+  FROM 
+      (
+          SELECT 
+              COALESCE(SUM(CASE WHEN booking_status = 'CONFIRMED' THEN total_amount ELSE 0 END), 0.00) AS confirmed_tickets,
+              COALESCE(SUM(CASE WHEN booking_status = 'CANCELLED' THEN total_amount ELSE 0 END), 0.00) AS refunded_amount
+          FROM BOOKING
+      ) AS ticket_summary
+  CROSS JOIN 
+      (
+          SELECT 
+              COALESCE(SUM(total_price), 0.00) AS total_concessions
+          FROM SNACK_ORDER
+          WHERE order_status = 'COMPLETED'
+      ) AS concession_summary;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li>Uses two derived subqueries (<code>ticket_summary</code> and <code>concession_summary</code>).</li>
+<li>Conditional <code>SUM(CASE ...)</code> separates confirmed ticket earnings from refunded amounts.</li>
+<li><code>CROSS JOIN</code> combines the two single-row scalar summaries to calculate overall net revenue.</li>
+<em> <strong>Expected Result:</strong>
+  Returns exactly 1 row summarizing overall corporate financials.
+</em> <strong>Relational Concept:</strong> Derived tables (inline views), <code>CASE</code> expressions inside aggregates, and scalar joins.
+
+<hr/>
+
+<h3>Task 10: Find Movies Screened in All 8 Multiplex Theaters</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to find movies that have at least one showtime scheduled in every single theater in the circuit (Relational Division concept)."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      m.movie_id,
+      m.title
+  FROM MOVIE m
+  JOIN SHOWTIME s ON m.movie_id = s.movie_id
+  JOIN SCREEN sc ON s.screen_id = sc.screen_id
+  GROUP BY m.movie_id, m.title
+  HAVING COUNT(DISTINCT sc.theater_id) = (SELECT COUNT(<em>) FROM THEATER);
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li>Joins <code>MOVIE</code> through <code>SHOWTIME</code> and <code>SCREEN</code> to access <code>theater_id</code>.</li>
+<li><code>GROUP BY m.movie_id, m.title</code>: Groups rows by movie.</li>
+<li><code>HAVING COUNT(DISTINCT sc.theater_id) = (SELECT COUNT(<em>) FROM THEATER)</code>: Compares the distinct count of theaters where the movie is scheduled to the total count of theaters in the entire circuit (8).</li>
+</em> <strong>Expected Result:</strong>
+  Returns universal releases that are playing across all venues nationwide.
+<em> <strong>Relational Concept:</strong> Relational Division ($A \div B$) simulated using <code>GROUP BY</code>, <code>COUNT(DISTINCT)</code>, and <code>HAVING</code> with a subquery.
+
+<hr/>
+
+<h3>Task 11: Rank Theaters by Ticket Sales Using Window Functions</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to rank all multiplex theaters by total ticket sales using SQL Window Functions."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      t.theater_id,
+      t.theater_name,
+      t.city,
+      COALESCE(SUM(b.total_amount), 0.00) AS theater_revenue,
+      RANK() OVER (ORDER BY COALESCE(SUM(b.total_amount), 0.00) DESC) AS revenue_rank,
+      DENSE_RANK() OVER (ORDER BY COALESCE(SUM(b.total_amount), 0.00) DESC) AS dense_revenue_rank
+  FROM THEATER t
+  LEFT JOIN SCREEN sc ON t.theater_id = sc.theater_id
+  LEFT JOIN SHOWTIME s ON sc.screen_id = s.screen_id
+  LEFT JOIN BOOKING b ON s.show_id = b.show_id AND b.booking_status = 'CONFIRMED'
+  GROUP BY t.theater_id, t.theater_name, t.city;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li><code>RANK() OVER (ORDER BY ... DESC)</code>: Calculates relative rank. If two theaters tie for rank 1, the next rank is 3.</li>
+<li><code>DENSE_RANK() OVER (...)</code>: Calculates dense rank without skipping rank numbers on ties.</li>
+<em> <strong>Expected Result:</strong>
+  Returns all 8 multiplexes with their revenue ranks (1 through 8).
+</em> <strong>Relational Concept:</strong> Modern SQL Window Functions (<code>OVER</code>, <code>RANK()</code>, <code>DENSE_RANK()</code>).
+
+<hr/>
+
+<h3>Task 12: Identify Theaters with No Active Showtimes</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to find multiplex theaters that currently have zero showtimes scheduled."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      t.theater_id,
+      t.theater_name,
+      t.city
+  FROM THEATER t
+  WHERE t.theater_id NOT IN (
+      SELECT DISTINCT sc.theater_id
+      FROM SCREEN sc
+      JOIN SHOWTIME s ON sc.screen_id = s.screen_id
+  );
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li>Subquery selects all <code>theater_id</code>s that currently appear in <code>SCREEN</code> rows linked to <code>SHOWTIME</code>.</li>
+<li><code>WHERE t.theater_id NOT IN (...)</code> returns theaters absent from that set.</li>
+</em> <strong>Expected Result:</strong>
+  Returns any newly constructed or unprogrammed multiplex venues.
+<em> <strong>Relational Concept:</strong> Set membership negation using <code>NOT IN</code>.
+
+<hr/>
+
+<h3>Task 13: Average Ticket Price by Auditorium Screen Type</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to calculate the average ticket base price across different screen formats (Standard, Laser IMAX, 4DX, VIP)."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      sc.screen_type,
+      COUNT(s.show_id) AS total_screenings,
+      ROUND(AVG(s.base_price), 2) AS avg_base_ticket_price,
+      MIN(s.base_price) AS min_price,
+      MAX(s.base_price) AS max_price
+  FROM SCREEN sc
+  JOIN SHOWTIME s ON sc.screen_id = s.screen_id
+  GROUP BY sc.screen_type
+  ORDER BY avg_base_ticket_price DESC;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li>Groups showtimes by <code>sc.screen_type</code>.</li>
+<li>Computes average, minimum, and maximum ticket pricing per cinema format.</li>
+<em> <strong>Expected Result:</strong>
+  Shows premium formats like IMAX and 4DX commanding significantly higher average prices than Standard auditoriums.
+</em> <strong>Relational Concept:</strong> Group-level aggregate statistics (<code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>ROUND</code>).
+
+<hr/>
+
+<h3>Task 14: Most Popular Screening Time Slots (Morning, Afternoon, Evening, Night)</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a query to categorize showtimes into time slots (Morning, Matinee, Evening, Night) and display the number of bookings made for each slot."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      CASE 
+          WHEN s.start_time &lt; '12:00:00' THEN 'Morning (Before 12 PM)'
+          WHEN s.start_time BETWEEN '12:00:00' AND '16:59:59' THEN 'Matinee (12 PM - 5 PM)'
+          WHEN s.start_time BETWEEN '17:00:00' AND '20:59:59' THEN 'Evening (5 PM - 9 PM)'
+          ELSE 'Night (After 9 PM)'
+      END AS time_slot,
+      COUNT(DISTINCT s.show_id) AS scheduled_shows_count,
+      COUNT(b.booking_id) AS total_bookings_received
+  FROM SHOWTIME s
+  LEFT JOIN BOOKING b ON s.show_id = b.show_id AND b.booking_status = 'CONFIRMED'
+  GROUP BY time_slot
+  ORDER BY total_bookings_received DESC;
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li>Uses a <code>CASE</code> expression to dynamically bin continuous time values into discrete business categories.</li>
+<li>Groups and aggregates by the computed <code>CASE</code> column.</li>
+</em> <strong>Expected Result:</strong>
+  Reveals peak cinema attendance hours (typically Evening and Night time slots).
+<em> <strong>Relational Concept:</strong> Categorical binning using <code>CASE</code> statements and grouped aggregation.
+
+<hr/>
+
+<h3>Task 15: Find the Most Frequently Booked Movie Genre</h3>
+</em> <strong>Examiner Prompt:</strong> <em>"Write a query to determine which movie genre has sold the highest number of individual seat tickets."</em>
+<em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      m.genre,
+      COUNT(bs.seat_id) AS total_tickets_sold
+  FROM MOVIE m
+  JOIN SHOWTIME s ON m.movie_id = s.movie_id
+  JOIN BOOKING b ON s.show_id = b.show_id
+  JOIN BOOKED_SEAT bs ON b.booking_id = bs.booking_id
+  WHERE b.booking_status = 'CONFIRMED'
+  GROUP BY m.genre
+  ORDER BY total_tickets_sold DESC
+  LIMIT 1;
+  </code></pre>
+</em> <strong>Line-by-Line Explanation:</strong>
+<li>Traverses the schema from <code>MOVIE</code> down to <code>BOOKED_SEAT</code>.</li>
+<li>Filters strictly for confirmed bookings.</li>
+<li>Aggregates by genre, sorts descending, and applies <code>LIMIT 1</code> to isolate the top-performing category.</li>
+<em> <strong>Expected Result:</strong>
+  Returns the single top genre (e.g., </em>Sci-Fi<em> or </em>Action<em>) along with ticket volume.
+</em> <strong>Relational Concept:</strong> Top-N query pattern using <code>ORDER BY ... DESC LIMIT 1</code>.
+
+<hr/>
+
+<h3>Task 16: Verify Physical Seat Map Integrity</h3>
+<em> <strong>Examiner Prompt:</strong> </em>"Write a validation query to verify that every screen's physical seat count in the <code>SEAT</code> table matches its declared <code>capacity</code> in the <code>SCREEN</code> table."<em>
+</em> <strong>SQL Query:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      sc.screen_id,
+      sc.screen_number,
+      sc.screen_name,
+      sc.capacity AS declared_capacity,
+      COUNT(st.seat_id) AS actual_physical_seats,
+      (sc.capacity - COUNT(st.seat_id)) AS discrepancy
+  FROM SCREEN sc
+  LEFT JOIN SEAT st ON sc.screen_id = st.screen_id
+  GROUP BY sc.screen_id, sc.screen_number, sc.screen_name, sc.capacity
+  HAVING discrepancy != 0;
+  </code></pre>
+<em> <strong>Line-by-Line Explanation:</strong>
+<li>Compares the configured integer <code>capacity</code> in <code>SCREEN</code> against the actual count of rows in <code>SEAT</code>.</li>
+<li><code>HAVING discrepancy != 0</code>: Filters strictly for auditoriums where a discrepancy exists.</li>
+</em> <strong>Expected Result:</strong>
+  Returns an empty result set (0 rows), mathematically proving 100% database integrity across all 32 screens and 4,544 physical seats.
+* <strong>Relational Concept:</strong> Database audit queries, integrity verification, and <code>HAVING</code> disparity filters.
+
+</div>
+
+<div class="section-demo">
+  <h1>CINEVERSE — Live Demonstration Script</h1>
+<strong>5–7 Minute Examiner Presentation &amp; Walkthrough Plan</strong>  
+<strong>Course:</strong> Relational Database Management Systems Laboratory  
+<strong>Institution:</strong> Manipal University Jaipur (MUJ)  
+<strong>System Services:</strong>  
+<li>Admin Frontend: <code>http://localhost:5173</code></li>
+<li>Customer Frontend: <code>http://localhost:5174</code></li>
+<li>Backend API: <code>http://localhost:5000</code></li>
+<li>Database: MySQL 8.0 <code>MovieTheaterDB</code></li>
+
+<hr/>
+
+<h2>Pre-Demonstration Setup Checklist</h2>
+Before the examiner calls your name:
+<li>Ensure the MySQL service is running on port 3306.</li>
+<li>Verify all three development servers are running:</li>
+<li>Backend: <code>cd backend &amp;&amp; node src/server.js</code> (Listening on 5000)</li>
+<li>Admin: <code>cd frontend-admin &amp;&amp; npm run dev</code> (Listening on 5173)</li>
+<li>Customer: <code>cd frontend-customer &amp;&amp; npm run dev</code> (Listening on 5174)</li>
+<li>Open two browser windows side by side:</li>
+<li>Left Window: Customer Portal (<code>http://localhost:5174</code>)</li>
+<li>Right Window: Admin Portal (<code>http://localhost:5173</code>)</li>
+<li>Open a terminal or MySQL Workbench connected to <code>MovieTheaterDB</code>.</li>
+
+<hr/>
+
+<h2>Step-by-Step 5–7 Minute Walkthrough</h2>
+
+<h3>Phase 1: High-Level Architecture &amp; Database Blueprint (Minute 0:00 – 1:00)</h3>
+<em> <strong>What to Show:</strong>
+<li>Open the project report or ER diagram file <code>report_assets/cineverse_er_diagram.svg</code>.</li>
+<li>Point to the separation between Venue Infrastructure (<code>THEATER</code>, <code>SCREEN</code>, <code>SEAT</code>), Temporal Scheduling (<code>SHOWTIME</code>), and Commercial Ledger (<code>BOOKING</code>, <code>BOOKED_SEAT</code>, <code>PAYMENT</code>).</li>
+</em> <strong>What to Say to Examiner:</strong>
+  <em>"Good morning, Examiners. Today I am presenting CINEVERSE, a multi-city multiplex movie theater booking and management system. Our database, <code>MovieTheaterDB</code>, is designed strictly in Third Normal Form across 15 relational tables with 22 check constraints. The system manages 8 cinema complexes across 5 Indian cities, 32 screens, 4,544 physical seats, and over 1,000 scheduled screenings."</em>
+<em> <strong>Database Concept Demonstrated:</strong>
+  Three-Tier Client-Server Architecture, Conceptual ER Modeling, and 3NF Normalization.
+
+<hr/>
+
+<h3>Phase 2: Live Database Introspection (Minute 1:00 – 2:00)</h3>
+</em> <strong>What to Show:</strong>
+  Switch to MySQL terminal or Workbench and execute a safe read query showing table counts.
+<em> <strong>SQL Query to Execute:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      table_name, table_rows 
+  FROM information_schema.tables 
+  WHERE table_schema = 'MovieTheaterDB';
+  </code></pre>
+</em> <strong>What to Say to Examiner:</strong>
+  <em>"Before demonstrating the web applications, here is the live MySQL database running under InnoDB. Notice the exact row distribution: 8 theaters, 32 screens, 4,544 individual seats, and 13 movies. Every table enforces primary keys, foreign keys, and explicit ON DELETE CASCADE or RESTRICT rules."</em>
+<em> <strong>Database Concept Demonstrated:</strong>
+  Physical storage engine compliance, metadata querying via <code>information_schema</code>, and entity integrity.
+
+<hr/>
+
+<h3>Phase 3: Theatrical Scheduling &amp; Collision Engine (Minute 2:00 – 3:30)</h3>
+</em> <strong>What to Show:</strong>
+<li>Navigate to the Admin Portal at <code>http://localhost:5173</code>.</li>
+<li>Log in using <code>admin@cinema.com</code> / <code>Admin@123</code>.</li>
+<li>Navigate to <strong>Showtimes</strong> (<code>/showtimes</code>).</li>
+<li>Click <strong>Schedule Showtime</strong>.</li>
+<li>Select <strong>CINEVERSE Nexus IMAX, Bengaluru</strong>, select <strong>Auditorium 1 (IMAX)</strong>, select date <code>2026-10-27</code>.</li>
+<li>Attempt to schedule a screening at an overlapping time (e.g., 18:30 when a screening is already scheduled from 18:00 to 21:00).</li>
+<li>Observe the red conflict alert banner: <em>"Scheduling Conflict: Auditorium 1 already has..."</em></li>
+<em> <strong>What to Say to Examiner:</strong>
+  </em>"In our admin portal, showtime scheduling is protected by a mathematical collision engine. In <code>showtimeController.js</code>, before inserting into <code>SHOWTIME</code>, the system checks for overlapping screenings using the interval condition: $A_{start} &lt; B_{end} \land A_{end} &gt; B_{start}$, while adding a mandatory 15-minute turnaround buffer. The database prevents duplicate bookings of the same auditorium space."<em>
+</em> <strong>Database Concept Demonstrated:</strong>
+  Domain constraints, temporal range integrity, and application-level pre-flight validation.
+
+<hr/>
+
+<h3>Phase 4: Dynamic Seat Map &amp; Atomic Booking Transaction (Minute 3:30 – 5:30)</h3>
+<em> <strong>What to Show:</strong>
+<li>Switch to the Customer Portal at <code>http://localhost:5174</code>.</li>
+<li>Point out the dynamic hero section and click <strong>Now Showing</strong> &rarr; select a movie (e.g., </em>Oppenheimer<em> or </em>The Dark Knight<em>).</li>
+<li>Click <strong>Book Seats</strong> to enter <code>/booking-flow</code>.</li>
+<li>Choose <strong>Bengaluru</strong> &rarr; select an evening showtime.</li>
+<li>The interactive seat map loads: Show that available seats are selectable, tier colors are visible (Standard, Premium, VIP), and prices adjust dynamically.</li>
+<li>Select 2 seats (e.g., Row G, Seats 7 and 8).</li>
+<li>Add a snack item (e.g., Caramel Popcorn).</li>
+<li>Click <strong>Confirm Booking &amp; Pay</strong>.</li>
+<li>The confirmation screen appears with the Booking ID and invoice summary.</li>
+</em> <strong>What to Say to Examiner:</strong>
+  <em>"Notice what just occurred under the hood: The customer frontend fetched the live seat availability by relationally subtracting booked seats from total physical seats. When I clicked Confirm, the backend initiated a multi-statement ACID transaction. It verified seat ownership, inserted into <code>BOOKING</code>, looped over the two seats inserting into the junction table <code>BOOKED_SEAT</code>, generated a <code>PAYMENT</code> receipt, and decremented the <code>SNACK</code> stock quantity with row-level locking. If any step had failed, the entire transaction would have rolled back."</em>
+<em> <strong>Database Concept Demonstrated:</strong>
+  ACID Transaction boundaries (<code>START TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code>), Associative Junction Tables ($M:N$ mapping), and Server-Side Dynamic Price Calculation.
+
+<hr/>
+
+<h3>Phase 5: Verification of the Committed Transaction in MySQL (Minute 5:30 – 6:30)</h3>
+</em> <strong>What to Show:</strong>
+  Switch back to the MySQL terminal and run a query showing the new booking that was just created.
+<em> <strong>SQL Query to Execute:</strong>
+  <pre><code class="language-sql">
+  SELECT 
+      b.booking_id,
+      b.total_amount,
+      b.booking_status,
+      c.customer_name,
+      GROUP_CONCAT(st.seat_number SEPARATOR ', ') AS seats,
+      p.payment_method,
+      p.payment_status
+  FROM BOOKING b
+  JOIN CUSTOMER c ON b.customer_id = c.customer_id
+  JOIN PAYMENT p ON b.booking_id = p.booking_id
+  JOIN BOOKED_SEAT bs ON b.booking_id = bs.booking_id
+  JOIN SEAT st ON bs.seat_id = st.seat_id
+  GROUP BY b.booking_id, b.total_amount, b.booking_status, c.customer_name, p.payment_method, p.payment_status
+  ORDER BY b.booking_id DESC
+  LIMIT 1;
+  </code></pre>
+</em> <strong>What to Say to Examiner:</strong>
+  <em>"Here is our newly created booking record directly in MySQL. The booking total reflects the exact server-side calculated seat tier pricing plus concessions. The payment record is tied via a 1:1 foreign key, and the junction table <code>BOOKED_SEAT</code> holds our specific seat selections."</em>
+<em> <strong>Database Concept Demonstrated:</strong>
+  Immediate consistency, relational join queries, and financial reconciliation.
+
+<hr/>
+
+<h3>Phase 6: Conclusion &amp; Questions (Minute 6:30 – 7:00)</h3>
+</em> <strong>What to Say to Examiner:</strong>
+  <em>"To conclude, CINEVERSE demonstrates that rigorous relational database design—separating infrastructure, schedules, and reservations—eliminates data anomalies and guarantees transaction atomicity. The complete documentation and test suites are compiled in our official project report. I am now ready for your questions."</em>
+
+<hr/>
+
+<h2>Troubleshooting &amp; Fallback Protocol</h2>
+
+<table class="viva-table"><thead><tr><th>Scenario / Glitch</th><th>Immediate Cause</th><th>Fallback Action to Take During Demo</th></tr></thead><tbody><tr><td><strong>Customer page shows black / blank screen</strong></td><td>Stale Vite HMR cache in browser tab</td><td>Press <strong><code>Ctrl + Shift + R</code></strong> or <strong><code>Ctrl + F5</code></strong> immediately to hard reload the fresh bundle.</td></tr><tr><td><strong>Admin login fails with "Invalid credentials"</strong></td><td>Incorrect email or password entered</td><td>Use verified demo credentials: <code>email: admin@cinema.com</code>, <code>password: Admin@123</code>.</td></tr><tr><td><strong>MySQL returns "Access Denied for user root"</strong></td><td>Password mismatch in <code>.env</code></td><td>Check <code>backend/.env</code>. If local MySQL uses a password, ensure <code>DB_PASSWORD</code> matches.</td></tr><tr><td><strong>Port 5000 is already in use</strong></td><td>Stale background Node process</td><td>In PowerShell run: <code>Get-Process node \</td><td>Stop-Process -Force</code> and restart <code>node src/server.js</code>.</td></tr><tr><td><strong>Examiner asks to show a table that has 0 rows</strong></td><td>Non-seeded edge case</td><td>Explain that all 15 tables are populated, and run <code>SELECT COUNT(*) FROM &lt;table&gt;</code> to prove data exists.</td></tr></tbody></table>
+</div>
+
+<div class="section-rev">
+  <h1>CINEVERSE — Last-Minute Rapid-Fire Revision &amp; Cheat Sheet</h1>
+<strong>High-Yield Viva Revision Guide (Read 10 Minutes Before Viva)</strong>  
+<strong>Course:</strong> Relational Database Management Systems Laboratory (CSE Department)  
+<strong>Institution:</strong> Manipal University Jaipur (MUJ)  
+
+<hr/>
+
+<h2>Part 1: Project Facts &amp; Credentials Cheat Sheet</h2>
+
+<table class="viva-table"><thead><tr><th>Parameter</th><th>Exact Value</th><th>Where Verified</th></tr></thead><tbody><tr><td><strong>Database Name</strong></td><td><code>MovieTheaterDB</code></td><td>MySQL Server / <code>backend/.env</code></td></tr><tr><td><strong>Storage Engine</strong></td><td>InnoDB (ACID Compliant)</td><td><code>SHOW TABLE STATUS</code></td></tr><tr><td><strong>Total Base Tables</strong></td><td>15 Tables</td><td><code>information_schema.tables</code></td></tr><tr><td><strong>Total Database Records</strong></td><td>5,699 Rows</td><td>Live Database Audit</td></tr><tr><td><strong>Total Theaters</strong></td><td>8 Multiplex Complexes</td><td><code>THEATER</code> table (Bengaluru, Mumbai, Delhi, Hyd, Chennai)</td></tr><tr><td><strong>Total Screens</strong></td><td>32 Auditoriums</td><td><code>SCREEN</code> table (4 screens per theater)</td></tr><tr><td><strong>Total Physical Seats</strong></td><td>4,544 Seats</td><td><code>SEAT</code> table (A1..K16 per screen)</td></tr><tr><td><strong>Total Movies</strong></td><td>13 Theatrical Titles</td><td><code>MOVIE</code> table</td></tr><tr><td><strong>Total Scheduled Shows</strong></td><td>1,008 Screenings</td><td><code>SHOWTIME</code> table</td></tr><tr><td><strong>Backend API URL / Port</strong></td><td><code>http://localhost:5000</code></td><td>Node.js v20 / Express 4.19</td></tr><tr><td><strong>Admin Frontend Port</strong></td><td><code>http://localhost:5173</code></td><td>React 18 / Vite 5 (<code>frontend-admin</code>)</td></tr><tr><td><strong>Customer Frontend Port</strong></td><td><code>http://localhost:5174</code></td><td>React 18 / Vite 5 (<code>frontend-customer</code>)</td></tr><tr><td><strong>Admin Login Email</strong></td><td><code>admin@cinema.com</code></td><td><code>ADMIN_STAFF</code> table</td></tr><tr><td><strong>Admin Login Password</strong></td><td><code>Admin@123</code></td><td>Bcrypt Hash / Lab Demo Fallback</td></tr><tr><td><strong>Database Driver</strong></td><td><code>mysql2/promise</code> (Pool: 10)</td><td><code>backend/src/config/db.js</code></td></tr><tr><td><strong>Security Mechanism</strong></td><td>JWT (8h expiry) + Bcrypt (10 salt rounds)</td><td><code>backend/src/middleware/auth.js</code></td></tr></tbody></table>
+<hr/>
+
+<h2>Part 2: 30 Rapid-Fire Viva Q&amp;As</h2>
+
+<h4>1. What is the database name?</h4>
+<code>MovieTheaterDB</code>.
+
+<h4>2. What storage engine does MySQL use, and why?</h4>
+InnoDB, because it supports ACID transactions, foreign keys, and row-level locking.
+
+<h4>3. How many tables are in your database?</h4>
+Exactly 15 base tables.
+
+<h4>4. Name the two junction tables in your schema.</h4>
+<code>BOOKED_SEAT</code> (resolves Booking &harr; Seat) and <code>SNACK_ORDER_ITEM</code> (resolves Snack Order &harr; Snack).
+
+<h4>5. What are the composite primary keys in your project?</h4>
+<code>BOOKED_SEAT(booking_id, seat_id)</code> and <code>SNACK_ORDER_ITEM(snack_order_id, snack_id)</code>.
+
+<h4>6. What normal form does the database satisfy?</h4>
+Third Normal Form (3NF) across all tables, with single-attribute PK tables satisfying BCNF.
+
+<h4>7. Why isn't seat availability a boolean column in the SEAT table?</h4>
+Because a physical seat is available or booked relative to a specific <em>showtime</em>, not permanently.
+
+<h4>8. How is live seat availability calculated?</h4>
+Available Seats = Total Screen Seats $-$ Booked Seats for that specific <code>show_id</code> in <code>BOOKED_SEAT</code>.
+
+<h4>9. What is the mathematical condition for scheduling conflict detection?</h4>
+$A_{start} &lt; B_{end} \land A_{end} &gt; B_{start}$ on the same screen and date.
+
+<h4>10. How much turnaround buffer is added between movie screenings?</h4>
+15 minutes (<code>turnaroundMins = 15</code>), automatically calculated in <code>showtimeController.js</code>.
+
+<h4>11. What happens if an admin tries to delete a movie with active showtimes?</h4>
+MySQL blocks the deletion with an Error 1451 foreign key constraint violation (<code>ON DELETE RESTRICT</code>).
+
+<h4>12. What happens to child seats if a screen is deleted?</h4>
+All physical seats belonging to that screen are automatically cascade-deleted (<code>ON DELETE CASCADE</code>).
+
+<h4>13. What data type is used for financial amounts?</h4>
+<code>DECIMAL(10,2)</code> to prevent binary floating-point roundoff errors.
+
+<h4>14. What data type is used for movie ratings?</h4>
+<code>DECIMAL(3,1)</code> constrained between 0.0 and 10.0 via check constraint <code>chk_movie_rating</code>.
+
+<h4>15. How many check constraints are active in your database?</h4>
+22 active CHECK constraints.
+
+<h4>16. What happens when a booking is cancelled?</h4>
+<code>BOOKING.booking_status</code> is updated to <code>'CANCELLED'</code> and <code>PAYMENT.payment_status</code> is set to <code>'REFUNDED'</code>.
+
+<h4>17. Why aren't rows deleted from BOOKED_SEAT upon cancellation?</h4>
+To preserve historical transaction audit trails while immediately releasing seat availability relationally.
+
+<h4>18. How do you prevent SQL injection in your Node.js backend?</h4>
+By strictly using parameterized queries (<code>?</code> placeholders) executed via <code>pool.execute()</code>.
+
+<h4>19. What is a 1:1 relationship in your schema? Give two examples.</h4>
+<code>CUSTOMER</code> &harr; <code>ACCOUNT</code> (enforced by unique <code>customer_id</code>) and <code>BOOKING</code> &harr; <code>PAYMENT</code> (enforced by unique <code>booking_id</code>).
+
+<h4>20. Does your database have Triggers or Stored Procedures?</h4>
+No; validations and transaction boundaries are handled in Express controllers for portability and testability.
+
+<h4>21. What is the difference between WHERE and HAVING?</h4>
+<code>WHERE</code> filters individual rows <em>before</em> grouping; <code>HAVING</code> filters aggregated groups <em>after</em> <code>GROUP BY</code>.
+
+<h4>22. What is an intentional denormalization in your schema?</h4>
+<code>BOOKED_SEAT.ticket_price</code>, which records the historical price snapshot at the moment of purchase.
+
+<h4>23. What are the four levels of transaction isolation?</h4>
+Read Uncommitted, Read Committed, Repeatable Read (MySQL default), and Serializable.
+
+<h4>24. What does <code>SELECT ... FOR UPDATE</code> do?</h4>
+Acquires exclusive row-level locks on read rows, blocking concurrent transactions until commit or rollback.
+
+<h4>25. Where is <code>FOR UPDATE</code> used in CINEVERSE?</h4>
+In <code>bookingController.js</code> for deducting <code>SNACK</code> inventory and locking the <code>BOOKING</code> row during cancellation.
+
+<h4>26. How are seat categories priced?</h4>
+Standard is base price, Premium is $+20\%$ (<code>base_price <em> 1.2</code>), and VIP Recliner is $+40\%$ (<code>base_price </em> 1.4</code>).
+
+<h4>27. How are admin staff passwords protected?</h4>
+Salted and hashed using <code>bcryptjs</code> with 10 salt rounds (<code>$2a$10$...</code>).
+
+<h4>28. What token standard is used for session authentication?</h4>
+JSON Web Tokens (JWT) signed with <code>JWT_SECRET</code> and expiring in 8 hours.
+
+<h4>29. What is a candidate key? Give an example from CINEVERSE.</h4>
+Any minimal superkey. In <code>CUSTOMER</code>, both <code>customer_id</code> and <code>email</code> are candidate keys.
+
+<h4>30. How many automated tests were executed, and what was the pass rate?</h4>
+37 integration tests executed with a 100% pass rate (37 passed, 0 failed).
+
+<hr/>
+
+<h2>Part 3: Golden Rules for Defending Your Viva</h2>
+<li><strong>Be Honest About Concurrency:</strong> If asked about race conditions on seat booking, acknowledge that adding <code>SELECT ... FOR UPDATE</code> or an engine-level unique key on <code>(show_id, seat_id)</code> is the recommended production enhancement.</li>
+<li><strong>Never Guess Table or Column Names:</strong> Keep the cheat sheet above in mind: <code>SHOWTIME</code> uses <code>show_id</code>, <code>SCREEN</code> uses <code>screen_id</code>, and <code>BOOKED_SEAT</code> has composite PK <code>(booking_id, seat_id)</code>.</li>
+<li><strong>Anchor on Relational Theory:</strong> When asked why you designed a table a certain way, always use theoretical terms: <em>"To eliminate transitive dependencies (3NF)"</em>, <em>"To resolve Many-to-Many cardinality"</em>, or <em>"To prevent update anomalies"</em>.</li>
+
+</div>
+
+</body>
+</html>
+  

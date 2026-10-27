@@ -27,6 +27,7 @@ export default function AdminSidebar({ collapsed, onToggleCollapse }) {
   const menuItems = [
     { path: '/overview', label: 'Operations Overview', icon: LayoutDashboard },
     { path: '/movies', label: 'Movie Catalog', icon: Film },
+    { path: '/hero-trailers', label: 'Hero Trailers', icon: Clapperboard },
     { path: '/theaters', label: 'Theaters & Screens', icon: Building2 },
     { path: '/showtimes', label: 'Showtime Programming', icon: CalendarDays },
     { path: '/seats', label: 'Seat Availability Map', icon: Armchair },

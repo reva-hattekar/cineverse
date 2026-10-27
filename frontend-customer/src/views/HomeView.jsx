@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Play, Sparkles, Star, Clock, Ticket, Film, Compass, CheckCircle2, Calendar } from 'lucide-react';
 import CinematicHeroCanvas from '../components/hero/CinematicHeroCanvas';
 import NowShowingCarousel from '../components/hero/NowShowingCarousel';
 import HeroTrailerPlayer from '../components/hero/HeroTrailerPlayer';
@@ -16,9 +16,25 @@ import { HERO_EXPERIENCES } from '../config/heroExperiences';
  * - "STEP INTO ANOTHER REALITY" experiential modal
  * - Continuous charcoal/burgundy atmosphere flowing into database-backed carousel and catalog
  */
+function formatPremiereDate(dateStr) {
+  if (!dateStr || dateStr === 'Expected Soon') return 'Premiere Date TBA';
+  try {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const [y, m, d] = parts.map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    }
+    return dateStr;
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function HomeView({
   movies = [],
   upcomingMovies = [],
+  heroSlots = [],
   onSelectMovie,
   searchQuery = '',
   setSearchQuery,
@@ -49,24 +65,162 @@ export default function HomeView({
   }, [movies]);
 
   const comingSoonCount = useMemo(() => {
+    const todayStr = new Date().toISOString().split('T')[0];
     return movies.filter(
       (m) =>
-        m.release_status === 'Coming Soon' ||
-        (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0))
+        (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0) &&
+        ((m.release_status === 'Coming Soon' && (!m.release_date || m.release_date >= todayStr)) ||
+         (m.release_date && m.release_date >= todayStr))
     ).length;
   }, [movies]);
 
-  // Current active hero experience from data configuration
-  const currentExp = HERO_EXPERIENCES.find((e) => e.id === activeSlide) || HERO_EXPERIENCES[0];
+  // TASK 1: Dynamic hero experiences definition
+  // - Slot 1: ALWAYS the bespoke interactive 3D hero scene
+  // - Slots 2, 3, 4: Movie trailers
+  const heroExperiences = useMemo(() => {
+    // Guaranteed 3D Brand experience baseline for Slot 1
+    const slot1Experience = {
+      id: 1,
+      type: '3d-brand',
+      show3D: true,
+      title: 'CINEVERSE',
+      fallbackTitle: 'CINEVERSE',
+      eyebrow: 'A UNIVERSE OF STORIES AWAITS',
+      tagline: 'MOVIES • EXPERIENCES • BEYOND REALITY',
+      description: 'Immerse yourself in state-of-the-art cinema technology, IMAX 70mm, and artisanal auditoriums.',
+      videoUrl: '',
+      trailerUrl: '',
+      posterFallback: ''
+    };
 
-  // Match real movie from live database movies array if configured
-  const matchedMovie = currentExp.movieId
+    // Extract candidates for Slots 2, 3, and 4
+    let slot2Movie = null;
+    let slot3Movie = null;
+    let slot4Movie = null;
+
+    if (Array.isArray(heroSlots) && heroSlots.length > 0) {
+      const s2 = heroSlots.find((s) => s.slot_id === 2);
+      const s3 = heroSlots.find((s) => s.slot_id === 3);
+      const s4 = heroSlots.find((s) => s.slot_id === 4 || s.slot_type === 'coming_soon');
+
+      slot2Movie = s2?.movie || null;
+      slot3Movie = s3?.movie || null;
+      slot4Movie = s4?.movie || null;
+
+      // If slot_id 1 in heroSlots had a movie and slot2 doesn't yet, adopt it for slot2
+      if (!slot2Movie && heroSlots[0]?.movie) {
+        slot2Movie = heroSlots[0].movie;
+      }
+    }
+
+    // Direct derivation from catalog movies if gaps exist
+    if (Array.isArray(movies) && movies.length > 0) {
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      // Latest releases (release_date <= todayStr, release_date DESC, rating DESC)
+      const eligibleLatest = movies
+        .filter((m) => m.release_date && m.release_date <= todayStr)
+        .sort((a, b) => {
+          if (a.release_date !== b.release_date) {
+            return b.release_date.localeCompare(a.release_date);
+          }
+          return (b.rating || 0) - (a.rating || 0);
+        });
+
+      // Coming soon (release_date > todayStr)
+      const eligibleComingSoon = movies
+        .filter(
+          (m) =>
+            m.release_date &&
+            m.release_date > todayStr &&
+            (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0)
+        )
+        .sort((a, b) => {
+          if (a.release_date !== b.release_date) {
+            return a.release_date.localeCompare(b.release_date);
+          }
+          return (b.rating || 0) - (a.rating || 0);
+        });
+
+      const usedIds = new Set();
+      if (slot2Movie?.movie_id) usedIds.add(slot2Movie.movie_id);
+      if (slot3Movie?.movie_id) usedIds.add(slot3Movie.movie_id);
+      if (slot4Movie?.movie_id) usedIds.add(slot4Movie.movie_id);
+
+      if (!slot2Movie) {
+        slot2Movie = eligibleLatest.find((m) => !usedIds.has(m.movie_id)) || movies[0];
+        if (slot2Movie?.movie_id) usedIds.add(slot2Movie.movie_id);
+      }
+      if (!slot3Movie) {
+        slot3Movie =
+          eligibleLatest.find((m) => !usedIds.has(m.movie_id)) ||
+          movies.find((m) => !usedIds.has(m.movie_id)) ||
+          movies[1];
+        if (slot3Movie?.movie_id) usedIds.add(slot3Movie.movie_id);
+      }
+      if (!slot4Movie) {
+        slot4Movie =
+          eligibleComingSoon.find((m) => !usedIds.has(m.movie_id)) ||
+          movies.find((m) => !usedIds.has(m.movie_id)) ||
+          movies[2];
+        if (slot4Movie?.movie_id) usedIds.add(slot4Movie.movie_id);
+      }
+    }
+
+    // Helper to format trailer slots 2, 3, and 4
+    const formatTrailerSlot = (id, movie, isComingSoon = false) => {
+      const baseline = HERO_EXPERIENCES.find((b) => b.id === id) || HERO_EXPERIENCES[id - 1] || {};
+      if (!movie) {
+        return {
+          ...baseline,
+          id,
+          type: 'trailer',
+          show3D: false
+        };
+      }
+
+      return {
+        id,
+        type: 'trailer',
+        show3D: false,
+        movieId: movie.movie_id,
+        movie,
+        title: movie.title,
+        fallbackTitle: movie.title,
+        eyebrow: isComingSoon
+          ? 'ANTICIPATED PREMIERE • COMING SOON'
+          : id === 2
+          ? 'FEATURED SPOTLIGHT • NOW SHOWING'
+          : 'OFFICIAL SELECTION • NOW SHOWING',
+        tagline: `${movie.genre || 'Cinema'} • ${movie.language || 'English'} • ${movie.duration || 120}m`,
+        description: isComingSoon
+          ? `Coming soon exclusively to CINEVERSE auditoriums. Experience ${movie.title} in breathtaking laser clarity.`
+          : `Experience ${movie.title} in state-of-the-art CINEVERSE IMAX and artisanal auditoriums.`,
+        videoUrl: movie.trailer_url || baseline.videoUrl || '',
+        trailerUrl: movie.trailer_url || baseline.videoUrl || '',
+        posterFallback: movie.backdrop_url || movie.poster_url || baseline.posterFallback || ''
+      };
+    };
+
+    return [
+      slot1Experience,
+      formatTrailerSlot(2, slot2Movie, false),
+      formatTrailerSlot(3, slot3Movie, false),
+      formatTrailerSlot(4, slot4Movie, true)
+    ];
+  }, [heroSlots, movies]);
+
+  const currentExp = (heroExperiences && heroExperiences.find((e) => e.id === activeSlide))
+    || heroExperiences?.[0]
+    || HERO_EXPERIENCES[0];
+
+  const matchedMovie = currentExp.movie || (currentExp.movieId
     ? movies.find(
         (m) =>
           m.movie_id === currentExp.movieId ||
           m.title?.toLowerCase() === currentExp.fallbackTitle?.toLowerCase()
       )
-    : null;
+    : null);
 
   // Available unique genres from live movies
   const genres = ['All', ...Array.from(new Set(movies.map((m) => m.genre).filter(Boolean)))];
@@ -78,10 +232,12 @@ export default function HomeView({
         selectedGenre === 'All' || m.genre?.toLowerCase() === selectedGenre.toLowerCase();
       if (!matchGenre) return false;
 
+      const todayStr = new Date().toISOString().split('T')[0];
       const isBookable = m.scheduled_showtimes_count > 0 && m.release_status !== 'Ended';
       const isComingSoon =
-        m.release_status === 'Coming Soon' ||
-        (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0));
+        (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0) &&
+        ((m.release_status === 'Coming Soon' && (!m.release_date || m.release_date >= todayStr)) ||
+         (m.release_date && m.release_date >= todayStr));
 
       if (categoryFilter === 'now_showing') return isBookable;
       if (categoryFilter === 'coming_soon') return isComingSoon;
@@ -111,48 +267,67 @@ export default function HomeView({
     }
   };
 
-  // Timed progression (30s on Experience 01, 15s on Experiences 02, 03, 04)
+  // TASK 1: Hero trailer rotation behavior
+  // - Slot 1: Default 3D hero scene
+  // - Slots 2, 3, 4: Movie trailers
+  // - 15-second inactivity progression: 1 -> 2 -> 3 -> 4 -> 1
+  // - Any mouse movement resets the 15-second inactivity timer
+  // - Browser tab hidden: pause timer; resume when active
+  // - Manual click on 01-04 rail: immediate switch and restart 15s timer from zero
+  const INACTIVITY_DELAY_MS = 15000;
   const timerRef = useRef(null);
 
-  const advanceExperience = useCallback(() => {
-    setActiveSlide((prev) => (prev >= 4 ? 1 : prev + 1));
-  }, []);
-
   useEffect(() => {
-    // Suspend progression if user is actively interacting, or if reduced-motion is preferred
+    // Check reduced-motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (userInteracting || mediaQuery.matches) {
+    if (mediaQuery.matches) {
       if (timerRef.current) clearTimeout(timerRef.current);
       return;
     }
 
-    const duration = activeSlide === 1 ? 30000 : 15000;
-
-    const scheduleTimer = () => {
-      if (document.hidden) return;
+    const startInactivityTimer = () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (document.hidden) return; // Do not run timer while tab is backgrounded
+
       timerRef.current = setTimeout(() => {
-        advanceExperience();
-      }, duration);
+        setActiveSlide((prev) => (prev >= 4 ? 1 : prev + 1));
+      }, INACTIVITY_DELAY_MS);
     };
 
-    scheduleTimer();
+    // Start 15-second timer on mount or when activeSlide changes
+    startInactivityTimer();
 
-    const handleVisibility = () => {
-      if (document.hidden) {
-        if (timerRef.current) clearTimeout(timerRef.current);
-      } else {
-        scheduleTimer();
+    // Reset inactivity timer on any mouse movement (throttled to avoid churn)
+    let lastMoveTime = 0;
+    const handleMouseMove = () => {
+      const now = Date.now();
+      if (now - lastMoveTime > 120) {
+        lastMoveTime = now;
+        startInactivityTimer();
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibility);
+    // Pause timer when document is hidden; resume when visible
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      } else {
+        startInactivityTimer();
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [activeSlide, userInteracting, advanceExperience]);
+  }, [activeSlide]);
 
   const handleManualSlideSelect = (id) => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -166,19 +341,18 @@ export default function HomeView({
          ========================================================= */}
       <section className="cineverse-hero-viewport" aria-label="Hero Spotlight">
         {/* Experience 01: Genuine Three.js 3D Procedural Hero Scene */}
-        <CinematicHeroCanvas active={currentExp.type === '3d-brand'} />
+        <CinematicHeroCanvas active={activeSlide === 1} />
 
         {/* Experiences 02, 03, 04: Configurable Featured Trailer Layer */}
-        {currentExp.type === 'trailer' && (
+        {activeSlide !== 1 && currentExp.type === 'trailer' && (
           <HeroTrailerPlayer
             key={currentExp.id}
             experience={currentExp}
             movie={matchedMovie}
             onSelectMovie={(m) => {
-              setUserInteracting(true);
               onSelectMovie(m);
             }}
-            isActive={currentExp.type === 'trailer'}
+            isActive={activeSlide === currentExp.id}
           />
         )}
 
@@ -194,7 +368,7 @@ export default function HomeView({
         <div className="hero-foreground-grid">
           {/* Vertical Slide Indicator Rail (01, 02, 03, 04) */}
           <div className="hero-slide-rail" aria-label="Hero experience selector" role="tablist">
-            {HERO_EXPERIENCES.map((exp) => (
+            {heroExperiences.map((exp) => (
               <button
                 key={exp.id}
                 role="tab"
@@ -473,9 +647,9 @@ export default function HomeView({
                     </div>
 
                     {/* Release Date if Coming Soon */}
-                    {isComingSoon && movie.release_date && (
+                    {isComingSoon && (
                       <div style={{ color: '#fbbf24', fontSize: '0.78rem', fontWeight: 700, marginTop: '5px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Calendar size={12} /> Releasing: {movie.release_date}
+                        <Calendar size={12} /> Releasing: {formatPremiereDate(movie.release_date)}
                       </div>
                     )}
 

@@ -18,6 +18,8 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { api } from '../services/api';
+import { getYouTubeEmbedUrl, isValidTrailerUrl, normalizeTrailerUrl } from '../utils/trailerUtils';
+import { Play } from 'lucide-react';
 
 /**
  * Format date & time into localized readable string: e.g. "16 Oct 2026 · 7:00 PM"
@@ -69,7 +71,8 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
     poster_url: '',
     backdrop_url: '',
     release_date: '',
-    release_status: 'Now Showing'
+    release_status: 'Now Showing',
+    trailer_url: ''
   });
 
   // Accessible keyboard ESC listener
@@ -95,7 +98,8 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
       poster_url: '',
       backdrop_url: '',
       release_date: '',
-      release_status: 'Now Showing'
+      release_status: 'Now Showing',
+      trailer_url: ''
     });
     setEditModalOpen(true);
   };
@@ -111,7 +115,8 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
       poster_url: m.poster_url || '',
       backdrop_url: m.backdrop_url || '',
       release_date: m.release_date || '',
-      release_status: m.release_status || (m.scheduled_showtimes_count > 0 ? 'Now Showing' : 'Coming Soon')
+      release_status: m.release_status || (m.scheduled_showtimes_count > 0 ? 'Now Showing' : 'Coming Soon'),
+      trailer_url: m.trailer_url || ''
     });
     setEditModalOpen(true);
   };
@@ -142,13 +147,22 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
 
   const handleSaveMovie = async (e) => {
     e.preventDefault();
+    const trimmedTrailer = (formData.trailer_url || '').trim();
+    if (trimmedTrailer && !isValidTrailerUrl(trimmedTrailer)) {
+      showNotification('Please enter a valid YouTube trailer URL or clear the field.', 'error');
+      return;
+    }
     setSubmitting(true);
     try {
+      const payload = {
+        ...formData,
+        trailer_url: trimmedTrailer
+      };
       if (selectedMovie) {
-        await api.updateMovie(selectedMovie.movie_id, formData);
+        await api.updateMovie(selectedMovie.movie_id, payload);
         showNotification(`Movie "${formData.title}" updated successfully.`);
       } else {
-        await api.createMovie(formData);
+        await api.createMovie(payload);
         showNotification(`Movie "${formData.title}" added to catalog.`);
       }
       setEditModalOpen(false);
@@ -570,6 +584,68 @@ export default function MoviesView({ movies = [], onRefresh, showNotification })
                   onChange={(e) => setFormData({ ...formData, backdrop_url: e.target.value })}
                   placeholder="https://image.tmdb.org/t/p/original/..."
                 />
+              </div>
+
+              {/* Trailer Video URL */}
+              <div className="form-group" style={{ background: 'var(--bg-secondary)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ color: 'var(--text-primary)', fontWeight: 700, margin: 0 }}>
+                    Trailer Video URL (YouTube)
+                  </label>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                    Optional • watch, youtu.be, or embed
+                  </span>
+                </div>
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="url"
+                    value={formData.trailer_url || ''}
+                    onChange={(e) => setFormData({ ...formData, trailer_url: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                    style={{ paddingRight: formData.trailer_url ? '36px' : '12px' }}
+                  />
+                  {formData.trailer_url && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, trailer_url: '' })}
+                      title="Clear trailer URL"
+                      style={{
+                        position: 'absolute',
+                        right: '8px',
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--text-muted)',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        display: 'flex'
+                      }}
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+                {formData.trailer_url && (
+                  <div style={{ marginTop: '8px' }}>
+                    {isValidTrailerUrl(formData.trailer_url) ? (
+                      <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-subtle)', background: '#000' }}>
+                        <div style={{ fontSize: '0.75rem', padding: '6px 10px', background: 'rgba(0,0,0,0.6)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Play size={12} fill="#e11d48" color="#e11d48" /> Live Trailer Preview
+                        </div>
+                        <iframe
+                          src={getYouTubeEmbedUrl(formData.trailer_url, { autoplay: 0, controls: 1, mute: 0 })}
+                          title="Trailer Preview"
+                          style={{ width: '100%', height: '180px', border: 'none', display: 'block' }}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: '0.75rem', color: '#f87171', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                        ⚠️ Invalid YouTube link. Supported: youtube.com/watch?v=..., youtu.be/..., or embed/...
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px' }}>

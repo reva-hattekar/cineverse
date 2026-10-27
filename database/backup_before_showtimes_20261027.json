@@ -1,0 +1,5379 @@
+{
+  "timestamp": "2026-10-27T10:58:06.084Z",
+  "theaters": [
+    {
+      "theater_id": 1,
+      "theater_name": "Grand PVR Cinemas",
+      "city": "Bengaluru",
+      "address": "4th Floor, Nexus Mall, Koramangala"
+    },
+    {
+      "theater_id": 2,
+      "theater_name": "Cinepolis IMAX Arena",
+      "city": "Bengaluru",
+      "address": "Royal Meenakshi Mall, Bannerghatta Road"
+    },
+    {
+      "theater_id": 3,
+      "theater_name": "CINEVERSE Orion Mall IMAX",
+      "city": "Bengaluru",
+      "address": "Dr Rajkumar Road, Rajajinagar, Bengaluru"
+    },
+    {
+      "theater_id": 4,
+      "theater_name": "CINEVERSE Phoenix Marketcity Laser",
+      "city": "Bengaluru",
+      "address": "Whitefield Main Road, Mahadevapura, Bengaluru"
+    },
+    {
+      "theater_id": 5,
+      "theater_name": "CINEVERSE Raj Mandir Luxe",
+      "city": "Jaipur",
+      "address": "Bhagwan Das Road, C-Scheme, Jaipur"
+    },
+    {
+      "theater_id": 6,
+      "theater_name": "CINEVERSE World Trade Park Laser",
+      "city": "Jaipur",
+      "address": "JLN Marg, Malviya Nagar, Jaipur"
+    },
+    {
+      "theater_id": 7,
+      "theater_name": "CINEVERSE Crystal Palm IMAX",
+      "city": "Jaipur",
+      "address": "Sardar Patel Marg, C-Scheme, Jaipur"
+    },
+    {
+      "theater_id": 8,
+      "theater_name": "CINEVERSE Palladium Dolby Cinema",
+      "city": "Mumbai",
+      "address": "High Street Phoenix, Lower Parel, Mumbai"
+    },
+    {
+      "theater_id": 9,
+      "theater_name": "CINEVERSE Bandra Royale Luxe",
+      "city": "Mumbai",
+      "address": "Hill Road, Bandra West, Mumbai"
+    },
+    {
+      "theater_id": 10,
+      "theater_name": "CINEVERSE Inorbit Malad IMAX",
+      "city": "Mumbai",
+      "address": "Link Road, Malad West, Mumbai"
+    },
+    {
+      "theater_id": 11,
+      "theater_name": "CINEVERSE Select Citywalk IMAX",
+      "city": "Delhi NCR",
+      "address": "Saket District Centre, New Delhi"
+    },
+    {
+      "theater_id": 12,
+      "theater_name": "CINEVERSE DLF CyberHub Laser",
+      "city": "Delhi NCR",
+      "address": "DLF Phase 2, Gurugram, Delhi NCR"
+    },
+    {
+      "theater_id": 13,
+      "theater_name": "CINEVERSE Ambience Mall Luxe",
+      "city": "Delhi NCR",
+      "address": "NH-8, Ambience Island, Gurugram, Delhi NCR"
+    }
+  ],
+  "screens": [
+    {
+      "screen_id": 1,
+      "screen_number": 1,
+      "screen_name": null,
+      "screen_type": "Standard",
+      "capacity": 30,
+      "theater_id": 1
+    },
+    {
+      "screen_id": 2,
+      "screen_number": 2,
+      "screen_name": null,
+      "screen_type": "Standard",
+      "capacity": 20,
+      "theater_id": 1
+    },
+    {
+      "screen_id": 3,
+      "screen_number": 1,
+      "screen_name": null,
+      "screen_type": "Standard",
+      "capacity": 25,
+      "theater_id": 2
+    },
+    {
+      "screen_id": 4,
+      "screen_number": 2,
+      "screen_name": null,
+      "screen_type": "Standard",
+      "capacity": 25,
+      "theater_id": 2
+    },
+    {
+      "screen_id": 5,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Orion Mall IMAX - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 3
+    },
+    {
+      "screen_id": 6,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Orion Mall IMAX - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 3
+    },
+    {
+      "screen_id": 7,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Phoenix Marketcity Laser - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 4
+    },
+    {
+      "screen_id": 8,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Phoenix Marketcity Laser - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 4
+    },
+    {
+      "screen_id": 9,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Raj Mandir Luxe - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 5
+    },
+    {
+      "screen_id": 10,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Raj Mandir Luxe - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 5
+    },
+    {
+      "screen_id": 11,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE World Trade Park Laser - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 6
+    },
+    {
+      "screen_id": 12,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE World Trade Park Laser - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 6
+    },
+    {
+      "screen_id": 13,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Crystal Palm IMAX - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 7
+    },
+    {
+      "screen_id": 14,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Crystal Palm IMAX - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 7
+    },
+    {
+      "screen_id": 15,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Palladium Dolby Cinema - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 8
+    },
+    {
+      "screen_id": 16,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Palladium Dolby Cinema - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 8
+    },
+    {
+      "screen_id": 17,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Bandra Royale Luxe - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 9
+    },
+    {
+      "screen_id": 18,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Bandra Royale Luxe - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 9
+    },
+    {
+      "screen_id": 19,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Inorbit Malad IMAX - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 10
+    },
+    {
+      "screen_id": 20,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Inorbit Malad IMAX - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 10
+    },
+    {
+      "screen_id": 21,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Select Citywalk IMAX - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 11
+    },
+    {
+      "screen_id": 22,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Select Citywalk IMAX - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 11
+    },
+    {
+      "screen_id": 23,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE DLF CyberHub Laser - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 12
+    },
+    {
+      "screen_id": 24,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE DLF CyberHub Laser - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 12
+    },
+    {
+      "screen_id": 25,
+      "screen_number": 1,
+      "screen_name": "CINEVERSE Ambience Mall Luxe - Screen 1",
+      "screen_type": "IMAX Laser",
+      "capacity": 20,
+      "theater_id": 13
+    },
+    {
+      "screen_id": 26,
+      "screen_number": 2,
+      "screen_name": "CINEVERSE Ambience Mall Luxe - Screen 2",
+      "screen_type": "Dolby Atmos",
+      "capacity": 20,
+      "theater_id": 13
+    }
+  ],
+  "seats": [
+    {
+      "seat_id": 1,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 2,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 3,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 4,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 5,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 6,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 7,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 8,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 9,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 10,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 11,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 12,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 13,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 14,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 15,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 16,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 17,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 18,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 19,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 20,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 1
+    },
+    {
+      "seat_id": 21,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 22,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 23,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 24,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 25,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 26,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 27,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 28,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 29,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 30,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 31,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 32,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 33,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 34,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 35,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 36,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 2
+    },
+    {
+      "seat_id": 37,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 38,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 39,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 40,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 41,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 42,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 43,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 44,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 45,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 46,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 47,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 48,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 49,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 50,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 51,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 52,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 3
+    },
+    {
+      "seat_id": 53,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 54,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 55,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 56,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 57,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 58,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 59,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 60,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 61,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 62,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 63,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 64,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 65,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 66,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 67,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 68,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 4
+    },
+    {
+      "seat_id": 69,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 70,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 71,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 72,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 73,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 74,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 75,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 76,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 77,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 78,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 79,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 80,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 81,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 82,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 83,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 84,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 85,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 86,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 87,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 88,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 5
+    },
+    {
+      "seat_id": 89,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 90,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 91,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 92,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 93,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 94,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 95,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 96,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 97,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 98,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 99,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 100,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 101,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 102,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 103,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 104,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 105,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 106,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 107,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 108,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 6
+    },
+    {
+      "seat_id": 109,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 110,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 111,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 112,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 113,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 114,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 115,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 116,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 117,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 118,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 119,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 120,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 121,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 122,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 123,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 124,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 125,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 126,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 127,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 128,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 7
+    },
+    {
+      "seat_id": 129,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 130,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 131,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 132,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 133,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 134,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 135,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 136,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 137,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 138,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 139,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 140,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 141,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 142,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 143,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 144,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 145,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 146,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 147,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 148,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 8
+    },
+    {
+      "seat_id": 149,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 150,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 151,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 152,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 153,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 154,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 155,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 156,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 157,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 158,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 159,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 160,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 161,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 162,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 163,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 164,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 165,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 166,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 167,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 168,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 9
+    },
+    {
+      "seat_id": 169,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 170,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 171,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 172,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 173,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 174,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 175,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 176,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 177,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 178,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 179,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 180,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 181,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 182,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 183,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 184,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 185,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 186,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 187,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 188,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 10
+    },
+    {
+      "seat_id": 189,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 190,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 191,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 192,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 193,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 194,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 195,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 196,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 197,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 198,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 199,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 200,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 201,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 202,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 203,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 204,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 205,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 206,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 207,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 208,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 11
+    },
+    {
+      "seat_id": 209,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 210,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 211,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 212,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 213,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 214,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 215,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 216,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 217,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 218,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 219,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 220,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 221,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 222,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 223,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 224,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 225,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 226,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 227,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 228,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 12
+    },
+    {
+      "seat_id": 229,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 230,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 231,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 232,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 233,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 234,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 235,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 236,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 237,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 238,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 239,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 240,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 241,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 242,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 243,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 244,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 245,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 246,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 247,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 248,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 13
+    },
+    {
+      "seat_id": 249,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 250,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 251,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 252,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 253,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 254,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 255,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 256,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 257,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 258,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 259,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 260,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 261,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 262,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 263,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 264,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 265,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 266,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 267,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 268,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 14
+    },
+    {
+      "seat_id": 269,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 270,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 271,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 272,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 273,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 274,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 275,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 276,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 277,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 278,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 279,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 280,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 281,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 282,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 283,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 284,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 285,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 286,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 287,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 288,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 15
+    },
+    {
+      "seat_id": 289,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 290,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 291,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 292,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 293,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 294,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 295,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 296,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 297,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 298,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 299,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 300,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 301,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 302,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 303,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 304,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 305,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 306,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 307,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 308,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 16
+    },
+    {
+      "seat_id": 309,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 310,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 311,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 312,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 313,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 314,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 315,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 316,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 317,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 318,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 319,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 320,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 321,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 322,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 323,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 324,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 325,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 326,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 327,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 328,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 17
+    },
+    {
+      "seat_id": 329,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 330,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 331,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 332,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 333,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 334,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 335,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 336,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 337,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 338,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 339,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 340,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 341,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 342,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 343,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 344,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 345,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 346,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 347,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 348,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 18
+    },
+    {
+      "seat_id": 349,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 350,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 351,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 352,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 353,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 354,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 355,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 356,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 357,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 358,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 359,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 360,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 361,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 362,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 363,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 364,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 365,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 366,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 367,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 368,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 19
+    },
+    {
+      "seat_id": 369,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 370,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 371,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 372,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 373,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 374,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 375,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 376,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 377,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 378,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 379,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 380,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 381,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 382,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 383,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 384,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 385,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 386,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 387,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 388,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 20
+    },
+    {
+      "seat_id": 389,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 390,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 391,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 392,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 393,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 394,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 395,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 396,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 397,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 398,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 399,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 400,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 401,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 402,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 403,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 404,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 405,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 406,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 407,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 408,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 21
+    },
+    {
+      "seat_id": 409,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 410,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 411,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 412,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 413,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 414,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 415,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 416,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 417,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 418,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 419,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 420,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 421,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 422,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 423,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 424,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 425,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 426,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 427,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 428,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 22
+    },
+    {
+      "seat_id": 429,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 430,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 431,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 432,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 433,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 434,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 435,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 436,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 437,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 438,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 439,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 440,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 441,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 442,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 443,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 444,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 445,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 446,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 447,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 448,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 23
+    },
+    {
+      "seat_id": 449,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 450,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 451,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 452,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 453,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 454,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 455,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 456,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 457,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 458,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 459,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 460,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 461,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 462,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 463,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 464,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 465,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 466,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 467,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 468,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 24
+    },
+    {
+      "seat_id": 469,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 470,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 471,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 472,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 473,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 474,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 475,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 476,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 477,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 478,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 479,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 480,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 481,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 482,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 483,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 484,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 485,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 486,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 487,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 488,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 25
+    },
+    {
+      "seat_id": 489,
+      "seat_number": "A1",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 490,
+      "seat_number": "A2",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 491,
+      "seat_number": "A3",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 492,
+      "seat_number": "A4",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 493,
+      "seat_number": "A5",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 494,
+      "seat_number": "A6",
+      "seat_type": "VIP",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 495,
+      "seat_number": "B1",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 496,
+      "seat_number": "B2",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 497,
+      "seat_number": "B3",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 498,
+      "seat_number": "B4",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 499,
+      "seat_number": "B5",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 500,
+      "seat_number": "B6",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 501,
+      "seat_number": "B7",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 502,
+      "seat_number": "B8",
+      "seat_type": "Premium",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 503,
+      "seat_number": "C1",
+      "seat_type": "Standard",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 504,
+      "seat_number": "C2",
+      "seat_type": "Standard",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 505,
+      "seat_number": "C3",
+      "seat_type": "Standard",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 506,
+      "seat_number": "C4",
+      "seat_type": "Standard",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 507,
+      "seat_number": "C5",
+      "seat_type": "Standard",
+      "screen_id": 26
+    },
+    {
+      "seat_id": 508,
+      "seat_number": "C6",
+      "seat_type": "Standard",
+      "screen_id": 26
+    }
+  ],
+  "showtimes": [
+    {
+      "show_id": 1,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "250.00",
+      "movie_id": 1,
+      "screen_id": 1
+    },
+    {
+      "show_id": 2,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "300.00",
+      "movie_id": 2,
+      "screen_id": 1
+    },
+    {
+      "show_id": 3,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "350.00",
+      "movie_id": 3,
+      "screen_id": 1
+    },
+    {
+      "show_id": 4,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "11:00:00",
+      "end_time": "14:00:00",
+      "base_price": "400.00",
+      "movie_id": 4,
+      "screen_id": 2
+    },
+    {
+      "show_id": 5,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "15:30:00",
+      "end_time": "18:30:00",
+      "base_price": "450.00",
+      "movie_id": 5,
+      "screen_id": 2
+    },
+    {
+      "show_id": 6,
+      "show_date": "2026-10-14T18:30:00.000Z",
+      "start_time": "19:30:00",
+      "end_time": "22:30:00",
+      "base_price": "400.00",
+      "movie_id": 5,
+      "screen_id": 2
+    },
+    {
+      "show_id": 7,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "10:30:00",
+      "end_time": "13:00:00",
+      "base_price": "220.00",
+      "movie_id": 6,
+      "screen_id": 3
+    },
+    {
+      "show_id": 8,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "16:45:00",
+      "base_price": "280.00",
+      "movie_id": 7,
+      "screen_id": 3
+    },
+    {
+      "show_id": 9,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "320.00",
+      "movie_id": 8,
+      "screen_id": 3
+    },
+    {
+      "show_id": 10,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:30:00",
+      "base_price": "350.00",
+      "movie_id": 9,
+      "screen_id": 4
+    },
+    {
+      "show_id": 11,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "14:30:00",
+      "end_time": "17:30:00",
+      "base_price": "260.00",
+      "movie_id": 10,
+      "screen_id": 4
+    },
+    {
+      "show_id": 12,
+      "show_date": "2026-10-15T18:30:00.000Z",
+      "start_time": "19:00:00",
+      "end_time": "22:00:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 4
+    },
+    {
+      "show_id": 13,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "300.00",
+      "movie_id": 1,
+      "screen_id": 2
+    },
+    {
+      "show_id": 14,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "350.00",
+      "movie_id": 4,
+      "screen_id": 2
+    },
+    {
+      "show_id": 15,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "420.00",
+      "movie_id": 5,
+      "screen_id": 1
+    },
+    {
+      "show_id": 16,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "11:00:00",
+      "end_time": "14:00:00",
+      "base_price": "240.00",
+      "movie_id": 7,
+      "screen_id": 3
+    },
+    {
+      "show_id": 17,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "15:00:00",
+      "end_time": "18:00:00",
+      "base_price": "310.00",
+      "movie_id": 8,
+      "screen_id": 4
+    },
+    {
+      "show_id": 18,
+      "show_date": "2026-10-16T18:30:00.000Z",
+      "start_time": "19:00:00",
+      "end_time": "22:00:00",
+      "base_price": "360.00",
+      "movie_id": 9,
+      "screen_id": 1
+    },
+    {
+      "show_id": 19,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 1,
+      "screen_id": 1
+    },
+    {
+      "show_id": 20,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 2,
+      "screen_id": 1
+    },
+    {
+      "show_id": 21,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 1
+    },
+    {
+      "show_id": 22,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 4,
+      "screen_id": 1
+    },
+    {
+      "show_id": 23,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 3,
+      "screen_id": 2
+    },
+    {
+      "show_id": 24,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 4,
+      "screen_id": 2
+    },
+    {
+      "show_id": 25,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 2
+    },
+    {
+      "show_id": 26,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 6,
+      "screen_id": 2
+    },
+    {
+      "show_id": 27,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 5,
+      "screen_id": 3
+    },
+    {
+      "show_id": 28,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 6,
+      "screen_id": 3
+    },
+    {
+      "show_id": 29,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 7,
+      "screen_id": 3
+    },
+    {
+      "show_id": 30,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 8,
+      "screen_id": 3
+    },
+    {
+      "show_id": 31,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 7,
+      "screen_id": 4
+    },
+    {
+      "show_id": 32,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 8,
+      "screen_id": 4
+    },
+    {
+      "show_id": 33,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 9,
+      "screen_id": 4
+    },
+    {
+      "show_id": 34,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 10,
+      "screen_id": 4
+    },
+    {
+      "show_id": 35,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 9,
+      "screen_id": 5
+    },
+    {
+      "show_id": 36,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 10,
+      "screen_id": 5
+    },
+    {
+      "show_id": 37,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 1,
+      "screen_id": 5
+    },
+    {
+      "show_id": 38,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 5
+    },
+    {
+      "show_id": 39,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 1,
+      "screen_id": 6
+    },
+    {
+      "show_id": 40,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 2,
+      "screen_id": 6
+    },
+    {
+      "show_id": 41,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 6
+    },
+    {
+      "show_id": 42,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 4,
+      "screen_id": 6
+    },
+    {
+      "show_id": 43,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 3,
+      "screen_id": 7
+    },
+    {
+      "show_id": 44,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 4,
+      "screen_id": 7
+    },
+    {
+      "show_id": 45,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 5,
+      "screen_id": 7
+    },
+    {
+      "show_id": 46,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 7
+    },
+    {
+      "show_id": 47,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 5,
+      "screen_id": 8
+    },
+    {
+      "show_id": 48,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 6,
+      "screen_id": 8
+    },
+    {
+      "show_id": 49,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 7,
+      "screen_id": 8
+    },
+    {
+      "show_id": 50,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 8,
+      "screen_id": 8
+    },
+    {
+      "show_id": 51,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 7,
+      "screen_id": 9
+    },
+    {
+      "show_id": 52,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 8,
+      "screen_id": 9
+    },
+    {
+      "show_id": 53,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 9,
+      "screen_id": 9
+    },
+    {
+      "show_id": 54,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 10,
+      "screen_id": 9
+    },
+    {
+      "show_id": 55,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 9,
+      "screen_id": 10
+    },
+    {
+      "show_id": 56,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 10,
+      "screen_id": 10
+    },
+    {
+      "show_id": 57,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 1,
+      "screen_id": 10
+    },
+    {
+      "show_id": 58,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 2,
+      "screen_id": 10
+    },
+    {
+      "show_id": 59,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 1,
+      "screen_id": 11
+    },
+    {
+      "show_id": 60,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 2,
+      "screen_id": 11
+    },
+    {
+      "show_id": 61,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 3,
+      "screen_id": 11
+    },
+    {
+      "show_id": 62,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 4,
+      "screen_id": 11
+    },
+    {
+      "show_id": 63,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 3,
+      "screen_id": 12
+    },
+    {
+      "show_id": 64,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 4,
+      "screen_id": 12
+    },
+    {
+      "show_id": 65,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 12
+    },
+    {
+      "show_id": 66,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 6,
+      "screen_id": 12
+    },
+    {
+      "show_id": 67,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 5,
+      "screen_id": 13
+    },
+    {
+      "show_id": 68,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 6,
+      "screen_id": 13
+    },
+    {
+      "show_id": 69,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 7,
+      "screen_id": 13
+    },
+    {
+      "show_id": 70,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 8,
+      "screen_id": 13
+    },
+    {
+      "show_id": 71,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 7,
+      "screen_id": 14
+    },
+    {
+      "show_id": 72,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 8,
+      "screen_id": 14
+    },
+    {
+      "show_id": 73,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 9,
+      "screen_id": 14
+    },
+    {
+      "show_id": 74,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 10,
+      "screen_id": 14
+    },
+    {
+      "show_id": 75,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 9,
+      "screen_id": 15
+    },
+    {
+      "show_id": 76,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 10,
+      "screen_id": 15
+    },
+    {
+      "show_id": 77,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 1,
+      "screen_id": 15
+    },
+    {
+      "show_id": 78,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 15
+    },
+    {
+      "show_id": 79,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 1,
+      "screen_id": 16
+    },
+    {
+      "show_id": 80,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 2,
+      "screen_id": 16
+    },
+    {
+      "show_id": 81,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 16
+    },
+    {
+      "show_id": 82,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 4,
+      "screen_id": 16
+    },
+    {
+      "show_id": 83,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 3,
+      "screen_id": 17
+    },
+    {
+      "show_id": 84,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 4,
+      "screen_id": 17
+    },
+    {
+      "show_id": 85,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 5,
+      "screen_id": 17
+    },
+    {
+      "show_id": 86,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 17
+    },
+    {
+      "show_id": 87,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 5,
+      "screen_id": 18
+    },
+    {
+      "show_id": 88,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 6,
+      "screen_id": 18
+    },
+    {
+      "show_id": 89,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 7,
+      "screen_id": 18
+    },
+    {
+      "show_id": 90,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 8,
+      "screen_id": 18
+    },
+    {
+      "show_id": 91,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 7,
+      "screen_id": 19
+    },
+    {
+      "show_id": 92,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 8,
+      "screen_id": 19
+    },
+    {
+      "show_id": 93,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 9,
+      "screen_id": 19
+    },
+    {
+      "show_id": 94,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 10,
+      "screen_id": 19
+    },
+    {
+      "show_id": 95,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 9,
+      "screen_id": 20
+    },
+    {
+      "show_id": 96,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 10,
+      "screen_id": 20
+    },
+    {
+      "show_id": 97,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 1,
+      "screen_id": 20
+    },
+    {
+      "show_id": 98,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 2,
+      "screen_id": 20
+    },
+    {
+      "show_id": 99,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 1,
+      "screen_id": 21
+    },
+    {
+      "show_id": 100,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 2,
+      "screen_id": 21
+    },
+    {
+      "show_id": 101,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 3,
+      "screen_id": 21
+    },
+    {
+      "show_id": 102,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 4,
+      "screen_id": 21
+    },
+    {
+      "show_id": 103,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 3,
+      "screen_id": 22
+    },
+    {
+      "show_id": 104,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 4,
+      "screen_id": 22
+    },
+    {
+      "show_id": 105,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 22
+    },
+    {
+      "show_id": 106,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 6,
+      "screen_id": 22
+    },
+    {
+      "show_id": 107,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 5,
+      "screen_id": 23
+    },
+    {
+      "show_id": 108,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 6,
+      "screen_id": 23
+    },
+    {
+      "show_id": 109,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 7,
+      "screen_id": 23
+    },
+    {
+      "show_id": 110,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 8,
+      "screen_id": 23
+    },
+    {
+      "show_id": 111,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 7,
+      "screen_id": 24
+    },
+    {
+      "show_id": 112,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 8,
+      "screen_id": 24
+    },
+    {
+      "show_id": 113,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 9,
+      "screen_id": 24
+    },
+    {
+      "show_id": 114,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 10,
+      "screen_id": 24
+    },
+    {
+      "show_id": 115,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 9,
+      "screen_id": 25
+    },
+    {
+      "show_id": 116,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 10,
+      "screen_id": 25
+    },
+    {
+      "show_id": 117,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 1,
+      "screen_id": 25
+    },
+    {
+      "show_id": 118,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 25
+    },
+    {
+      "show_id": 119,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 1,
+      "screen_id": 26
+    },
+    {
+      "show_id": 120,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 2,
+      "screen_id": 26
+    },
+    {
+      "show_id": 121,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 26
+    },
+    {
+      "show_id": 122,
+      "show_date": "2026-10-26T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 4,
+      "screen_id": 26
+    },
+    {
+      "show_id": 123,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 4,
+      "screen_id": 1
+    },
+    {
+      "show_id": 124,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 5,
+      "screen_id": 1
+    },
+    {
+      "show_id": 125,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 1
+    },
+    {
+      "show_id": 126,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 7,
+      "screen_id": 1
+    },
+    {
+      "show_id": 127,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 6,
+      "screen_id": 2
+    },
+    {
+      "show_id": 128,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 7,
+      "screen_id": 2
+    },
+    {
+      "show_id": 129,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 8,
+      "screen_id": 2
+    },
+    {
+      "show_id": 130,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 9,
+      "screen_id": 2
+    },
+    {
+      "show_id": 131,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 8,
+      "screen_id": 3
+    },
+    {
+      "show_id": 132,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 9,
+      "screen_id": 3
+    },
+    {
+      "show_id": 133,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 10,
+      "screen_id": 3
+    },
+    {
+      "show_id": 134,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 1,
+      "screen_id": 3
+    },
+    {
+      "show_id": 135,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 10,
+      "screen_id": 4
+    },
+    {
+      "show_id": 136,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 1,
+      "screen_id": 4
+    },
+    {
+      "show_id": 137,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 4
+    },
+    {
+      "show_id": 138,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 3,
+      "screen_id": 4
+    },
+    {
+      "show_id": 139,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 2,
+      "screen_id": 5
+    },
+    {
+      "show_id": 140,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 3,
+      "screen_id": 5
+    },
+    {
+      "show_id": 141,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 4,
+      "screen_id": 5
+    },
+    {
+      "show_id": 142,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 5
+    },
+    {
+      "show_id": 143,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 4,
+      "screen_id": 6
+    },
+    {
+      "show_id": 144,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 5,
+      "screen_id": 6
+    },
+    {
+      "show_id": 145,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 6
+    },
+    {
+      "show_id": 146,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 7,
+      "screen_id": 6
+    },
+    {
+      "show_id": 147,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 6,
+      "screen_id": 7
+    },
+    {
+      "show_id": 148,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 7,
+      "screen_id": 7
+    },
+    {
+      "show_id": 149,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 8,
+      "screen_id": 7
+    },
+    {
+      "show_id": 150,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 9,
+      "screen_id": 7
+    },
+    {
+      "show_id": 151,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 8,
+      "screen_id": 8
+    },
+    {
+      "show_id": 152,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 9,
+      "screen_id": 8
+    },
+    {
+      "show_id": 153,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 10,
+      "screen_id": 8
+    },
+    {
+      "show_id": 154,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 1,
+      "screen_id": 8
+    },
+    {
+      "show_id": 155,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 10,
+      "screen_id": 9
+    },
+    {
+      "show_id": 156,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 1,
+      "screen_id": 9
+    },
+    {
+      "show_id": 157,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 2,
+      "screen_id": 9
+    },
+    {
+      "show_id": 158,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 9
+    },
+    {
+      "show_id": 159,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 2,
+      "screen_id": 10
+    },
+    {
+      "show_id": 160,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 3,
+      "screen_id": 10
+    },
+    {
+      "show_id": 161,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 4,
+      "screen_id": 10
+    },
+    {
+      "show_id": 162,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 5,
+      "screen_id": 10
+    },
+    {
+      "show_id": 163,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 4,
+      "screen_id": 11
+    },
+    {
+      "show_id": 164,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 5,
+      "screen_id": 11
+    },
+    {
+      "show_id": 165,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 6,
+      "screen_id": 11
+    },
+    {
+      "show_id": 166,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 7,
+      "screen_id": 11
+    },
+    {
+      "show_id": 167,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 6,
+      "screen_id": 12
+    },
+    {
+      "show_id": 168,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 7,
+      "screen_id": 12
+    },
+    {
+      "show_id": 169,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 8,
+      "screen_id": 12
+    },
+    {
+      "show_id": 170,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 9,
+      "screen_id": 12
+    },
+    {
+      "show_id": 171,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 8,
+      "screen_id": 13
+    },
+    {
+      "show_id": 172,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 9,
+      "screen_id": 13
+    },
+    {
+      "show_id": 173,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 10,
+      "screen_id": 13
+    },
+    {
+      "show_id": 174,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 1,
+      "screen_id": 13
+    },
+    {
+      "show_id": 175,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 10,
+      "screen_id": 14
+    },
+    {
+      "show_id": 176,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 1,
+      "screen_id": 14
+    },
+    {
+      "show_id": 177,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 14
+    },
+    {
+      "show_id": 178,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 3,
+      "screen_id": 14
+    },
+    {
+      "show_id": 179,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 2,
+      "screen_id": 15
+    },
+    {
+      "show_id": 180,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 3,
+      "screen_id": 15
+    },
+    {
+      "show_id": 181,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 4,
+      "screen_id": 15
+    },
+    {
+      "show_id": 182,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 15
+    },
+    {
+      "show_id": 183,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 4,
+      "screen_id": 16
+    },
+    {
+      "show_id": 184,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 5,
+      "screen_id": 16
+    },
+    {
+      "show_id": 185,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 16
+    },
+    {
+      "show_id": 186,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 7,
+      "screen_id": 16
+    },
+    {
+      "show_id": 187,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 6,
+      "screen_id": 17
+    },
+    {
+      "show_id": 188,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 7,
+      "screen_id": 17
+    },
+    {
+      "show_id": 189,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 8,
+      "screen_id": 17
+    },
+    {
+      "show_id": 190,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 9,
+      "screen_id": 17
+    },
+    {
+      "show_id": 191,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 8,
+      "screen_id": 18
+    },
+    {
+      "show_id": 192,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 9,
+      "screen_id": 18
+    },
+    {
+      "show_id": 193,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 10,
+      "screen_id": 18
+    },
+    {
+      "show_id": 194,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 1,
+      "screen_id": 18
+    },
+    {
+      "show_id": 195,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 10,
+      "screen_id": 19
+    },
+    {
+      "show_id": 196,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 1,
+      "screen_id": 19
+    },
+    {
+      "show_id": 197,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 2,
+      "screen_id": 19
+    },
+    {
+      "show_id": 198,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 3,
+      "screen_id": 19
+    },
+    {
+      "show_id": 199,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 2,
+      "screen_id": 20
+    },
+    {
+      "show_id": 200,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 3,
+      "screen_id": 20
+    },
+    {
+      "show_id": 201,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 4,
+      "screen_id": 20
+    },
+    {
+      "show_id": 202,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 5,
+      "screen_id": 20
+    },
+    {
+      "show_id": 203,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 4,
+      "screen_id": 21
+    },
+    {
+      "show_id": 204,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 5,
+      "screen_id": 21
+    },
+    {
+      "show_id": 205,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 6,
+      "screen_id": 21
+    },
+    {
+      "show_id": 206,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 7,
+      "screen_id": 21
+    },
+    {
+      "show_id": 207,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 6,
+      "screen_id": 22
+    },
+    {
+      "show_id": 208,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 7,
+      "screen_id": 22
+    },
+    {
+      "show_id": 209,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 8,
+      "screen_id": 22
+    },
+    {
+      "show_id": 210,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 9,
+      "screen_id": 22
+    },
+    {
+      "show_id": 211,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 8,
+      "screen_id": 23
+    },
+    {
+      "show_id": 212,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 9,
+      "screen_id": 23
+    },
+    {
+      "show_id": 213,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 10,
+      "screen_id": 23
+    },
+    {
+      "show_id": 214,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 1,
+      "screen_id": 23
+    },
+    {
+      "show_id": 215,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 10,
+      "screen_id": 24
+    },
+    {
+      "show_id": 216,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 1,
+      "screen_id": 24
+    },
+    {
+      "show_id": 217,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 2,
+      "screen_id": 24
+    },
+    {
+      "show_id": 218,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 3,
+      "screen_id": 24
+    },
+    {
+      "show_id": 219,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "350.00",
+      "movie_id": 2,
+      "screen_id": 25
+    },
+    {
+      "show_id": 220,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "400.00",
+      "movie_id": 3,
+      "screen_id": 25
+    },
+    {
+      "show_id": 221,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "480.00",
+      "movie_id": 4,
+      "screen_id": 25
+    },
+    {
+      "show_id": 222,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "380.00",
+      "movie_id": 5,
+      "screen_id": 25
+    },
+    {
+      "show_id": 223,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "10:00:00",
+      "end_time": "13:00:00",
+      "base_price": "280.00",
+      "movie_id": 4,
+      "screen_id": 26
+    },
+    {
+      "show_id": 224,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "14:00:00",
+      "end_time": "17:00:00",
+      "base_price": "320.00",
+      "movie_id": 5,
+      "screen_id": 26
+    },
+    {
+      "show_id": 225,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "18:00:00",
+      "end_time": "21:00:00",
+      "base_price": "380.00",
+      "movie_id": 6,
+      "screen_id": 26
+    },
+    {
+      "show_id": 226,
+      "show_date": "2026-10-27T18:30:00.000Z",
+      "start_time": "21:45:00",
+      "end_time": "00:45:00",
+      "base_price": "300.00",
+      "movie_id": 7,
+      "screen_id": 26
+    }
+  ]
+}

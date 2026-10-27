@@ -13,6 +13,7 @@ const snackController = require('../controllers/snackController');
 const reportController = require('../controllers/reportController');
 const adminController = require('../controllers/adminController');
 const tmdbController = require('../controllers/tmdbController');
+const heroController = require('../controllers/heroController');
 
 // ============================================================================
 // SYSTEM & HEALTH CHECK
@@ -39,6 +40,7 @@ router.get('/tmdb/search', tmdbController.searchTmdbArtwork);
 router.get('/movies', movieController.getAllMovies);
 router.get('/movies/:id', movieController.getMovieById);
 router.get('/movies/:id/showtimes', movieController.getMovieShowtimes);
+router.get('/hero/slots', heroController.getHeroSlots);
 
 // ============================================================================
 // THEATER & SEAT ROUTES
@@ -91,6 +93,11 @@ router.delete('/admin/movies/:id', authenticateToken, requireRole('Admin', 'Mana
 router.get('/admin/showtimes', authenticateToken, showtimeController.getAllShowtimes);
 router.post('/admin/showtimes', authenticateToken, requireRole('Admin', 'Manager'), showtimeController.adminCreateShowtime);
 router.delete('/admin/showtimes/:id', authenticateToken, requireRole('Admin', 'Manager'), showtimeController.adminDeleteShowtime);
+
+// Admin Hero Trailer Management
+router.get('/admin/hero/slots', authenticateToken, heroController.getHeroSlotsAdmin);
+router.put('/admin/hero/slots', authenticateToken, requireRole('Admin', 'Manager'), heroController.updateHeroSlotOverride);
+router.post('/admin/hero/slots/reset', authenticateToken, requireRole('Admin', 'Manager'), heroController.resetHeroSlotsToAutomatic);
 
 // Admin Bookings & Staff
 router.get('/admin/bookings', authenticateToken, bookingController.getAllBookings);

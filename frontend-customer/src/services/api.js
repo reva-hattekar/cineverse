@@ -82,6 +82,12 @@ export const api = {
     return handleResponse(res);
   },
 
+  // Dynamic Hero Slots
+  getHeroSlots: async () => {
+    const res = await fetch(`${BASE_URL}/hero/slots`);
+    return handleResponse(res);
+  },
+
   // TMDB Proxy (Upcoming Releases)
   getUpcomingReleases: async () => {
     const res = await fetch(`${BASE_URL}/tmdb/upcoming`);
