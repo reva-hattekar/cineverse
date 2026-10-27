@@ -1,0 +1,34 @@
+{
+  "manual_overrides": {
+    "1": null,
+    "2": null,
+    "3": null,
+    "4": null
+  },
+  "movie_trailers": {
+    "1": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+    "2": "https://www.youtube.com/watch?v=YoHD9XEInc0",
+    "3": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+    "4": "https://www.youtube.com/watch?v=uYPbbksJxIg",
+    "5": "https://www.youtube.com/watch?v=Way9Dexny3w",
+    "6": "https://www.youtube.com/watch?v=ByXuk9QqQkk",
+    "7": "https://www.youtube.com/watch?v=cqGjhVJWtEg",
+    "8": "https://www.youtube.com/watch?v=8mrVmf239GU",
+    "9": "https://www.youtube.com/watch?v=GY4BgdUSpbE",
+    "10": "https://www.youtube.com/watch?v=K0eDlFX9GMc",
+    "13": "https://www.youtube.com/watch?v=62bIsvRcPv0"
+  },
+  "movie_release_dates": {
+    "1": "2014-11-07",
+    "2": "2010-07-16",
+    "3": "2008-07-18",
+    "4": "2023-07-21",
+    "5": "2024-03-01",
+    "6": "2001-07-20",
+    "7": "2023-06-02",
+    "8": "2022-09-30",
+    "9": "2022-03-25",
+    "10": "2009-12-25",
+    "13": "2026-11-27"
+  }
+}

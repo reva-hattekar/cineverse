@@ -1,0 +1,159 @@
+erDiagram
+    %% ============================================================================
+    %% CINEVERSE MULTIPLEX — RELATIONAL ENTITY-RELATIONSHIP DIAGRAM
+    %% Database: MovieTheaterDB (MySQL 8.0 InnoDB)
+    %% Fully Normalized Third Normal Form (3NF) Architecture
+    %% ============================================================================
+
+    %% --- INFRASTRUCTURE & THEATRICAL PROGRAMMING RELATIONSHIPS ---
+    THEATER ||--o{ SCREEN : "contains (1:N)"
+    THEATER ||--o{ ADMIN_STAFF : "employs (1:N)"
+    SCREEN ||--o{ SEAT : "configures (1:N)"
+    SCREEN ||--o{ SHOWTIME : "hosts (1:N)"
+    MOVIE ||--o{ SHOWTIME : "schedules (1:N)"
+
+    %% --- CUSTOMER & AUTHENTICATION RELATIONSHIPS ---
+    CUSTOMER ||--|| ACCOUNT : "authenticates (1:1)"
+    CUSTOMER ||--|| LOYALTY_ACCOUNT : "holds (1:1)"
+    CUSTOMER ||--o{ BOOKING : "places (1:N)"
+
+    %% --- TICKETING, SEATING & SETTLEMENT RELATIONSHIPS ---
+    SHOWTIME ||--o{ BOOKING : "receives (1:N)"
+    BOOKING ||--|{ BOOKED_SEAT : "reserves (1:N)"
+    SEAT ||--o{ BOOKED_SEAT : "allocated_in (1:N)"
+    BOOKING ||--|| PAYMENT : "settled_via (1:1)"
+
+    %% --- CONCESSIONS & SNACK ORDER RELATIONSHIPS ---
+    BOOKING ||--o{ SNACK_ORDER : "includes (1:N)"
+    SNACK_ORDER ||--|{ SNACK_ORDER_ITEM : "contains (1:N)"
+    SNACK ||--o{ SNACK_ORDER_ITEM : "ordered_in (1:N)"
+
+    %% ============================================================================
+    %% ENTITY DEFINITIONS & ATTRIBUTES
+    %% ============================================================================
+
+    THEATER {
+        int theater_id PK "Surrogate Primary Key"
+        varchar theater_name "Multiplex venue title"
+        varchar city "Metropolitan location"
+        varchar address "Physical street address"
+    }
+
+    SCREEN {
+        int screen_id PK "Surrogate Primary Key"
+        int screen_number "Auditorium number within venue"
+        varchar screen_name "Acoustic brand label"
+        varchar screen_type "Standard, IMAX, 4DX, VIP"
+        int capacity "Total physical seating capacity"
+        int theater_id FK "References THEATER(theater_id)"
+    }
+
+    SEAT {
+        int seat_id PK "Surrogate Primary Key"
+        varchar seat_number "Row and seat identifier (e.g. A1, K16)"
+        varchar seat_type "Standard, Premium, Recliner, VIP"
+        int screen_id FK "References SCREEN(screen_id)"
+    }
+
+    MOVIE {
+        int movie_id PK "Surrogate Primary Key"
+        varchar title "Official theatrical release title"
+        varchar genre "Film category classification"
+        int duration "Total runtime in minutes"
+        varchar language "Spoken audio language"
+        decimal rating "Critic/Audience score (0.0 to 10.0)"
+        varchar poster_url "High-resolution portrait poster"
+        varchar backdrop_url "Widescreen panoramic backdrop"
+    }
+
+    SHOWTIME {
+        int show_id PK "Surrogate Primary Key"
+        date show_date "Calendar date of screening"
+        time start_time "Screening start time (HH:MM:SS)"
+        time end_time "Computed end time with buffer"
+        decimal base_price "Standard ticket base admission"
+        int movie_id FK "References MOVIE(movie_id)"
+        int screen_id FK "References SCREEN(screen_id)"
+    }
+
+    CUSTOMER {
+        int customer_id PK "Surrogate Primary Key"
+        varchar customer_name "Patron full legal name"
+        varchar phone "Contact telephone number"
+        varchar email UK "Unique customer contact email"
+    }
+
+    ACCOUNT {
+        int account_id PK "Surrogate Primary Key"
+        int customer_id FK,UK "1:1 References CUSTOMER(customer_id)"
+        varchar email UK "Login username credential"
+        varchar password_hash "Cryptographically salted bcrypt hash"
+        timestamp created_at "Registration audit timestamp"
+        boolean is_active "Account status flag (1=active)"
+    }
+
+    LOYALTY_ACCOUNT {
+        int loyalty_id PK "Surrogate Primary Key"
+        int customer_id FK,UK "1:1 References CUSTOMER(customer_id)"
+        int total_points "Accumulated reward spend points"
+        date join_date "Loyalty membership enrollment date"
+        varchar membership_level "Bronze, Silver, Gold, Platinum"
+    }
+
+    BOOKING {
+        int booking_id PK "Surrogate Primary Key"
+        timestamp booking_date "Reservation audit timestamp"
+        decimal total_amount "Gross total transaction amount"
+        varchar booking_status "CONFIRMED, PENDING, CANCELLED"
+        int customer_id FK "References CUSTOMER(customer_id)"
+        int show_id FK "References SHOWTIME(show_id)"
+    }
+
+    BOOKED_SEAT {
+        int booking_id PK,FK "Composite PK Part 1 -> BOOKING"
+        int seat_id PK,FK "Composite PK Part 2 -> SEAT"
+        decimal ticket_price "Historical executed ticket price"
+    }
+
+    PAYMENT {
+        int payment_id PK "Surrogate Primary Key"
+        decimal amount "Settled monetary reconciliation sum"
+        varchar payment_method "UPI, Credit Card, Debit Card, Net Banking"
+        varchar payment_status "COMPLETED, REFUNDED, PENDING"
+        timestamp payment_date "Reconciliation audit timestamp"
+        int booking_id FK,UK "1:1 References BOOKING(booking_id)"
+    }
+
+    ADMIN_STAFF {
+        int staff_id PK "Surrogate Primary Key"
+        varchar staff_name "Employee full legal name"
+        varchar email UK "Staff login email"
+        varchar phone "Staff emergency contact"
+        varchar role "Admin, Manager, Supervisor, Cashier"
+        varchar password_hash "Salted bcrypt hash"
+        boolean is_active "Employment status flag"
+        timestamp created_at "Account creation timestamp"
+        int theater_id FK "References THEATER(theater_id)"
+    }
+
+    SNACK {
+        int snack_id PK "Surrogate Primary Key"
+        varchar snack_name "Concession menu item description"
+        decimal price "Retail unit price"
+        int stock_quantity "Remaining physical inventory"
+    }
+
+    SNACK_ORDER {
+        int snack_order_id PK "Surrogate Primary Key"
+        timestamp order_date "Order placement timestamp"
+        varchar order_status "COMPLETED, CANCELLED, PENDING"
+        decimal total_price "Total concession order amount"
+        int booking_id FK "References BOOKING(booking_id)"
+    }
+
+    SNACK_ORDER_ITEM {
+        int snack_order_id PK,FK "Composite PK Part 1 -> SNACK_ORDER"
+        int snack_id PK,FK "Composite PK Part 2 -> SNACK"
+        int quantity "Item count ordered (chk > 0)"
+        decimal unit_price "Historical executed unit price"
+    }

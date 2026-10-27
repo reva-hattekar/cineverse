@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Play, Pause, RotateCcw, Ticket, Film } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, RotateCcw, Ticket, Film, ExternalLink } from 'lucide-react';
+import { extractYouTubeVideoId, getYouTubeEmbedUrl, isValidTrailerUrl } from '../../utils/trailerUtils';
 
 /**
  * HeroTrailerPlayer
- * Handles video trailer playback for slides 02, 03, and 04.
- * - Respects browser autoplay policy (muted autoplay)
+ * Handles dynamic video trailer playback for the featured hero slots:
+ * - Supports YouTube watch URLs, short links, and embed URLs (iframe embed)
+ * - Supports direct MP4 / WebM video files (HTML5 video)
+ * - Respects browser autoplay policies (starts muted, background playback)
  * - Mute/Unmute & Play/Pause controls
- * - Graceful poster fallback if no direct videoUrl is configured yet
- * - Full end-state when video completes (dimmed frame, prominent Book Tickets CTA, Watch Again button)
- * - Cleans up HTML5 video element on slide switch or unmount
+ * - Graceful high-resolution poster backdrop fallback if no trailer is attached
+ * - End-state and booking actions
  */
 export default function HeroTrailerPlayer({
   experience,
@@ -22,28 +24,30 @@ export default function HeroTrailerPlayer({
   const [hasEnded, setHasEnded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
+  const trailerUrl = movie?.trailer_url || experience?.trailerUrl || experience?.videoUrl || '';
+  const youtubeId = extractYouTubeVideoId(trailerUrl);
+  const isDirectVideo = Boolean(trailerUrl && trailerUrl.match(/\.(mp4|webm)($|\?)/i));
+  const hasTrailer = Boolean(youtubeId || isDirectVideo);
+
   const posterImage =
     movie?.backdrop_url ||
-    experience.posterFallback ||
+    experience?.posterFallback ||
     movie?.poster_url ||
     'https://image.tmdb.org/t/p/original/fm6K9vYI7vmvup4Q9Z69gtv20ec.jpg';
 
-  const hasVideoSource = Boolean(experience.videoUrl && experience.videoUrl.trim() !== '');
-
-  // Reset states whenever active experience changes
+  // Reset playback states on slide switch
   useEffect(() => {
     setHasEnded(false);
     setVideoError(false);
     setIsPlaying(true);
 
     const videoEl = videoRef.current;
-    if (videoEl && hasVideoSource) {
+    if (videoEl && isDirectVideo) {
       videoEl.currentTime = 0;
       const playPromise = videoEl.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
-          // Autoplay policy prevented playback, keep paused
-          console.warn('Autoplay prevented or video interrupted:', err);
+          console.warn('Autoplay prevented:', err);
           setIsPlaying(false);
         });
       }
@@ -54,57 +58,85 @@ export default function HeroTrailerPlayer({
         videoEl.pause();
       }
     };
-  }, [experience.id, hasVideoSource, isActive]);
+  }, [experience?.id, movie?.movie_id, isDirectVideo, isActive]);
 
-  // Handle Play/Pause
   const togglePlay = () => {
-    const videoEl = videoRef.current;
-    if (!videoEl) return;
-    if (isPlaying) {
-      videoEl.pause();
-      setIsPlaying(false);
+    if (isDirectVideo) {
+      const videoEl = videoRef.current;
+      if (!videoEl) return;
+      if (isPlaying) {
+        videoEl.pause();
+        setIsPlaying(false);
+      } else {
+        videoEl.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
     } else {
-      videoEl.play().then(() => setIsPlaying(true)).catch(() => {});
+      setIsPlaying(prev => !prev);
     }
   };
 
-  // Handle Mute/Unmute
   const toggleMute = () => {
     const videoEl = videoRef.current;
-    if (!videoEl) return;
-    videoEl.muted = !isMuted;
+    if (videoEl) {
+      videoEl.muted = !isMuted;
+    }
     setIsMuted(!isMuted);
   };
 
-  // Handle Replay Trailer after ended
   const handleReplay = () => {
-    const videoEl = videoRef.current;
-    if (!videoEl) return;
     setHasEnded(false);
-    videoEl.currentTime = 0;
-    videoEl.play().then(() => setIsPlaying(true)).catch(() => {});
+    setIsPlaying(true);
+    const videoEl = videoRef.current;
+    if (videoEl) {
+      videoEl.currentTime = 0;
+      videoEl.play().catch(() => {});
+    }
   };
 
   return (
     <div className={`hero-trailer-layer ${hasEnded ? 'video-ended-state' : ''}`}>
-      {/* Background Media: Video or Backdrop Poster Fallback */}
-      {hasVideoSource && !videoError ? (
-        <video
-          ref={videoRef}
-          src={experience.videoUrl}
-          className="hero-media-video"
-          playsInline
-          autoPlay
-          muted={isMuted}
-          poster={posterImage}
-          onEnded={() => {
-            setHasEnded(true);
-            setIsPlaying(false);
-          }}
-          onError={() => {
-            setVideoError(true);
-          }}
-        />
+      {/* Background Media: YouTube Iframe, Direct Video, or High-Res Poster Fallback */}
+      {hasTrailer && !videoError ? (
+        youtubeId ? (
+          <div className="hero-media-youtube-wrap" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${youtubeId}&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+              title={`Trailer for ${movie?.title || experience?.fallbackTitle}`}
+              style={{
+                width: '100vw',
+                height: '56.25vw', // 16:9 ratio
+                minHeight: '100%',
+                minWidth: '177.77vh',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                border: 'none',
+                opacity: isPlaying ? 0.85 : 0.4,
+                transition: 'opacity 0.5s ease',
+                pointerEvents: 'none'
+              }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            />
+          </div>
+        ) : (
+          <video
+            ref={videoRef}
+            src={trailerUrl}
+            className="hero-media-video"
+            playsInline
+            autoPlay
+            muted={isMuted}
+            poster={posterImage}
+            onEnded={() => {
+              setHasEnded(true);
+              setIsPlaying(false);
+            }}
+            onError={() => {
+              setVideoError(true);
+            }}
+          />
+        )
       ) : (
         <div
           className="hero-media-poster"
@@ -115,8 +147,8 @@ export default function HeroTrailerPlayer({
       {/* Atmospheric Scrim Gradient for Readability */}
       <div className="hero-media-scrim" />
 
-      {/* Floating Video Controls Pill (Only shown if video source is active & not ended) */}
-      {hasVideoSource && !videoError && !hasEnded && (
+      {/* Floating Video Controls Pill (Only shown if trailer is active) */}
+      {hasTrailer && !videoError && !hasEnded && (
         <div className="trailer-playback-controls">
           <button
             className="trailer-ctrl-btn"
@@ -134,10 +166,22 @@ export default function HeroTrailerPlayer({
           >
             {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
           </button>
+          {trailerUrl && (
+            <a
+              href={trailerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="trailer-ctrl-btn"
+              title="Open full trailer on YouTube"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <ExternalLink size={13} />
+            </a>
+          )}
         </div>
       )}
 
-      {/* End-State Overlay (When video finishes) */}
+      {/* End-State Overlay (When video completes) */}
       {hasEnded && (
         <div className="trailer-end-overlay">
           <div className="trailer-end-card">
@@ -145,13 +189,13 @@ export default function HeroTrailerPlayer({
               <Film size={13} /> TRAILER COMPLETED
             </span>
             <h3 className="trailer-end-title">
-              {movie?.title || experience.fallbackTitle}
+              {movie?.title || experience?.fallbackTitle}
             </h3>
             <p className="trailer-end-desc">
               Experience the theatrical phenomenon on the giant screen. Reserve your seats today.
             </p>
             <div className="trailer-end-actions">
-              {movie && (
+              {movie && movie.scheduled_showtimes_count > 0 && (
                 <button
                   className="hero-primary-btn"
                   onClick={() => onSelectMovie(movie)}
@@ -171,4 +215,3 @@ export default function HeroTrailerPlayer({
     </div>
   );
 }
-

@@ -5,6 +5,7 @@ import AdminSidebar from './components/AdminSidebar';
 import AdminHeader from './components/AdminHeader';
 import OverviewView from './views/OverviewView';
 import MoviesView from './views/MoviesView';
+import HeroTrailersView from './views/HeroTrailersView';
 import TheatersView from './views/TheatersView';
 import ShowtimesView from './views/ShowtimesView';
 import SeatAvailabilityView from './views/SeatAvailabilityView';
@@ -204,6 +205,14 @@ export default function App() {
                   movies={movies}
                   onRefresh={() => loadRouteData('/movies')}
                   showNotification={showNotification}
+                />
+              }
+            />
+            <Route
+              path="/hero-trailers"
+              element={
+                <HeroTrailersView
+                  onNavigate={(path) => navigate(path)}
                 />
               }
             />

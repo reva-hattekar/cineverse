@@ -6,9 +6,25 @@ import BookingFlowView from './views/BookingFlowView';
 import MyBookingsView from './views/MyBookingsView';
 import { api } from './services/api';
 
+function formatPremiereDate(dateStr) {
+  if (!dateStr || dateStr === 'Expected Soon') return 'Premiere Date TBA';
+  try {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const [y, m, d] = parts.map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    }
+    return dateStr;
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function App() {
   const [currentView, setCurrentView] = useState('home'); // 'home', 'theatres', 'upcoming', 'booking-flow', 'bookings'
   const [movies, setMovies] = useState([]);
+  const [heroSlots, setHeroSlots] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [theaters, setTheaters] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -16,6 +32,7 @@ export default function App() {
   const [customers, setCustomers] = useState([]);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCity, setSelectedCity] = useState('Bengaluru');
 
@@ -25,44 +42,59 @@ export default function App() {
 
   const loadInitialData = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const [moviesRes, upcomingRes, customersRes, theatersRes] = await Promise.all([
+      const [moviesRes, upcomingRes, customersRes, theatersRes, heroSlotsRes] = await Promise.all([
         api.getMovies(),
         api.getUpcomingReleases(),
         api.getCustomers(),
-        api.getTheaters()
+        api.getTheaters(),
+        api.getHeroSlots().catch(() => ({ success: false, data: [] }))
       ]);
 
       if (moviesRes.success) {
         setMovies(moviesRes.data);
       }
 
-      // Merge database upcoming movies with upcoming releases (guaranteeing zero duplicates)
+      if (heroSlotsRes && heroSlotsRes.success && Array.isArray(heroSlotsRes.data)) {
+        setHeroSlots(heroSlotsRes.data);
+      }
+
+      // Single source of truth: database upcoming movies
       let combinedUpcoming = [];
+      const todayStr = new Date().toISOString().split('T')[0];
+
       if (upcomingRes && upcomingRes.success && Array.isArray(upcomingRes.data)) {
-        combinedUpcoming = [...upcomingRes.data];
+        // Enforce date validation: release date must not be in the past
+        combinedUpcoming = upcomingRes.data.filter(
+          u => !u.release_date || u.release_date >= todayStr
+        );
       }
 
       if (moviesRes && moviesRes.success && Array.isArray(moviesRes.data)) {
         const dbComingSoon = moviesRes.data.filter(
           m =>
-            m.release_status === 'Coming Soon' ||
-            (m.release_date && new Date(m.release_date) > new Date() && (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0))
+            (!m.scheduled_showtimes_count || m.scheduled_showtimes_count === 0) &&
+            ((m.release_status === 'Coming Soon' && (!m.release_date || m.release_date >= todayStr)) ||
+             (m.release_date && m.release_date >= todayStr))
         );
+        const existingIds = new Set(combinedUpcoming.map(u => u.id));
         const existingTitles = new Set(combinedUpcoming.map(u => (u.title || '').trim().toLowerCase()));
+
         dbComingSoon.forEach(dbM => {
-          if (!existingTitles.has(dbM.title.trim().toLowerCase())) {
+          if (!existingIds.has(dbM.movie_id) && !existingTitles.has(dbM.title.trim().toLowerCase())) {
             combinedUpcoming.unshift({
               id: dbM.movie_id,
               title: dbM.title,
               genre: dbM.genre,
               language: dbM.language,
               duration: dbM.duration,
-              release_date: dbM.release_date || 'Expected Soon',
+              release_date: dbM.release_date || null,
               poster_url: dbM.poster_url,
               backdrop_url: dbM.backdrop_url,
               status: 'Coming Soon'
             });
+            existingIds.add(dbM.movie_id);
             existingTitles.add(dbM.title.trim().toLowerCase());
           }
         });
@@ -78,6 +110,7 @@ export default function App() {
       }
     } catch (err) {
       console.error('Failed to load catalog data:', err);
+      setError('Unable to load theatrical catalogue. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -127,6 +160,7 @@ export default function App() {
           <HomeView
             movies={movies}
             upcomingMovies={upcomingMovies}
+            heroSlots={heroSlots}
             onSelectMovie={handleSelectMovie}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -160,52 +194,76 @@ export default function App() {
               </p>
             </div>
 
-            <div className="catalog-grid">
-              {upcomingMovies.map(up => (
-                <div key={up.id || up.title} className="catalog-movie-card" style={{ cursor: 'default' }}>
-                  <div className="catalog-poster-wrap">
-                    <img
-                      src={up.poster_url || 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg'}
-                      alt={up.title}
-                      className="catalog-poster-img"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src = 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
-                      }}
-                    />
-                    <div className="catalog-status-badge status-coming-soon">
-                      <span>Coming Soon</span>
-                    </div>
-                  </div>
-                  <div className="catalog-card-details">
-                    <h3 className="catalog-card-title">{up.title}</h3>
-                    <div className="catalog-card-meta">
-                      <span>{up.genre || 'Action / Drama'}</span>
-                      <span className="meta-sep">•</span>
-                      <span>{up.language || 'English'}</span>
-                    </div>
-                    <div style={{ color: '#fbbf24', fontSize: '0.82rem', fontWeight: 700, marginTop: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      Releasing: {up.release_date || 'Expected Soon'}
-                    </div>
-                    <div style={{ marginTop: '12px' }}>
-                      <button
-                        type="button"
-                        className="catalog-book-btn btn-disabled"
-                        disabled
-                        title="Screenings will become bookable once scheduled closer to premiere date"
-                      >
-                        Premiere Releasing Soon
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {loading && (
+              <div className="empty-catalog-state" style={{ padding: '60px 20px' }}>
+                <h3>Loading Upcoming Premieres...</h3>
+                <p>Retrieving the latest release schedules from CINEVERSE programming...</p>
+              </div>
+            )}
 
-            {upcomingMovies.length === 0 && (
+            {!loading && error && (
+              <div className="empty-catalog-state" style={{ border: '1px solid rgba(225, 29, 72, 0.4)', padding: '40px 20px' }}>
+                <h3 style={{ color: '#fb7185' }}>Unable to Load Premieres</h3>
+                <p>{error}</p>
+                <button
+                  type="button"
+                  className="catalog-book-btn"
+                  style={{ maxWidth: '180px', margin: '16px auto 0' }}
+                  onClick={loadInitialData}
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {!loading && !error && upcomingMovies.length === 0 && (
               <div className="empty-catalog-state">
                 <h3>No Upcoming Releases Scheduled</h3>
                 <p>Check back shortly as our film programmers announce new theatrical releases.</p>
+              </div>
+            )}
+
+            {!loading && !error && upcomingMovies.length > 0 && (
+              <div className="catalog-grid">
+                {upcomingMovies.map(up => (
+                  <div key={up.id || up.title} className="catalog-movie-card" style={{ cursor: 'default' }}>
+                    <div className="catalog-poster-wrap">
+                      <img
+                        src={up.poster_url || 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg'}
+                        alt={up.title}
+                        className="catalog-poster-img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = 'https://image.tmdb.org/t/p/w500/bA4bZg5sP002E7e2oR64v5e6Z7a.jpg';
+                        }}
+                      />
+                      <div className="catalog-status-badge status-coming-soon">
+                        <span>Coming Soon</span>
+                      </div>
+                    </div>
+                    <div className="catalog-card-details">
+                      <h3 className="catalog-card-title">{up.title}</h3>
+                      <div className="catalog-card-meta">
+                        <span>{up.genre || 'Action / Drama'}</span>
+                        <span className="meta-sep">•</span>
+                        <span>{up.language || 'English'}</span>
+                      </div>
+                      <div style={{ color: '#fbbf24', fontSize: '0.82rem', fontWeight: 700, marginTop: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        Releasing: {formatPremiereDate(up.release_date)}
+                      </div>
+                      <div style={{ marginTop: '12px' }}>
+                        <button
+                          type="button"
+                          className="catalog-book-btn btn-disabled"
+                          disabled
+                          title="Screenings will become bookable once scheduled closer to premiere date"
+                        >
+                          Premiere Releasing Soon
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -231,6 +289,7 @@ export default function App() {
         {currentView === 'bookings' && (
           <MyBookingsView
             currentCustomer={currentCustomer}
+            movies={movies}
             onBookNew={() => setCurrentView('home')}
           />
         )}
