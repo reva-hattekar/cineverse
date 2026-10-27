@@ -22,7 +22,16 @@ function formatPremiereDate(dateStr) {
 }
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'theatres', 'upcoming', 'booking-flow', 'bookings'
+  const [currentView, setCurrentView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (['bookings', 'theatres', 'upcoming'].includes(hash)) return hash;
+      const params = new URLSearchParams(window.location.search);
+      const v = params.get('view');
+      if (['bookings', 'theatres', 'upcoming'].includes(v)) return v;
+    }
+    return 'home';
+  });
   const [movies, setMovies] = useState([]);
   const [heroSlots, setHeroSlots] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
