@@ -71,7 +71,8 @@ export default function App() {
 
       // Single source of truth: database upcoming movies
       let combinedUpcoming = [];
-      const todayStr = new Date().toISOString().split('T')[0];
+      const d = new Date();
+      const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
       if (upcomingRes && upcomingRes.success && Array.isArray(upcomingRes.data)) {
         // Enforce date validation: release date must not be in the past

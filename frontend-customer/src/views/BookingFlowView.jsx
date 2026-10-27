@@ -25,8 +25,8 @@ import AuditoriumSeatMap from '../components/AuditoriumSeatMap';
  */
 function getUpcomingDates(daysCount = 8) {
   const dates = [];
-  // Today in local context is 2026-10-27
-  const start = new Date(2026, 9, 27); // Month 9 is October (0-indexed)
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Month 9 is October (0-indexed)
 
   for (let i = 0; i < daysCount; i++) {
     const d = new Date(start);
@@ -115,7 +115,7 @@ export default function BookingFlowView({
   const [step, setStep] = useState(initialShowtime ? 2 : 1);
   const [showtimes, setShowtimes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
-    initialShowtime?.show_date || upcomingDates[0]?.dateStr || '2026-10-27'
+    initialShowtime?.show_date || upcomingDates[0]?.dateStr
   );
   const [selectedShowtime, setSelectedShowtime] = useState(initialShowtime || null);
   const [seatsData, setSeatsData] = useState(null);

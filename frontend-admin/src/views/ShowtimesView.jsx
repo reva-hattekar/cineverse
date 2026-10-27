@@ -55,6 +55,14 @@ function calculateEndTime(startTimeStr, durationMins = 120, turnaroundMins = 15)
   return `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;
 }
 
+const getTodayDateStr = () => {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 export default function ShowtimesView({
   showtimes = [],
   movies = [],
@@ -82,7 +90,7 @@ export default function ShowtimesView({
   const [selectedMovieId, setSelectedMovieId] = useState('');
   const [selectedTheaterId, setSelectedTheaterId] = useState('');
   const [selectedScreenId, setSelectedScreenId] = useState('');
-  const [showDate, setShowDate] = useState('2026-10-28');
+  const [showDate, setShowDate] = useState(getTodayDateStr());
   const [startTime, setStartTime] = useState('18:00');
   const [endTime, setEndTime] = useState('21:04');
   const [basePrice, setBasePrice] = useState(250);
@@ -144,7 +152,7 @@ export default function ShowtimesView({
     const initialScreen = initialTheater?.screens?.[0] || null;
     setSelectedScreenId(initialScreen?.screen_id ?? '');
 
-    setShowDate('2026-10-28');
+    setShowDate(getTodayDateStr());
     setStartTime('18:00');
     setErrorMessage('');
     setModalOpen(true);

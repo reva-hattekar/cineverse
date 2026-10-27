@@ -6,14 +6,19 @@ export default function AdminHeader({ activeTitle, adminUser, onLogout, systemHe
   const [currentDateStr, setCurrentDateStr] = useState('');
 
   useEffect(() => {
-    const now = new Date(2026, 9, 27); // Local context baseline: 27 Oct 2026
-    const formatted = now.toLocaleDateString('en-US', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
-    setCurrentDateStr(formatted);
+    const updateDate = () => {
+      const now = new Date();
+      const formatted = now.toLocaleDateString('en-US', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      setCurrentDateStr(formatted);
+    };
+    updateDate();
+    const timer = setInterval(updateDate, 60000);
+    return () => clearInterval(timer);
   }, []);
 
   return (

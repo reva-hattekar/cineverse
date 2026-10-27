@@ -123,11 +123,19 @@ async function getAdminDashboard(req, res, next) {
     `);
 
     const todayScreenings = await query(`
-      SELECT s.show_id, s.show_date, s.start_time, s.base_price, m.title AS movie_title, t.theater_name, sc.screen_number
+      SELECT 
+        s.show_id, 
+        DATE_FORMAT(s.show_date, '%Y-%m-%d') AS show_date, 
+        s.start_time, 
+        s.base_price, 
+        m.title AS movie_title, 
+        t.theater_name, 
+        sc.screen_number
       FROM SHOWTIME s
       JOIN MOVIE m ON s.movie_id = m.movie_id
       JOIN SCREEN sc ON s.screen_id = sc.screen_id
       JOIN THEATER t ON sc.theater_id = t.theater_id
+      WHERE s.show_date >= CURRENT_DATE()
       ORDER BY s.show_date ASC, s.start_time ASC
       LIMIT 4
     `);

@@ -5,6 +5,10 @@ const { normalizeTrailerUrl, getYouTubeEmbedUrl, isValidTrailerUrl } = require('
 
 const SETTINGS_FILE = path.join(__dirname, '../../data/hero_settings.json');
 
+function getLocalTodayStr() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+}
+
 function loadFallbackSettings() {
   try {
     if (fs.existsSync(SETTINGS_FILE)) {
@@ -77,7 +81,7 @@ async function getAllCatalogMovies(schema) {
         DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
         m.release_status,
         m.trailer_url,
-        COUNT(s.show_id) AS scheduled_showtimes_count
+        COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
       FROM MOVIE m
       LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
       GROUP BY m.movie_id
@@ -97,7 +101,7 @@ async function getAllCatalogMovies(schema) {
         DATE_FORMAT(m.release_date, '%Y-%m-%d') AS release_date,
         m.release_status,
         NULL AS trailer_url,
-        COUNT(s.show_id) AS scheduled_showtimes_count
+        COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
       FROM MOVIE m
       LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
       GROUP BY m.movie_id
@@ -117,7 +121,7 @@ async function getAllCatalogMovies(schema) {
         NULL AS release_date,
         NULL AS release_status,
         NULL AS trailer_url,
-        COUNT(s.show_id) AS scheduled_showtimes_count
+        COUNT(CASE WHEN s.show_date >= CURRENT_DATE() THEN s.show_id END) AS scheduled_showtimes_count
       FROM MOVIE m
       LEFT JOIN SHOWTIME s ON m.movie_id = s.movie_id
       GROUP BY m.movie_id
@@ -186,7 +190,7 @@ async function computeHeroSlots() {
   const allMovies = await getAllCatalogMovies(schema);
   const overrides = await getManualOverrides(schema);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalTodayStr();
 
   // Eligible Latest Releases (for Slots 1-3)
   // - Must have a known release date
@@ -385,8 +389,8 @@ async function getHeroSlotsAdmin(req, res, next) {
         rating: m.rating,
         trailer_url: m.trailer_url,
         has_trailer: m.has_trailer,
-        is_upcoming: Boolean(m.release_date && m.release_date > new Date().toISOString().split('T')[0]),
-        is_latest_eligible: Boolean(m.release_date && m.release_date <= new Date().toISOString().split('T')[0])
+        is_upcoming: Boolean(m.release_date && m.release_date > getLocalTodayStr()),
+        is_latest_eligible: Boolean(m.release_date && m.release_date <= getLocalTodayStr())
       }))
     });
   } catch (err) {
@@ -409,7 +413,7 @@ async function updateHeroSlotOverride(req, res, next) {
     const schema = await inspectHeroSchema();
     const allMovies = await getAllCatalogMovies(schema);
     const overrides = await getManualOverrides(schema);
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalTodayStr();
 
     // Check if resetting slot to automatic
     if (override_movie_id === null || override_movie_id === '' || override_movie_id === undefined) {
